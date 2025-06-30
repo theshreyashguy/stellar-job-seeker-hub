@@ -18,6 +18,31 @@ const Cuvette = () => {
   const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
   const { toast } = useToast();
 
+  // Dummy data for Cuvette opportunities
+  const dummyOpportunities: Opportunity[] = [
+    {
+      id: '1',
+      name: 'Backend Developer',
+      company: 'GreenTech Startup',
+      salary: '₹8,00,000 - ₹12,00,000',
+      location: 'Bangalore, India'
+    },
+    {
+      id: '2',
+      name: 'Mobile App Developer',
+      company: 'FinanceFlow',
+      salary: '₹6,00,000 - ₹10,00,000',
+      location: 'Mumbai, India'
+    },
+    {
+      id: '3',
+      name: 'DevOps Engineer',
+      company: 'CloudFirst',
+      salary: '₹10,00,000 - ₹15,00,000',
+      location: 'Remote'
+    }
+  ];
+
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
     if (!selectedFile) return;
@@ -25,34 +50,15 @@ const Cuvette = () => {
     setFile(selectedFile);
     setIsUploading(true);
 
-    try {
-      const formData = new FormData();
-      formData.append('file', selectedFile);
-
-      const response = await fetch('/api/cuvette/extract', {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setOpportunities(data.opportunities);
-        toast({
-          title: "Success!",
-          description: `Found ${data.opportunities.length} opportunities`,
-        });
-      } else {
-        throw new Error('Failed to extract opportunities');
-      }
-    } catch (error) {
+    // Simulate processing time
+    setTimeout(() => {
+      setOpportunities(dummyOpportunities);
       toast({
-        title: "Error",
-        description: "Failed to process file. Please try again.",
-        variant: "destructive"
+        title: "Success!",
+        description: `Found ${dummyOpportunities.length} opportunities`,
       });
-    } finally {
       setIsUploading(false);
-    }
+    }, 2000);
   };
 
   return (

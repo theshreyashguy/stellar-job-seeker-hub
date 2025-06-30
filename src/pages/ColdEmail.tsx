@@ -19,38 +19,15 @@ const ColdEmail = () => {
   const handleSendEmail = async () => {
     setIsSending(true);
     
-    try {
-      const response = await fetch('/api/cold-email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          company,
-          role,
-          employeeInfo,
-          timestamp: new Date().toISOString(),
-        }),
-      });
-
-      if (response.ok) {
-        setIsSent(true);
-        toast({
-          title: "Cold Email Sent!",
-          description: `Your email regarding ${role} at ${company} has been sent.`,
-        });
-      } else {
-        throw new Error('Failed to send cold email');
-      }
-    } catch (error) {
+    // Simulate sending cold email
+    setTimeout(() => {
+      setIsSent(true);
       toast({
-        title: "Error",
-        description: "Failed to send cold email. Please try again.",
-        variant: "destructive"
+        title: "Cold Email Sent!",
+        description: `Your email regarding ${role} at ${company} has been sent.`,
       });
-    } finally {
       setIsSending(false);
-    }
+    }, 2000);
   };
 
   return (

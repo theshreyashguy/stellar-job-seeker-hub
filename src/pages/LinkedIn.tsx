@@ -18,6 +18,38 @@ const LinkedIn = () => {
   const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
   const { toast } = useToast();
 
+  // Dummy data for LinkedIn opportunities
+  const dummyOpportunities: Opportunity[] = [
+    {
+      id: '1',
+      name: 'Senior Frontend Developer',
+      company: 'TechCorp Inc.',
+      salary: '$120,000 - $160,000',
+      location: 'San Francisco, CA'
+    },
+    {
+      id: '2',
+      name: 'Full Stack Engineer',
+      company: 'StartupXYZ',
+      salary: '$100,000 - $140,000',
+      location: 'Remote'
+    },
+    {
+      id: '3',
+      name: 'React Developer',
+      company: 'InnovateLabs',
+      salary: '$90,000 - $120,000',
+      location: 'New York, NY'
+    },
+    {
+      id: '4',
+      name: 'Software Engineer',
+      company: 'MegaTech Solutions',
+      salary: '$110,000 - $150,000',
+      location: 'Austin, TX'
+    }
+  ];
+
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
     if (!selectedFile) return;
@@ -25,34 +57,15 @@ const LinkedIn = () => {
     setFile(selectedFile);
     setIsUploading(true);
 
-    try {
-      const formData = new FormData();
-      formData.append('file', selectedFile);
-
-      const response = await fetch('/api/linkedin/extract', {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setOpportunities(data.opportunities);
-        toast({
-          title: "Success!",
-          description: `Found ${data.opportunities.length} opportunities`,
-        });
-      } else {
-        throw new Error('Failed to extract opportunities');
-      }
-    } catch (error) {
+    // Simulate processing time
+    setTimeout(() => {
+      setOpportunities(dummyOpportunities);
       toast({
-        title: "Error",
-        description: "Failed to process file. Please try again.",
-        variant: "destructive"
+        title: "Success!",
+        description: `Found ${dummyOpportunities.length} opportunities`,
       });
-    } finally {
       setIsUploading(false);
-    }
+    }, 2000);
   };
 
   return (

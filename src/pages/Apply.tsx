@@ -18,37 +18,15 @@ const Apply = () => {
   const handleApply = async () => {
     setIsApplying(true);
     
-    try {
-      const response = await fetch('/api/apply', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          company,
-          role,
-          timestamp: new Date().toISOString(),
-        }),
-      });
-
-      if (response.ok) {
-        setIsApplied(true);
-        toast({
-          title: "Application Submitted!",
-          description: `Your application for ${role} at ${company} has been submitted.`,
-        });
-      } else {
-        throw new Error('Failed to submit application');
-      }
-    } catch (error) {
+    // Simulate application submission
+    setTimeout(() => {
+      setIsApplied(true);
       toast({
-        title: "Error",
-        description: "Failed to submit application. Please try again.",
-        variant: "destructive"
+        title: "Application Submitted!",
+        description: `Your application for ${role} at ${company} has been submitted.`,
       });
-    } finally {
       setIsApplying(false);
-    }
+    }, 2000);
   };
 
   return (

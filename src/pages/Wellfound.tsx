@@ -18,6 +18,38 @@ const Wellfound = () => {
   const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
   const { toast } = useToast();
 
+  // Dummy data for Wellfound opportunities
+  const dummyOpportunities: Opportunity[] = [
+    {
+      id: '1',
+      name: 'Product Manager',
+      company: 'AI Innovators',
+      salary: '$140,000 - $180,000',
+      location: 'San Francisco, CA'
+    },
+    {
+      id: '2',
+      name: 'Data Scientist',
+      company: 'ML Dynamics',
+      salary: '$130,000 - $170,000',
+      location: 'Seattle, WA'
+    },
+    {
+      id: '3',
+      name: 'Frontend Lead',
+      company: 'Design First',
+      salary: '$120,000 - $160,000',
+      location: 'Remote'
+    },
+    {
+      id: '4',
+      name: 'Growth Engineer',
+      company: 'ScaleUp Co',
+      salary: '$110,000 - $145,000',
+      location: 'Los Angeles, CA'
+    }
+  ];
+
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
     if (!selectedFile) return;
@@ -25,34 +57,15 @@ const Wellfound = () => {
     setFile(selectedFile);
     setIsUploading(true);
 
-    try {
-      const formData = new FormData();
-      formData.append('file', selectedFile);
-
-      const response = await fetch('/api/wellfound/extract', {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setOpportunities(data.opportunities);
-        toast({
-          title: "Success!",
-          description: `Found ${data.opportunities.length} opportunities`,
-        });
-      } else {
-        throw new Error('Failed to extract opportunities');
-      }
-    } catch (error) {
+    // Simulate processing time
+    setTimeout(() => {
+      setOpportunities(dummyOpportunities);
       toast({
-        title: "Error",
-        description: "Failed to process file. Please try again.",
-        variant: "destructive"
+        title: "Success!",
+        description: `Found ${dummyOpportunities.length} opportunities`,
       });
-    } finally {
       setIsUploading(false);
-    }
+    }, 2000);
   };
 
   return (
