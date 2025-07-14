@@ -21,7 +21,7 @@ const Gmail = () => {
       // Refresh the iframe
       const iframe = document.getElementById('gmail-frame') as HTMLIFrameElement;
       if (iframe) {
-        iframe.src = iframe.src;
+        // iframe.src = iframe.src;
       }
     }, 2000);
   };
