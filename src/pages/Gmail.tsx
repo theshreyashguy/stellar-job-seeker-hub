@@ -24,7 +24,7 @@ const Gmail = () => {
     getHeader,
     sendReply,
     isInitialized,
-  } = useGmail();
+  } = useGmail({isSignedIn});
 
   useEffect(() => {
     const initGapi = async () => {
