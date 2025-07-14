@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { RefreshCw, Send, Mail, LogIn, LogOut, Search } from 'lucide-react';
+import { RefreshCw, Send, Mail, LogIn, LogOut, Search, AlertCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useGoogleAuth } from '@/hooks/useGoogleAuth';
 import { useGmail } from '@/hooks/useGmail';
@@ -13,7 +13,7 @@ import { gapi } from 'gapi-script';
 const Gmail = () => {
   const [searchQuery, setSearchQuery] = useState('sde applicant');
   const { toast } = useToast();
-  const { isSignedIn, isLoading, signIn, signOut } = useGoogleAuth();
+  const { isSignedIn, isLoading, error, signIn, signOut } = useGoogleAuth();
   const {
     messages,
     isLoading: isLoadingMessages,
@@ -23,23 +23,19 @@ const Gmail = () => {
     getMessageBody,
     getHeader,
     sendReply,
+    isInitialized,
   } = useGmail();
 
   useEffect(() => {
     const initGapi = async () => {
-      if (isSignedIn) {
-        await gapi.load('client', async () => {
-          await gapi.client.init({
-            apiKey: 'AIzaSyBvqVYiTBQKvJ8JfGtF7h9K6BdC8PzP5Wk',
-            discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/gmail/v1/rest'],
-          });
-          searchMessages(searchQuery);
-        });
+      if (isSignedIn && isInitialized) {
+        console.log('User signed in and API initialized, searching messages...');
+        searchMessages(searchQuery);
       }
     };
 
     initGapi();
-  }, [isSignedIn, searchQuery, searchMessages]);
+  }, [isSignedIn, isInitialized, searchQuery, searchMessages]);
 
   const handleSearch = () => {
     if (isSignedIn) {
@@ -88,6 +84,15 @@ const Gmail = () => {
             </p>
           </div>
 
+          {error && (
+            <div className="glass rounded-2xl p-6 mb-6 border border-red-500/20">
+              <div className="flex items-center space-x-2 text-red-400">
+                <AlertCircle size={20} />
+                <p>{error}</p>
+              </div>
+            </div>
+          )}
+
           <div className="glass rounded-2xl p-8 text-center">
             <Mail size={64} className="mx-auto mb-6 text-red-400" />
             <h2 className="text-2xl font-bold text-white mb-4">Connect Your Gmail</h2>
@@ -96,10 +101,11 @@ const Gmail = () => {
             </p>
             <Button
               onClick={signIn}
+              disabled={isLoading}
               className="bg-red-600 hover:bg-red-700 px-8 py-3 text-lg"
             >
               <LogIn className="mr-2" size={20} />
-              Sign in with Gmail
+              {isLoading ? 'Loading...' : 'Sign in with Gmail'}
             </Button>
           </div>
 
@@ -128,9 +134,19 @@ const Gmail = () => {
         {/* Header Controls */}
         <div className="glass rounded-2xl p-6 mb-6">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-4">
               <Mail className="text-red-500" size={24} />
-              <h2 className="text-xl font-bold text-white">Application Emails</h2>
+              <div>
+                <h2 className="text-xl font-bold text-white">Application Emails</h2>
+                <div className="flex items-center space-x-2 text-sm text-gray-400">
+                  <span>Status:</span>
+                  {!isInitialized ? (
+                    <span className="text-yellow-400">Initializing Gmail API...</span>
+                  ) : (
+                    <span className="text-green-400">✓ Ready</span>
+                  )}
+                </div>
+              </div>
             </div>
             
             <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
