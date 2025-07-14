@@ -1,39 +1,117 @@
 
-import React, { useState } from 'react';
-import { RefreshCw, Send, Mail } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { RefreshCw, Send, Mail, LogIn, LogOut, Search } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { useGoogleAuth } from '@/hooks/useGoogleAuth';
+import { useGmail } from '@/hooks/useGmail';
+import EmailList from '@/components/EmailList';
+import EmailViewer from '@/components/EmailViewer';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { gapi } from 'gapi-script';
 
 const Gmail = () => {
-  const [isRefreshing, setIsRefreshing] = useState(false);
-  const [isSendingFollowups, setIsSendingFollowups] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('sde applicant');
   const { toast } = useToast();
+  const { isSignedIn, isLoading, signIn, signOut } = useGoogleAuth();
+  const {
+    messages,
+    isLoading: isLoadingMessages,
+    selectedMessage,
+    setSelectedMessage,
+    searchMessages,
+    getMessageBody,
+    getHeader,
+    sendReply,
+  } = useGmail();
+
+  useEffect(() => {
+    const initGapi = async () => {
+      if (isSignedIn) {
+        await gapi.load('client', async () => {
+          await gapi.client.init({
+            apiKey: 'AIzaSyBvqVYiTBQKvJ8JfGtF7h9K6BdC8PzP5Wk',
+            discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/gmail/v1/rest'],
+          });
+          searchMessages(searchQuery);
+        });
+      }
+    };
+
+    initGapi();
+  }, [isSignedIn, searchQuery, searchMessages]);
+
+  const handleSearch = () => {
+    if (isSignedIn) {
+      searchMessages(searchQuery);
+    }
+  };
 
   const handleFollowupAll = async () => {
-    setIsSendingFollowups(true);
-    
-    // Simulate sending follow-ups
-    setTimeout(() => {
+    if (!isSignedIn) {
       toast({
-        title: "Follow-ups sent!",
-        description: `Sent 8 follow-up emails`,
+        title: "Please sign in first",
+        description: "You need to sign in to Gmail to send follow-ups.",
+        variant: "destructive",
       });
-      setIsSendingFollowups(false);
-      // Refresh the iframe
-      const iframe = document.getElementById('gmail-frame') as HTMLIFrameElement;
-      if (iframe) {
-        // iframe.src = iframe.src;
-      }
-    }, 2000);
+      return;
+    }
+
+    // Simulate sending follow-ups for demo
+    toast({
+      title: "Follow-ups sent!",
+      description: `Sent ${messages.length} follow-up emails`,
+    });
   };
 
-  const refreshGmail = () => {
-    setIsRefreshing(true);
-    const iframe = document.getElementById('gmail-frame') as HTMLIFrameElement;
-    if (iframe) {
-      iframe.src = iframe.src;
-    }
-    setTimeout(() => setIsRefreshing(false), 1000);
-  };
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <RefreshCw className="animate-spin mx-auto mb-4" size={48} />
+          <p className="text-gray-300">Loading Gmail...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isSignedIn) {
+    return (
+      <div className="min-h-screen p-8">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-8">
+            <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-red-400 to-red-600 bg-clip-text text-transparent">
+              Gmail Management
+            </h1>
+            <p className="text-gray-300 text-lg mb-8">
+              Sign in to manage your job application emails and follow-ups
+            </p>
+          </div>
+
+          <div className="glass rounded-2xl p-8 text-center">
+            <Mail size={64} className="mx-auto mb-6 text-red-400" />
+            <h2 className="text-2xl font-bold text-white mb-4">Connect Your Gmail</h2>
+            <p className="text-gray-300 mb-6">
+              Sign in with your Google account to access your emails and manage your job applications
+            </p>
+            <Button
+              onClick={signIn}
+              className="bg-red-600 hover:bg-red-700 px-8 py-3 text-lg"
+            >
+              <LogIn className="mr-2" size={20} />
+              Sign in with Gmail
+            </Button>
+          </div>
+
+          <div className="mt-6 glass rounded-xl p-4">
+            <p className="text-gray-400 text-sm text-center">
+              💡 We'll search for emails containing "sde applicant" and help you manage your job applications
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen p-8">
@@ -47,47 +125,84 @@ const Gmail = () => {
           </p>
         </div>
 
+        {/* Header Controls */}
         <div className="glass rounded-2xl p-6 mb-6">
-          <div className="flex justify-between items-center">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
             <div className="flex items-center space-x-2">
               <Mail className="text-red-500" size={24} />
               <h2 className="text-xl font-bold text-white">Application Emails</h2>
             </div>
-            <div className="flex space-x-4">
-              <button
-                onClick={refreshGmail}
-                disabled={isRefreshing}
-                className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors duration-300 disabled:opacity-50"
-              >
-                <RefreshCw size={16} className={isRefreshing ? 'animate-spin' : ''} />
-                <span>Refresh</span>
-              </button>
-              <button
-                onClick={handleFollowupAll}
-                disabled={isSendingFollowups}
-                className="bg-stellar-purple hover:bg-stellar-purple/80 text-white px-6 py-2 rounded-lg flex items-center space-x-2 transition-colors duration-300 disabled:opacity-50"
-              >
-                <Send size={16} />
-                <span>{isSendingFollowups ? 'Sending...' : 'Follow-up All'}</span>
-              </button>
+            
+            <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
+              <div className="flex space-x-2">
+                <Input
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search emails..."
+                  className="bg-white/10 border-white/20 text-white"
+                />
+                <Button
+                  onClick={handleSearch}
+                  disabled={isLoadingMessages}
+                  variant="ghost"
+                >
+                  <Search size={16} />
+                </Button>
+              </div>
+              
+              <div className="flex space-x-2">
+                <Button
+                  onClick={handleSearch}
+                  disabled={isLoadingMessages}
+                  variant="ghost"
+                >
+                  <RefreshCw size={16} className={isLoadingMessages ? 'animate-spin' : ''} />
+                  Refresh
+                </Button>
+                <Button
+                  onClick={handleFollowupAll}
+                  disabled={isLoadingMessages}
+                  className="bg-stellar-purple hover:bg-stellar-purple/80"
+                >
+                  <Send size={16} className="mr-2" />
+                  Follow-up All
+                </Button>
+                <Button
+                  onClick={signOut}
+                  variant="ghost"
+                >
+                  <LogOut size={16} className="mr-2" />
+                  Sign Out
+                </Button>
+              </div>
             </div>
           </div>
         </div>
 
-        <div className="glass rounded-2xl overflow-hidden" style={{ height: 'calc(100vh - 300px)' }}>
-          <iframe
-            id="gmail-frame"
-            src="https://mail.google.com/mail/u/0/#search/label%3Aapplication+OR+subject%3Aapplication"
-            className="w-full h-full border-0"
-            title="Gmail"
-            sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
-          />
+        {/* Email Interface */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="order-2 lg:order-1">
+            <EmailList
+              messages={messages}
+              selectedMessage={selectedMessage}
+              onSelectMessage={setSelectedMessage}
+              getHeader={getHeader}
+            />
+          </div>
+          
+          <div className="order-1 lg:order-2">
+            <EmailViewer
+              message={selectedMessage}
+              getHeader={getHeader}
+              getMessageBody={getMessageBody}
+              sendReply={sendReply}
+            />
+          </div>
         </div>
 
         <div className="mt-6 glass rounded-xl p-4">
           <p className="text-gray-400 text-sm text-center">
-            💡 Tip: Use Gmail labels like "application", "interview", or "follow-up" to organize your job search emails.
-            The follow-up feature will automatically send professional follow-up emails to applications that haven't received responses.
+            💡 Search for keywords like "sde applicant", "software engineer", or company names to find relevant emails
           </p>
         </div>
       </div>
