@@ -57,15 +57,34 @@ const Wellfound = () => {
     setFile(selectedFile);
     setIsUploading(true);
 
-    // Simulate processing time
-    setTimeout(() => {
-      setOpportunities(dummyOpportunities);
+    const formData = new FormData();
+    formData.append('file', selectedFile);
+
+    try {
+      const response = await fetch('/api/scrape/wellfound', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to scrape jobs');
+      }
+
+      const data = await response.json();
+      setOpportunities(data);
       toast({
         title: "Success!",
-        description: `Found ${dummyOpportunities.length} opportunities`,
+        description: `Found ${data.length} opportunities`,
       });
+    } catch (error) {
+      toast({
+        title: "Error!",
+        description: "Failed to scrape jobs. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
       setIsUploading(false);
-    }, 2000);
+    }
   };
 
   return (

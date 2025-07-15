@@ -1,8 +1,7 @@
-
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Upload, ExternalLink, Send, Loader, CheckCircle } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { Upload, ExternalLink, Send, Loader, CheckCircle } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface Opportunity {
   id: string;
@@ -21,51 +20,88 @@ const LinkedIn = () => {
   // Dummy data for LinkedIn opportunities
   const dummyOpportunities: Opportunity[] = [
     {
-      id: '1',
-      name: 'Senior Frontend Developer',
-      company: 'TechCorp Inc.',
-      salary: '$120,000 - $160,000',
-      location: 'San Francisco, CA'
+      id: "1",
+      name: "Senior Frontend Developer",
+      company: "TechCorp Inc.",
+      salary: "$120,000 - $160,000",
+      location: "San Francisco, CA",
     },
     {
-      id: '2',
-      name: 'Full Stack Engineer',
-      company: 'StartupXYZ',
-      salary: '$100,000 - $140,000',
-      location: 'Remote'
+      id: "2",
+      name: "Full Stack Engineer",
+      company: "StartupXYZ",
+      salary: "$100,000 - $140,000",
+      location: "Remote",
     },
     {
-      id: '3',
-      name: 'React Developer',
-      company: 'InnovateLabs',
-      salary: '$90,000 - $120,000',
-      location: 'New York, NY'
+      id: "3",
+      name: "React Developer",
+      company: "InnovateLabs",
+      salary: "$90,000 - $120,000",
+      location: "New York, NY",
     },
     {
-      id: '4',
-      name: 'Software Engineer',
-      company: 'MegaTech Solutions',
-      salary: '$110,000 - $150,000',
-      location: 'Austin, TX'
-    }
+      id: "4",
+      name: "Software Engineer",
+      company: "MegaTech Solutions",
+      salary: "$110,000 - $150,000",
+      location: "Austin, TX",
+    },
   ];
 
-  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const selectedFile = event.target.files?.[0];
     if (!selectedFile) return;
 
     setFile(selectedFile);
     setIsUploading(true);
 
-    // Simulate processing time
-    setTimeout(() => {
-      setOpportunities(dummyOpportunities);
+    const formData = new FormData();
+    formData.append("html", selectedFile);
+
+    try {
+      const response = await fetch(
+        "http://localhost:8090/api/scrape/linkedin",
+        {
+          method: "POST",
+          headers: {
+            Authorization:
+              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTI1Njk4NzUsInN1YiI6IiJ9.jtK4sGN5mxMRfrXCadmgNPFz7-xiYgahTZXl7Zg-3w0",
+            // Do NOT set 'Content-Type' when using FormData
+          },
+          body: formData,
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to scrape jobs");
+      }
+
+      const data = await response.json();
+      // Map backend response to Opportunity type
+      const mapped = data.map((item: any) => ({
+        id: item.ID,
+        name: item.Role,
+        company: item.Company,
+        salary: item.Salary,
+        location: item.Location,
+      }));
+      setOpportunities(mapped);
       toast({
         title: "Success!",
-        description: `Found ${dummyOpportunities.length} opportunities`,
+        description: `Found ${mapped.length} opportunities`,
       });
+    } catch (error) {
+      toast({
+        title: "Error!",
+        description: "Failed to scrape jobs. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
       setIsUploading(false);
-    }, 2000);
+    }
   };
 
   return (
@@ -100,13 +136,19 @@ const LinkedIn = () => {
                   <div className="flex flex-col items-center space-y-4">
                     <CheckCircle className="w-12 h-12 text-green-500" />
                     <p className="text-white font-medium">{file.name}</p>
-                    <p className="text-gray-400">Click to upload a different file</p>
+                    <p className="text-gray-400">
+                      Click to upload a different file
+                    </p>
                   </div>
                 ) : (
                   <div className="flex flex-col items-center space-y-4">
                     <Upload className="w-12 h-12 text-stellar-purple" />
-                    <p className="text-white font-medium">Click to upload HTML file</p>
-                    <p className="text-gray-400">Support for LinkedIn job search exports</p>
+                    <p className="text-white font-medium">
+                      Click to upload HTML file
+                    </p>
+                    <p className="text-gray-400">
+                      Support for LinkedIn job search exports
+                    </p>
                   </div>
                 )}
               </div>
@@ -136,14 +178,18 @@ const LinkedIn = () => {
                   </div>
                   <div className="flex space-x-3 ml-4">
                     <Link
-                      to={`/apply?company=${encodeURIComponent(opportunity.company)}&role=${encodeURIComponent(opportunity.name)}`}
+                      to={`/apply?company=${encodeURIComponent(
+                        opportunity.company
+                      )}&role=${encodeURIComponent(opportunity.name)}`}
                       className="bg-stellar-purple hover:bg-stellar-purple/80 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors duration-300"
                     >
                       <ExternalLink size={16} />
                       <span>Apply</span>
                     </Link>
                     <Link
-                      to={`/cold-email?company=${encodeURIComponent(opportunity.company)}&role=${encodeURIComponent(opportunity.name)}`}
+                      to={`/cold-email?company=${encodeURIComponent(
+                        opportunity.company
+                      )}&role=${encodeURIComponent(opportunity.name)}`}
                       className="bg-stellar-cyan hover:bg-stellar-cyan/80 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors duration-300"
                     >
                       <Send size={16} />
