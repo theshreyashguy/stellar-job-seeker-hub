@@ -59,13 +59,13 @@ export const useGmail = ({ isSignedIn }: { isSignedIn: boolean }) => {
 
   // Search messages
   const searchMessages = useCallback(
-    async (query = "sde applicant") => {
+    async (query = "in:sent sde applicant") => {
       if (!isInitialized) return;
       setIsLoading(true);
       try {
         const resp = await gapi.client.gmail.users.messages.list({
           userId: "me",
-          q: query,
+          q: `in:sent  ${query}`,
           maxResults: 50,
         });
         const msgs = resp.result.messages || [];

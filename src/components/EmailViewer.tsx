@@ -137,7 +137,7 @@ const EmailViewer: React.FC<EmailViewerProps> = ({
               {subject}
             </h1>
           </div>
-          <div className="flex items-center space-x-1">
+          {/* <div className="flex items-center space-x-1">
             <Button variant="ghost" size="sm" onClick={handleArchive}>
               <Archive size={16} />
             </Button>
@@ -158,7 +158,7 @@ const EmailViewer: React.FC<EmailViewerProps> = ({
             <Button variant="ghost" size="sm">
               <MoreHorizontal size={16} />
             </Button>
-          </div>
+          </div> */}
         </div>
       </div>
 
@@ -194,7 +194,10 @@ const EmailViewer: React.FC<EmailViewerProps> = ({
         {/* Email body */}
         <div className="p-6">
           <div className="prose prose-neutral dark:prose-invert max-w-none">
-            <div className="text-foreground leading-relaxed" dangerouslySetInnerHTML={{ __html: cleanBody }} />
+            <div
+              className="text-foreground leading-relaxed"
+              dangerouslySetInnerHTML={{ __html: cleanBody }}
+            />
           </div>
         </div>
 
@@ -250,9 +253,9 @@ const EmailViewer: React.FC<EmailViewerProps> = ({
                     <Send size={16} className="mr-2" />
                     {isSending ? "Sending..." : "Send"}
                   </Button>
-                  <Button 
-                    onClick={() => setShowReplyBox(false)} 
-                    variant="ghost" 
+                  <Button
+                    onClick={() => setShowReplyBox(false)}
+                    variant="ghost"
                     size="sm"
                   >
                     Cancel
