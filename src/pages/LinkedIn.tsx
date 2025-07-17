@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Upload, ExternalLink, Send, Loader, CheckCircle } from "lucide-react";
+import { Upload, ExternalLink, Send, Loader, CheckCircle, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useJobOpportunities, Opportunity } from "@/hooks/useJobOpportunities";
 import { useSidebar } from "@/components/ui/sidebar";
+import { scrapeLinkedIn } from "@/lib/api";
 
 const LinkedIn = () => {
   const [file, setFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
-  const { opportunities, setOpportunities } = useJobOpportunities();
+  const { linkedinOpportunities, setLinkedinOpportunities, removeLinkedinOpportunity } = useJobOpportunities();
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -21,37 +22,9 @@ const LinkedIn = () => {
     setFile(selectedFile);
     setIsUploading(true);
 
-    const formData = new FormData();
-    formData.append("html", selectedFile);
-
     try {
-      const response = await fetch(
-        "http://localhost:8090/api/scrape/linkedin",
-        {
-          method: "POST",
-          headers: {
-            Authorization:
-              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTI2NjgzNDMsInN1YiI6IiJ9.DtlxcO9OkA1KI8iacWP4rrITmonI0ETOZ1WacdXJ_Ak",
-            // Do NOT set 'Content-Type' when using FormData
-          },
-          body: formData,
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to scrape jobs");
-      }
-
-      const data = await response.json();
-      // Map backend response to Opportunity type
-      const mapped = data.map((item: any) => ({
-        id: item.ID,
-        name: item.Role,
-        company: item.Company,
-        salary: item.Salary,
-        location: item.Location,
-      }));
-      setOpportunities(mapped);
+      const mapped = await scrapeLinkedIn(selectedFile);
+      setLinkedinOpportunities(mapped);
       toast({
         title: "Success!",
         description: `Found ${mapped.length} opportunities`,
@@ -119,12 +92,12 @@ const LinkedIn = () => {
           </div>
         </div>
 
-        {opportunities.length > 0 && (
+        {linkedinOpportunities.length > 0 && (
           <div className="space-y-4">
             <h2 className="text-2xl font-bold text-white mb-6">
-              Found {opportunities.length} Opportunities
+              Found {linkedinOpportunities.length} Opportunities
             </h2>
-            {opportunities.map((opportunity) => (
+            {linkedinOpportunities.map((opportunity) => (
               <div key={opportunity.id} className="glass rounded-xl p-6">
                 <div className="flex justify-between items-start">
                   <div className="flex-1">
@@ -175,16 +148,12 @@ const LinkedIn = () => {
                       <ExternalLink size={16} />
                       <span>Cold Email</span>
                     </a>
-                    {/* <Link
-                      to={`/cold-email?company=${encodeURIComponent(
-                        opportunity.company
-                      )}&role=${encodeURIComponent(opportunity.name)}`}
-                      className="bg-stellar-cyan hover:bg-stellar-cyan/80 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors duration-300"
-                      onClick={() => {}}
+                    <button
+                      onClick={() => removeLinkedinOpportunity(opportunity.id)}
+                      className="text-gray-400 hover:text-white transition-colors duration-300"
                     >
-                      <Send size={16} />
-                      <span>Cold Email</span>
-                    </Link> */}
+                      <X size={20} />
+                    </button>
                   </div>
                 </div>
               </div>

@@ -1,70 +1,28 @@
-
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Upload, ExternalLink, Send, Loader, CheckCircle } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { Upload, ExternalLink, Send, Loader, CheckCircle, X } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 import { useJobOpportunities, Opportunity } from "@/hooks/useJobOpportunities";
+import { scrapeWellfound } from "@/lib/api";
 
 const Wellfound = () => {
   const [file, setFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
-  const { opportunities, setOpportunities } = useJobOpportunities();
+  const { wellfoundOpportunities, setWellfoundOpportunities, removeWellfoundOpportunity } = useJobOpportunities();
   const { toast } = useToast();
 
-  // Dummy data for Wellfound opportunities
-  const dummyOpportunities: Opportunity[] = [
-    {
-      id: '1',
-      name: 'Product Manager',
-      company: 'AI Innovators',
-      salary: '$140,000 - $180,000',
-      location: 'San Francisco, CA'
-    },
-    {
-      id: '2',
-      name: 'Data Scientist',
-      company: 'ML Dynamics',
-      salary: '$130,000 - $170,000',
-      location: 'Seattle, WA'
-    },
-    {
-      id: '3',
-      name: 'Frontend Lead',
-      company: 'Design First',
-      salary: '$120,000 - $160,000',
-      location: 'Remote'
-    },
-    {
-      id: '4',
-      name: 'Growth Engineer',
-      company: 'ScaleUp Co',
-      salary: '$110,000 - $145,000',
-      location: 'Los Angeles, CA'
-    }
-  ];
-
-  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const selectedFile = event.target.files?.[0];
     if (!selectedFile) return;
 
     setFile(selectedFile);
     setIsUploading(true);
 
-    const formData = new FormData();
-    formData.append('file', selectedFile);
-
     try {
-      const response = await fetch('/api/scrape/wellfound', {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to scrape jobs');
-      }
-
-      const data = await response.json();
-      setOpportunities(data);
+      const data = await scrapeWellfound(selectedFile);
+      setWellfoundOpportunities(data);
       toast({
         title: "Success!",
         description: `Found ${data.length} opportunities`,
@@ -132,29 +90,43 @@ const Wellfound = () => {
           </div>
         </div>
 
-        {opportunities.length > 0 && (
+        {wellfoundOpportunities.length > 0 && (
           <div className="space-y-4">
             <h2 className="text-2xl font-bold text-white mb-6">
-              Found {opportunities.length} Opportunities
+              Found {wellfoundOpportunities.length} Opportunities
             </h2>
-            {opportunities.map((opportunity) => (
+            {wellfoundOpportunities.map((opportunity) => (
               <div key={opportunity.id} className="glass rounded-xl p-6">
                 <div className="flex justify-between items-start">
-                  <div className="flex-1">
-                    <h3 className="text-xl font-bold text-white mb-2">
-                      {opportunity.name}
-                    </h3>
-                    <p className="text-purple-400 font-medium mb-1">
-                      {opportunity.company}
-                    </p>
-                    <div className="flex flex-wrap gap-4 text-gray-300">
-                      <span>💰 {opportunity.salary}</span>
-                      <span>📍 {opportunity.location}</span>
+                  <div className="flex-1 flex items-center gap-6">
+                    {opportunity.imageUrl && (
+                      <img
+                        src={opportunity.imageUrl}
+                        alt={opportunity.company}
+                        className="w-16 h-16 rounded-lg object-cover border border-purple-500"
+                      />
+                    )}
+                    <div>
+                      <h3 className="text-xl font-bold text-white mb-2">
+                        {opportunity.name}
+                      </h3>
+                      <p className="text-purple-400 font-medium mb-1">
+                        {opportunity.company}
+                      </p>
+                      <div className="flex flex-wrap gap-4 text-gray-300">
+                        <span>💰 {opportunity.salary}</span>
+                        <span>📍 {opportunity.location}</span>
+                      </div>
                     </div>
                   </div>
                   <div className="flex space-x-3 ml-4">
                     <a
-                      href={`https://www.linkedin.com/jobs/view/${opportunity.id}`}
+                      href={
+                        opportunity.applyUrl ||
+                        `https://wellfound.com/company/${opportunity.company
+                          .toLowerCase()
+                          .replace(/ /g, "-")}`
+                      }
                       target="_blank"
                       rel="noopener noreferrer"
                       className="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors duration-300"
@@ -163,16 +135,20 @@ const Wellfound = () => {
                       <span>Apply</span>
                     </a>
                     <a
-                      href={`https://www.linkedin.com/company/${opportunity.company
-                        .toLowerCase()
-                        .replace(/ /g, "-")}/people/`}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      href={`/cold-email?company=${encodeURIComponent(
+                        opportunity.company
+                      )}&role=${encodeURIComponent(opportunity.name)}`}
                       className="bg-stellar-cyan hover:bg-stellar-cyan/80 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors duration-300"
                     >
                       <Send size={16} />
                       <span>Cold Email</span>
                     </a>
+                    <button
+                      onClick={() => removeWellfoundOpportunity(opportunity.id)}
+                      className="text-gray-400 hover:text-white transition-colors duration-300"
+                    >
+                      <X size={20} />
+                    </button>
                   </div>
                 </div>
               </div>

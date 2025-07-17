@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { TrendingUp, Users, Mail, FileText, Loader } from 'lucide-react';
+import { fetchAnalytics } from '@/lib/api';
 
 interface AnalyticsData {
   totalApplications: number;
@@ -23,32 +24,21 @@ const Analysis = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    fetchAnalytics();
-  }, []);
+    const loadAnalytics = async () => {
+      setIsLoading(true);
+      try {
+        const analyticsData = await fetchAnalytics();
+        setData(analyticsData as AnalyticsData);
+      } catch (error) {
+        console.error("Failed to fetch analytics:", error);
+        // Handle error appropriately in the UI
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  const fetchAnalytics = async () => {
-    setIsLoading(true);
-    
-    // Simulate loading time then use mock data
-    setTimeout(() => {
-      setData({
-        totalApplications: 47,
-        coldEmailsSent: 23,
-        platformBreakdown: [
-          { platform: 'LinkedIn', applications: 18, coldEmails: 12 },
-          { platform: 'Cuvette', applications: 15, coldEmails: 6 },
-          { platform: 'Wellfound', applications: 14, coldEmails: 5 },
-        ],
-        monthlyStats: [
-          { month: 'Jan', applications: 8, emails: 4 },
-          { month: 'Feb', applications: 12, emails: 7 },
-          { month: 'Mar', applications: 15, emails: 8 },
-          { month: 'Apr', applications: 12, emails: 4 },
-        ],
-      });
-      setIsLoading(false);
-    }, 1500);
-  };
+    loadAnalytics();
+  }, []);
 
   const COLORS = ['#6366F1', '#06B6D4', '#10B981', '#F59E0B'];
 

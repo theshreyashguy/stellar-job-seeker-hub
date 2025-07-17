@@ -1,39 +1,23 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { Upload, ExternalLink, Send, Loader, CheckCircle } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { Upload, ExternalLink, Send, Loader, CheckCircle, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useJobOpportunities, Opportunity } from "@/hooks/useJobOpportunities";
+import { scrapeCuvette } from "@/lib/api";
+import placeholder from "../../public/branch-svgrepo-com.svg";
+
+<img
+  src={placeholder}
+  alt="No Logo"
+  className="w-16 h-16 rounded-lg object-cover border border-green-500 opacity-60"
+/>;
 
 const Cuvette = () => {
   const [file, setFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
-  const { opportunities, setOpportunities } = useJobOpportunities();
+  const { cuvetteOpportunities, setCuvetteOpportunities, removeCuvetteOpportunity } = useJobOpportunities();
   const { toast } = useToast();
-
-  // Dummy data for Cuvette opportunities
-  const dummyOpportunities: Opportunity[] = [
-    {
-      id: "1",
-      name: "Backend Developer",
-      company: "GreenTech Startup",
-      salary: "₹8,00,000 - ₹12,00,000",
-      location: "Bangalore, India",
-    },
-    {
-      id: "2",
-      name: "Mobile App Developer",
-      company: "FinanceFlow",
-      salary: "₹6,00,000 - ₹10,00,000",
-      location: "Mumbai, India",
-    },
-    {
-      id: "3",
-      name: "DevOps Engineer",
-      company: "CloudFirst",
-      salary: "₹10,00,000 - ₹15,00,000",
-      location: "Remote",
-    },
-  ];
+  const navigate = useNavigate();
 
   const handleFileUpload = async (
     event: React.ChangeEvent<HTMLInputElement>
@@ -44,36 +28,9 @@ const Cuvette = () => {
     setFile(selectedFile);
     setIsUploading(true);
 
-    const formData = new FormData();
-    formData.append("html", selectedFile);
-
     try {
-      const response = await fetch("http://localhost:8090/api/scrape/cuvette", {
-        method: "POST",
-        headers: {
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTI2NTk0NjAsInN1YiI6IiJ9.5x5EHmXkaq9QI_78SXVLmf7s7p5wKotXiNbIhMOMAqI",
-          // Do NOT set 'Content-Type' when using FormData
-        },
-        // Do NOT set 'Content-Type' when using FormData
-        body: formData,
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to scrape jobs");
-      }
-
-      const data = await response.json();
-      // Map backend response to Opportunity type, including imageUrl
-      const mapped = data.map((item: any) => ({
-        id: item.ID,
-        name: item.Role,
-        company: item.CompanyName,
-        salary: item.Salary,
-        location: item.Location,
-        imageUrl: item.CompanyPhotoURL,
-      }));
-      setOpportunities(mapped);
+      const mapped = await scrapeCuvette(selectedFile);
+      setCuvetteOpportunities(mapped);
       toast({
         title: "Success!",
         description: `Found ${mapped.length} opportunities`,
@@ -141,23 +98,34 @@ const Cuvette = () => {
           </div>
         </div>
 
-        {opportunities.length > 0 && (
+        {cuvetteOpportunities.length > 0 && (
           <div className="space-y-4">
             <h2 className="text-2xl font-bold text-white mb-6">
-              Found {opportunities.length} Opportunities
+              Found {cuvetteOpportunities.length} Opportunities
             </h2>
-            {opportunities.map((opportunity) => (
+            {cuvetteOpportunities.map((opportunity) => (
               <div
                 key={opportunity.id + opportunity.name + opportunity.company}
                 className="glass rounded-xl p-6"
               >
                 <div className="flex justify-between items-start">
                   <div className="flex-1 flex items-center gap-6">
-                    {opportunity.imageUrl && (
+                    {opportunity.imageUrl &&
+                    opportunity.imageUrl.startsWith("http") ? (
                       <img
                         src={opportunity.imageUrl}
                         alt={opportunity.company}
                         className="w-16 h-16 rounded-lg object-cover border border-green-500"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src =
+                            "/placeholder.svg";
+                        }}
+                      />
+                    ) : (
+                      <img
+                        src={placeholder}
+                        alt="No Logo"
+                        className="w-16 h-16 rounded-lg object-cover border border-green-500 opacity-60"
                       />
                     )}
                     <div>
@@ -183,7 +151,7 @@ const Cuvette = () => {
                       <ExternalLink size={16} />
                       <span>Apply</span>
                     </a>
-                    <a
+                    {/* <a
                       href={`https://www.linkedin.com/company/${opportunity.company
                         .toLowerCase()
                         .replace(/ /g, "-")}/people/`}
@@ -193,7 +161,40 @@ const Cuvette = () => {
                     >
                       <Send size={16} />
                       <span>Cold Email</span>
+                    </a> */}
+
+                    <a
+                      href={`https://www.linkedin.com/company/${opportunity.company
+                        .toLocaleLowerCase()
+                        .split(" ")
+                        .join("-")}/people/`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => {
+                        //
+                        console.log(
+                          `https://www.linkedin.com/company/${opportunity.company
+                            .toLocaleLowerCase()
+                            .split(" ")
+                            .join("-")}/people/`
+                        );
+                        navigate(
+                          `/cold-email?company=${encodeURIComponent(
+                            opportunity.company
+                          )}&role=${encodeURIComponent(opportunity.name)}`
+                        );
+                      }}
+                      className="bg-stellar-cyan hover:bg-stellar-cyan/80 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors duration-300"
+                    >
+                      <ExternalLink size={16} />
+                      <span>Cold Email</span>
                     </a>
+                    <button
+                      onClick={() => removeCuvetteOpportunity(opportunity.id, opportunity.name, opportunity.company)}
+                      className="text-gray-400 hover:text-white transition-colors duration-300"
+                    >
+                      <X size={20} />
+                    </button>
                   </div>
                 </div>
               </div>

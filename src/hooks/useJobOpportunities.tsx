@@ -1,3 +1,4 @@
+
 import { createContext, useContext, useState, ReactNode } from "react";
 
 export interface Opportunity {
@@ -7,11 +8,19 @@ export interface Opportunity {
   salary: string;
   location: string;
   imageUrl?: string;
+  applyUrl?: string;
 }
 
 interface JobOpportunitiesContextType {
-  opportunities: Opportunity[];
-  setOpportunities: (opportunities: Opportunity[]) => void;
+  linkedinOpportunities: Opportunity[];
+  setLinkedinOpportunities: (opportunities: Opportunity[]) => void;
+  removeLinkedinOpportunity: (id: string) => void;
+  wellfoundOpportunities: Opportunity[];
+  setWellfoundOpportunities: (opportunities: Opportunity[]) => void;
+  removeWellfoundOpportunity: (id: string) => void;
+  cuvetteOpportunities: Opportunity[];
+  setCuvetteOpportunities: (opportunities: Opportunity[]) => void;
+  removeCuvetteOpportunity: (id: string, name: string, company: string) => void;
 }
 
 const JobOpportunitiesContext = createContext<
@@ -23,11 +32,46 @@ export const JobOpportunitiesProvider = ({
 }: {
   children: ReactNode;
 }) => {
-  const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
+  const [linkedinOpportunities, setLinkedinOpportunities] = useState<
+    Opportunity[]
+  >([]);
+  const [wellfoundOpportunities, setWellfoundOpportunities] = useState<
+    Opportunity[]
+  >([]);
+  const [cuvetteOpportunities, setCuvetteOpportunities] = useState<
+    Opportunity[]
+  >([]);
+
+  const removeLinkedinOpportunity = (id: string) => {
+    setLinkedinOpportunities((prev) => prev.filter((opp) => opp.id !== id));
+  };
+
+  const removeWellfoundOpportunity = (id: string) => {
+    setWellfoundOpportunities((prev) => prev.filter((opp) => opp.id !== id));
+  };
+
+  const removeCuvetteOpportunity = (id: string, name: string, company: string) => {
+    setCuvetteOpportunities((prev) =>
+      prev.filter(
+        (opp) =>
+          opp.id !== id || opp.name !== name || opp.company !== company
+      )
+    );
+  };
 
   return (
     <JobOpportunitiesContext.Provider
-      value={{ opportunities, setOpportunities }}
+      value={{
+        linkedinOpportunities,
+        setLinkedinOpportunities,
+        removeLinkedinOpportunity,
+        wellfoundOpportunities,
+        setWellfoundOpportunities,
+        removeWellfoundOpportunity,
+        cuvetteOpportunities,
+        setCuvetteOpportunities,
+        removeCuvetteOpportunity,
+      }}
     >
       {children}
     </JobOpportunitiesContext.Provider>
@@ -43,3 +87,4 @@ export const useJobOpportunities = () => {
   }
   return context;
 };
+
