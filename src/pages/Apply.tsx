@@ -1,19 +1,27 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { CheckCircle, Send, ArrowLeft } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { useJobOpportunities } from "@/hooks/useJobOpportunities";
 
 const Apply = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { opportunities } = useJobOpportunities();
   
   const company = searchParams.get('company') || 'Unknown Company';
   const role = searchParams.get('role') || 'Unknown Role';
   
   const [isApplying, setIsApplying] = useState(false);
   const [isApplied, setIsApplied] = useState(false);
+
+  useEffect(() => {
+    if (opportunities.length > 0) {
+      console.log("Opportunities available in Apply page:", opportunities);
+    }
+  }, [opportunities]);
 
   const handleApply = async () => {
     setIsApplying(true);

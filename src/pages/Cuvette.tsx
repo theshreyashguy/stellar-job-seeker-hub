@@ -2,20 +2,12 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Upload, ExternalLink, Send, Loader, CheckCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-
-interface Opportunity {
-  id: string;
-  name: string;
-  company: string;
-  salary: string;
-  location: string;
-  imageUrl?: string; // Add imageUrl for aesthetics
-}
+import { useJobOpportunities, Opportunity } from "@/hooks/useJobOpportunities";
 
 const Cuvette = () => {
   const [file, setFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
-  const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
+  const { opportunities, setOpportunities } = useJobOpportunities();
   const { toast } = useToast();
 
   // Dummy data for Cuvette opportunities
@@ -60,7 +52,7 @@ const Cuvette = () => {
         method: "POST",
         headers: {
           Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTI1Njk4NzUsInN1YiI6IiJ9.jtK4sGN5mxMRfrXCadmgNPFz7-xiYgahTZXl7Zg-3w0",
+            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTI2NTk0NjAsInN1YiI6IiJ9.5x5EHmXkaq9QI_78SXVLmf7s7p5wKotXiNbIhMOMAqI",
           // Do NOT set 'Content-Type' when using FormData
         },
         // Do NOT set 'Content-Type' when using FormData
@@ -182,24 +174,26 @@ const Cuvette = () => {
                     </div>
                   </div>
                   <div className="flex space-x-3 ml-4">
-                    <Link
-                      to={`/apply?company=${encodeURIComponent(
-                        opportunity.company
-                      )}&role=${encodeURIComponent(opportunity.name)}`}
+                    <a
+                      href={`https://www.linkedin.com/jobs/view/${opportunity.id}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors duration-300"
                     >
                       <ExternalLink size={16} />
                       <span>Apply</span>
-                    </Link>
-                    <Link
-                      to={`/cold-email?company=${encodeURIComponent(
-                        opportunity.company
-                      )}&role=${encodeURIComponent(opportunity.name)}`}
+                    </a>
+                    <a
+                      href={`https://www.linkedin.com/company/${opportunity.company
+                        .toLowerCase()
+                        .replace(/ /g, "-")}/people/`}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="bg-stellar-cyan hover:bg-stellar-cyan/80 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors duration-300"
                     >
                       <Send size={16} />
                       <span>Cold Email</span>
-                    </Link>
+                    </a>
                   </div>
                 </div>
               </div>

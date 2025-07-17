@@ -1,53 +1,16 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Upload, ExternalLink, Send, Loader, CheckCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-
-interface Opportunity {
-  id: string;
-  name: string;
-  company: string;
-  salary: string;
-  location: string;
-}
+import { useJobOpportunities, Opportunity } from "@/hooks/useJobOpportunities";
+import { useSidebar } from "@/components/ui/sidebar";
 
 const LinkedIn = () => {
   const [file, setFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
-  const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
+  const { opportunities, setOpportunities } = useJobOpportunities();
   const { toast } = useToast();
-
-  // Dummy data for LinkedIn opportunities
-  const dummyOpportunities: Opportunity[] = [
-    {
-      id: "1",
-      name: "Senior Frontend Developer",
-      company: "TechCorp Inc.",
-      salary: "$120,000 - $160,000",
-      location: "San Francisco, CA",
-    },
-    {
-      id: "2",
-      name: "Full Stack Engineer",
-      company: "StartupXYZ",
-      salary: "$100,000 - $140,000",
-      location: "Remote",
-    },
-    {
-      id: "3",
-      name: "React Developer",
-      company: "InnovateLabs",
-      salary: "$90,000 - $120,000",
-      location: "New York, NY",
-    },
-    {
-      id: "4",
-      name: "Software Engineer",
-      company: "MegaTech Solutions",
-      salary: "$110,000 - $150,000",
-      location: "Austin, TX",
-    },
-  ];
+  const navigate = useNavigate();
 
   const handleFileUpload = async (
     event: React.ChangeEvent<HTMLInputElement>
@@ -68,7 +31,7 @@ const LinkedIn = () => {
           method: "POST",
           headers: {
             Authorization:
-              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTI1Njk4NzUsInN1YiI6IiJ9.jtK4sGN5mxMRfrXCadmgNPFz7-xiYgahTZXl7Zg-3w0",
+              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTI2NjgzNDMsInN1YiI6IiJ9.DtlxcO9OkA1KI8iacWP4rrITmonI0ETOZ1WacdXJ_Ak",
             // Do NOT set 'Content-Type' when using FormData
           },
           body: formData,
@@ -177,24 +140,51 @@ const LinkedIn = () => {
                     </div>
                   </div>
                   <div className="flex space-x-3 ml-4">
-                    <Link
-                      to={`/apply?company=${encodeURIComponent(
-                        opportunity.company
-                      )}&role=${encodeURIComponent(opportunity.name)}`}
+                    <a
+                      href={`https://www.linkedin.com/jobs/view/${opportunity.id}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="bg-stellar-purple hover:bg-stellar-purple/80 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors duration-300"
                     >
                       <ExternalLink size={16} />
                       <span>Apply</span>
-                    </Link>
-                    <Link
+                    </a>
+                    <a
+                      href={`https://www.linkedin.com/company/${opportunity.company
+                        .toLocaleLowerCase()
+                        .split(" ")
+                        .join("-")}/people/`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => {
+                        //
+                        console.log(
+                          `https://www.linkedin.com/company/${opportunity.company
+                            .toLocaleLowerCase()
+                            .split(" ")
+                            .join("-")}/people/`
+                        );
+                        navigate(
+                          `/cold-email?company=${encodeURIComponent(
+                            opportunity.company
+                          )}&role=${encodeURIComponent(opportunity.name)}`
+                        );
+                      }}
+                      className="bg-stellar-cyan hover:bg-stellar-cyan/80 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors duration-300"
+                    >
+                      <ExternalLink size={16} />
+                      <span>Cold Email</span>
+                    </a>
+                    {/* <Link
                       to={`/cold-email?company=${encodeURIComponent(
                         opportunity.company
                       )}&role=${encodeURIComponent(opportunity.name)}`}
                       className="bg-stellar-cyan hover:bg-stellar-cyan/80 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors duration-300"
+                      onClick={() => {}}
                     >
                       <Send size={16} />
                       <span>Cold Email</span>
-                    </Link>
+                    </Link> */}
                   </div>
                 </div>
               </div>

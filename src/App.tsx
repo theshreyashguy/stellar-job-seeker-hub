@@ -15,31 +15,34 @@ import ColdEmail from "./pages/ColdEmail";
 import Analysis from "./pages/Analysis";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
+import { JobOpportunitiesProvider } from "./hooks/useJobOpportunities";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Layout>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/linkedin" element={<LinkedIn />} />
-            <Route path="/cuvette" element={<Cuvette />} />
-            <Route path="/wellfound" element={<Wellfound />} />
-            <Route path="/gmail" element={<Gmail />} />
-            <Route path="/apply" element={<Apply />} />
-            <Route path="/cold-email" element={<ColdEmail />} />
-            <Route path="/analysis" element={<Analysis />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Layout>
-      </BrowserRouter>
-    </TooltipProvider>
+    <JobOpportunitiesProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Layout>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/linkedin" element={<LinkedIn />} />
+              <Route path="/cuvette" element={<Cuvette />} />
+              <Route path="/wellfound" element={<Wellfound />} />
+              <Route path="/gmail" element={<Gmail />} />
+              <Route path="/apply" element={<Apply />} />
+              <Route path="/cold-email" element={<ColdEmail />} />
+              <Route path="/analysis" element={<Analysis />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Layout>
+        </BrowserRouter>
+      </TooltipProvider>
+    </JobOpportunitiesProvider>
   </QueryClientProvider>
 );
 

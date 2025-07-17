@@ -3,19 +3,12 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Upload, ExternalLink, Send, Loader, CheckCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-
-interface Opportunity {
-  id: string;
-  name: string;
-  company: string;
-  salary: string;
-  location: string;
-}
+import { useJobOpportunities, Opportunity } from "@/hooks/useJobOpportunities";
 
 const Wellfound = () => {
   const [file, setFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
-  const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
+  const { opportunities, setOpportunities } = useJobOpportunities();
   const { toast } = useToast();
 
   // Dummy data for Wellfound opportunities
@@ -119,13 +112,19 @@ const Wellfound = () => {
                   <div className="flex flex-col items-center space-y-4">
                     <CheckCircle className="w-12 h-12 text-green-500" />
                     <p className="text-white font-medium">{file.name}</p>
-                    <p className="text-gray-400">Click to upload a different file</p>
+                    <p className="text-gray-400">
+                      Click to upload a different file
+                    </p>
                   </div>
                 ) : (
                   <div className="flex flex-col items-center space-y-4">
                     <Upload className="w-12 h-12 text-purple-500" />
-                    <p className="text-white font-medium">Click to upload HTML file</p>
-                    <p className="text-gray-400">Support for Wellfound job search exports</p>
+                    <p className="text-white font-medium">
+                      Click to upload HTML file
+                    </p>
+                    <p className="text-gray-400">
+                      Support for Wellfound job search exports
+                    </p>
                   </div>
                 )}
               </div>
@@ -154,20 +153,26 @@ const Wellfound = () => {
                     </div>
                   </div>
                   <div className="flex space-x-3 ml-4">
-                    <Link
-                      to={`/apply?company=${encodeURIComponent(opportunity.company)}&role=${encodeURIComponent(opportunity.name)}`}
+                    <a
+                      href={`https://www.linkedin.com/jobs/view/${opportunity.id}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors duration-300"
                     >
                       <ExternalLink size={16} />
                       <span>Apply</span>
-                    </Link>
-                    <Link
-                      to={`/cold-email?company=${encodeURIComponent(opportunity.company)}&role=${encodeURIComponent(opportunity.name)}`}
+                    </a>
+                    <a
+                      href={`https://www.linkedin.com/company/${opportunity.company
+                        .toLowerCase()
+                        .replace(/ /g, "-")}/people/`}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="bg-stellar-cyan hover:bg-stellar-cyan/80 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors duration-300"
                     >
                       <Send size={16} />
                       <span>Cold Email</span>
-                    </Link>
+                    </a>
                   </div>
                 </div>
               </div>
