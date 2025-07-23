@@ -88,27 +88,12 @@ export const scrapeWellfound = async (file: File): Promise<Opportunity[]> => {
 };
 
 export const fetchAnalytics = async () => {
-  // In a real app, you would fetch this from the backend
-  // For now, we'll simulate the API call
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        totalApplications: 47,
-        coldEmailsSent: 23,
-        platformBreakdown: [
-          { platform: "LinkedIn", applications: 18, coldEmails: 12 },
-          { platform: "Cuvette", applications: 15, coldEmails: 6 },
-          { platform: "Wellfound", applications: 14, coldEmails: 5 },
-        ],
-        monthlyStats: [
-          { month: "Jan", applications: 8, emails: 4 },
-          { month: "Feb", applications: 12, emails: 7 },
-          { month: "Mar", applications: 15, emails: 8 },
-          { month: "Apr", applications: 12, emails: 4 },
-        ],
-      });
-    }, 1000);
+  const response = await fetch(`${API_BASE_URL}/analytics`, {
+    headers: {
+      Authorization: getAuthToken(),
+    },
   });
+  return handleResponse(response);
 };
 
 export const register = async (name, email, password) => {
