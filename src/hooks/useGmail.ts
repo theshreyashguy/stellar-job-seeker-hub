@@ -62,6 +62,11 @@ export const useGmail = ({ isSignedIn }: { isSignedIn: boolean }) => {
     async (query = "in:sent sde applicant") => {
       if (!isInitialized) return;
       setIsLoading(true);
+      // Set the access token for gapi if available
+      const token = localStorage.getItem("google_access_token");
+      if (token && gapi.client && gapi.client.setToken) {
+        gapi.client.setToken({ access_token: token });
+      }
       try {
         const resp = await gapi.client.gmail.users.messages.list({
           userId: "me",
@@ -81,7 +86,19 @@ export const useGmail = ({ isSignedIn }: { isSignedIn: boolean }) => {
         } else {
           setMessages([]);
         }
-      } catch (e) {
+      } catch (e: unknown) {
+        // If 401, prompt re-authentication
+        const err = e as {
+          status?: number;
+          result?: { error?: { code?: number } };
+        };
+        if (
+          err.status === 401 ||
+          (err.result && err.result.error && err.result.error.code === 401)
+        ) {
+          alert("Your Gmail session has expired. Please sign in again.");
+          window.location.reload();
+        }
         console.error("Error fetching messages:", e);
         setMessages([]);
       } finally {

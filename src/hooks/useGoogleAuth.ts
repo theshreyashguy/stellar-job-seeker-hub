@@ -1,50 +1,114 @@
-import { useState, useEffect } from 'react';
-import { useGoogleLogin, googleLogout } from '@react-oauth/google';
 
+import { useState, useEffect, useCallback } from 'react';
+import { gapi } from 'gapi-script';
+import { useToast } from '@/hooks/use-toast';
+
+const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
+const CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+const DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/gmail/v1/rest'];
 const SCOPES = 'https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/gmail.send';
 
 export const useGoogleAuth = () => {
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { toast } = useToast();
 
-  const login = useGoogleLogin({
-    onSuccess: (tokenResponse) => {
-      console.log('Login Success:', tokenResponse);
-      setIsSignedIn(true);
-      setError(null);
-      localStorage.setItem('google_access_token', tokenResponse.access_token);
-    },
-    onError: () => {
-      console.error('Login Failed');
-      setError('Failed to sign in. Please try again.');
-    },
-    scope: SCOPES,
-  });
-
-  useEffect(() => {
-    const token = localStorage.getItem('google_access_token');
-    if (token) {
-      setIsSignedIn(true);
-    }
+  const updateSigninStatus = useCallback((isSignedIn: boolean) => {
+    setIsSignedIn(isSignedIn);
     setIsLoading(false);
   }, []);
 
-  const signIn = () => {
-    login();
+  const initClient = useCallback(async () => {
+    try {
+      await gapi.client.init({
+        apiKey: API_KEY,
+        clientId: CLIENT_ID,
+        discoveryDocs: DISCOVERY_DOCS,
+        scope: SCOPES,
+      });
+      
+      const authInstance = gapi.auth2.getAuthInstance();
+      if (authInstance) {
+        authInstance.isSignedIn.listen(updateSigninStatus);
+        updateSigninStatus(authInstance.isSignedIn.get());
+      } else {
+        // Handle case where auth instance is not ready
+        console.warn("Google Auth instance not ready during init.");
+        setIsLoading(false);
+      }
+    } catch (e: any) {
+      setError(`Error initializing GAPI client: ${e.message}`);
+      toast({
+        title: 'GAPI Initialization Failed',
+        description: 'Could not initialize Google API client. Please check your API key and client ID.',
+        variant: 'destructive',
+      });
+      setIsLoading(false);
+    }
+  }, [updateSigninStatus, toast]);
+
+  useEffect(() => {
+    const handleGapiLoad = () => {
+      gapi.load('client:auth2', initClient);
+    };
+
+    if (window.gapi) {
+      handleGapiLoad();
+    } else {
+      // Fallback if gapi script isn't loaded yet, though gapi-script should handle this.
+      const script = document.createElement('script');
+      script.src = 'https://apis.google.com/js/api.js';
+      script.onload = handleGapiLoad;
+      document.body.appendChild(script);
+    }
+  }, [initClient]);
+
+  const signIn = async () => {
+    try {
+      const authInstance = gapi.auth2.getAuthInstance();
+      if (authInstance) {
+        await authInstance.signIn();
+        setIsSignedIn(true);
+        toast({
+          title: 'Signed In',
+          description: 'Successfully signed in with Google.',
+        });
+      } else {
+        throw new Error("Google Auth instance is not available.");
+      }
+    } catch (e: any) {
+      setError(`Sign-in failed: ${e.message}`);
+      toast({
+        title: 'Sign-in Failed',
+        description: 'Could not sign in with Google. Please try again.',
+        variant: 'destructive',
+      });
+    }
   };
 
-  const signOut = () => {
-    googleLogout();
-    setIsSignedIn(false);
-    localStorage.removeItem('google_access_token');
+  const signOut = async () => {
+    try {
+      const authInstance = gapi.auth2.getAuthInstance();
+      if (authInstance) {
+        await authInstance.signOut();
+        setIsSignedIn(false);
+        toast({
+          title: 'Signed Out',
+          description: 'Successfully signed out from Google.',
+        });
+      } else {
+        throw new Error("Google Auth instance is not available.");
+      }
+    } catch (e: any) {
+      setError(`Sign-out failed: ${e.message}`);
+      toast({
+        title: 'Sign-out Failed',
+        description: 'Could not sign out from Google.',
+        variant: 'destructive',
+      });
+    }
   };
 
-  return {
-    isSignedIn,
-    isLoading,
-    error,
-    signIn,
-    signOut,
-  };
+  return { isSignedIn, isLoading, error, signIn, signOut };
 };

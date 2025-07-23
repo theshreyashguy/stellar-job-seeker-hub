@@ -1,10 +1,13 @@
 
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, User, BarChart3, Mail } from 'lucide-react';
+import { Home, User, BarChart3, Mail, LogOut } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
+import { Button } from './ui/button';
 
 const Navbar: React.FC = () => {
   const location = useLocation();
+  const { signOut } = useAuth();
 
   const navItems = [
     { path: '/', label: 'Home', icon: Home },
@@ -24,7 +27,7 @@ const Navbar: React.FC = () => {
             </span>
           </div>
           
-          <div className="flex space-x-6">
+          <div className="flex items-center space-x-6">
             {navItems.map(({ path, label, icon: Icon }) => (
               <Link
                 key={path}
@@ -39,6 +42,10 @@ const Navbar: React.FC = () => {
                 <span>{label}</span>
               </Link>
             ))}
+            <Button onClick={signOut} variant="ghost">
+              <LogOut size={16} className="mr-2" />
+              Sign Out
+            </Button>
           </div>
         </div>
       </div>

@@ -1,17 +1,24 @@
-
-import React, { useState, useEffect } from 'react';
-import { RefreshCw, Send, Mail, LogIn, LogOut, Search, AlertCircle } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
-import { useGoogleAuth } from '@/hooks/useGoogleAuth';
-import { useGmail } from '@/hooks/useGmail';
-import EmailList from '@/components/EmailList';
-import EmailViewer from '@/components/EmailViewer';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { gapi } from 'gapi-script';
+import React, { useState, useEffect } from "react";
+import {
+  RefreshCw,
+  Send,
+  Mail,
+  LogIn,
+  LogOut,
+  Search,
+  AlertCircle,
+} from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { useGoogleAuth } from "@/hooks/useGoogleAuth";
+import { useGmail } from "@/hooks/useGmail";
+import EmailList from "@/components/EmailList";
+import EmailViewer from "@/components/EmailViewer";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { gapi } from "gapi-script";
 
 const Gmail = () => {
-  const [searchQuery, setSearchQuery] = useState('sde applicant');
+  const [searchQuery, setSearchQuery] = useState("sde applicant");
   const { toast } = useToast();
   const { isSignedIn, isLoading, error, signIn, signOut } = useGoogleAuth();
   const {
@@ -24,18 +31,34 @@ const Gmail = () => {
     getHeader,
     sendReply,
     isInitialized,
-  } = useGmail({isSignedIn});
+  } = useGmail({ isSignedIn });
 
   useEffect(() => {
     const initGapi = async () => {
       if (isSignedIn && isInitialized) {
-        console.log('User signed in and API initialized, searching messages...');
+        console.log(
+          "User signed in and API initialized, searching messages..."
+        );
         searchMessages(searchQuery);
       }
     };
 
     initGapi();
   }, [isSignedIn, isInitialized, searchQuery, searchMessages]);
+
+  useEffect(() => {
+    if (isSignedIn && isInitialized) {
+      searchMessages(searchQuery);
+    }
+    // Only run when both are true
+  }, [isSignedIn, isInitialized]);
+
+  useEffect(() => {
+    // When searchQuery changes and everything is ready, search again
+    if (isSignedIn && isInitialized) {
+      searchMessages(searchQuery);
+    }
+  }, [searchQuery, isSignedIn, isInitialized]);
 
   const handleSearch = () => {
     if (isSignedIn) {
@@ -95,9 +118,12 @@ const Gmail = () => {
 
           <div className="glass rounded-2xl p-8 text-center">
             <Mail size={64} className="mx-auto mb-6 text-red-400" />
-            <h2 className="text-2xl font-bold text-white mb-4">Connect Your Gmail</h2>
+            <h2 className="text-2xl font-bold text-white mb-4">
+              Connect Your Gmail
+            </h2>
             <p className="text-gray-300 mb-6">
-              Sign in with your Google account to access your emails and manage your job applications
+              Sign in with your Google account to access your emails and manage
+              your job applications
             </p>
             <Button
               onClick={signIn}
@@ -105,13 +131,14 @@ const Gmail = () => {
               className="bg-red-600 hover:bg-red-700 px-8 py-3 text-lg"
             >
               <LogIn className="mr-2" size={20} />
-              {isLoading ? 'Loading...' : 'Sign in with Gmail'}
+              {isLoading ? "Loading..." : "Sign in with Gmail"}
             </Button>
           </div>
 
           <div className="mt-6 glass rounded-xl p-4">
             <p className="text-gray-400 text-sm text-center">
-              💡 We'll search for emails containing "sde applicant" and help you manage your job applications
+              💡 We'll search for emails containing "sde applicant" and help you
+              manage your job applications
             </p>
           </div>
         </div>
@@ -137,18 +164,22 @@ const Gmail = () => {
             <div className="flex items-center space-x-4">
               <Mail className="text-red-500" size={24} />
               <div>
-                <h2 className="text-xl font-bold text-white">Application Emails</h2>
+                <h2 className="text-xl font-bold text-white">
+                  Application Emails
+                </h2>
                 <div className="flex items-center space-x-2 text-sm text-gray-400">
                   <span>Status:</span>
                   {!isInitialized ? (
-                    <span className="text-yellow-400">Initializing Gmail API...</span>
+                    <span className="text-yellow-400">
+                      Initializing Gmail API...
+                    </span>
                   ) : (
                     <span className="text-green-400">✓ Ready</span>
                   )}
                 </div>
               </div>
             </div>
-            
+
             <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
               <div className="flex space-x-2">
                 <Input
@@ -165,14 +196,17 @@ const Gmail = () => {
                   <Search size={16} />
                 </Button>
               </div>
-              
+
               <div className="flex space-x-2">
                 <Button
                   onClick={handleSearch}
                   disabled={isLoadingMessages}
                   variant="ghost"
                 >
-                  <RefreshCw size={16} className={isLoadingMessages ? 'animate-spin' : ''} />
+                  <RefreshCw
+                    size={16}
+                    className={isLoadingMessages ? "animate-spin" : ""}
+                  />
                   Refresh
                 </Button>
                 <Button
@@ -183,10 +217,7 @@ const Gmail = () => {
                   <Send size={16} className="mr-2" />
                   Follow-up All
                 </Button>
-                <Button
-                  onClick={signOut}
-                  variant="ghost"
-                >
+                <Button onClick={signOut} variant="ghost">
                   <LogOut size={16} className="mr-2" />
                   Sign Out
                 </Button>
@@ -205,7 +236,7 @@ const Gmail = () => {
               getHeader={getHeader}
             />
           </div>
-          
+
           <div className="order-1 lg:order-2">
             <EmailViewer
               message={selectedMessage}
@@ -218,7 +249,8 @@ const Gmail = () => {
 
         <div className="mt-6 glass rounded-xl p-4">
           <p className="text-gray-400 text-sm text-center">
-            💡 Search for keywords like "sde applicant", "software engineer", or company names to find relevant emails
+            💡 Search for keywords like "sde applicant", "software engineer", or
+            company names to find relevant emails
           </p>
         </div>
       </div>

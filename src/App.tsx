@@ -1,9 +1,8 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Layout from "./components/Layout";
 import Index from "./pages/Index";
 import LinkedIn from "./pages/LinkedIn";
@@ -15,35 +14,58 @@ import ColdEmail from "./pages/ColdEmail";
 import Analysis from "./pages/Analysis";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
+import Auth from "./pages/Auth";
 import { JobOpportunitiesProvider } from "./hooks/useJobOpportunities";
+import { useAuth } from "./hooks/useAuth";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <JobOpportunitiesProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Layout>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/linkedin" element={<LinkedIn />} />
-              <Route path="/cuvette" element={<Cuvette />} />
-              <Route path="/wellfound" element={<Wellfound />} />
-              <Route path="/gmail" element={<Gmail />} />
-              <Route path="/apply" element={<Apply />} />
-              <Route path="/cold-email" element={<ColdEmail />} />
-              <Route path="/analysis" element={<Analysis />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </Layout>
-        </BrowserRouter>
-      </TooltipProvider>
-    </JobOpportunitiesProvider>
-  </QueryClientProvider>
-);
+const PrivateRoute = ({
+  children,
+  isSignedIn,
+}: {
+  children: JSX.Element;
+  isSignedIn: boolean;
+}) => {
+  return isSignedIn ? children : <Navigate to="/auth" />;
+};
+
+const App = () => {
+  const { isSignedIn } = useAuth();
+  return (
+    <QueryClientProvider client={queryClient}>
+      <JobOpportunitiesProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <Routes>
+            <Route path="/auth" element={<Auth />} />
+            <Route
+              path="/*"
+              element={
+                <PrivateRoute isSignedIn={isSignedIn}>
+                  <Layout>
+                    <Routes>
+                      <Route path="/" element={<Index />} />
+                      <Route path="/linkedin" element={<LinkedIn />} />
+                      <Route path="/cuvette" element={<Cuvette />} />
+                      <Route path="/wellfound" element={<Wellfound />} />
+                      <Route path="/gmail" element={<Gmail />} />
+                      <Route path="/apply" element={<Apply />} />
+                      <Route path="/cold-email" element={<ColdEmail />} />
+                      <Route path="/analysis" element={<Analysis />} />
+                      <Route path="/profile" element={<Profile />} />
+                      <Route path="*" element={<NotFound />} />
+                    </Routes>
+                  </Layout>
+                </PrivateRoute>
+              }
+            />
+          </Routes>
+        </TooltipProvider>
+      </JobOpportunitiesProvider>
+    </QueryClientProvider>
+  );
+};
 
 export default App;

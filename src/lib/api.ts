@@ -1,4 +1,5 @@
 import { Opportunity } from "@/hooks/useJobOpportunities";
+import { profile } from "console";
 
 interface RawOpportunity {
   ID: string;
@@ -11,10 +12,11 @@ interface RawOpportunity {
 }
 
 const API_BASE_URL = "http://localhost:8090/api";
+const API_AUTH_URL = "http://localhost:8090";
 
 const getAuthToken = () => {
-  // In a real app, you'd get this from local storage or a cookie
-  return "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NTI5MDcyMjYsInN1YiI6IiJ9.WDlJKYiuqvKWpP3y11Xnd9P-uHOj5bLKSjt4RgleSCs";
+  const token = localStorage.getItem("auth_token");
+  return token ? `Bearer ${token}` : "";
 };
 
 const handleResponse = async (response: Response) => {
@@ -107,4 +109,44 @@ export const fetchAnalytics = async () => {
       });
     }, 1000);
   });
+};
+
+export const register = async (name, email, password) => {
+  console.log(
+    "Registering user:",
+    JSON.stringify({ username: name, email, password, profile: "." })
+  );
+  console.log("url:", `${API_AUTH_URL}/register`);
+  const response = await fetch(`${API_AUTH_URL}/register`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ username: name, email, password, profile: "." }),
+  });
+  return handleResponse(response);
+};
+
+export const login = async (email, password) => {
+  const response = await fetch(`${API_AUTH_URL}/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email, password }),
+  });
+  return handleResponse(response);
+};
+
+export const loginWithGoogle = async (token) => {
+  console.log("Logging in with Google token:", token);
+  const response = await fetch(`${API_AUTH_URL}/google`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ token }),
+  });
+
+  return handleResponse(response);
 };
