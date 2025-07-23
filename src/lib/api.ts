@@ -150,3 +150,24 @@ export const loginWithGoogle = async (token) => {
 
   return handleResponse(response);
 };
+
+export const getProfile = async () => {
+  const response = await fetch(`${API_BASE_URL}/profile`, {
+    headers: {
+      Authorization: getAuthToken(),
+    },
+  });
+  return handleResponse(response);
+};
+
+export const updateProfile = async (profileData) => {
+  const response = await fetch(`${API_BASE_URL}/profile`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: getAuthToken(),
+    },
+    body: JSON.stringify(profileData),
+  });
+  return handleResponse(response);
+};

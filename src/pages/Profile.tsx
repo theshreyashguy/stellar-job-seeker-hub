@@ -1,8 +1,50 @@
-
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { User, Mail, Phone, MapPin, Briefcase, Star } from 'lucide-react';
+import { getProfile, updateProfile } from '@/lib/api';
 
 const Profile = () => {
+  const [profileData, setProfileData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const data = await getProfile();
+        setProfileData(data);
+      } catch (error) {
+        console.error('Failed to fetch profile:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProfile();
+  }, []);
+
+  const handleUpdateProfile = async () => {
+    try {
+      const updatedProfile = await updateProfile(profileData);
+      setProfileData(updatedProfile);
+      alert('Profile updated successfully!');
+    } catch (error) {
+      console.error('Failed to update profile:', error);
+      alert('Failed to update profile.');
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setProfileData({ ...profileData, [name]: value });
+  };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!profileData) {
+    return <div>Failed to load profile.</div>;
+  }
+
   return (
     <div className="min-h-screen p-8">
       <div className="max-w-4xl mx-auto">
@@ -22,7 +64,7 @@ const Profile = () => {
               <div className="w-32 h-32 mx-auto mb-4 rounded-full bg-gradient-to-r from-stellar-purple to-stellar-cyan flex items-center justify-center">
                 <User size={48} className="text-white" />
               </div>
-              <h2 className="text-2xl font-bold text-white mb-2">Job Seeker</h2>
+              <h2 className="text-2xl font-bold text-white mb-2">{profileData.username}</h2>
               <p className="text-stellar-cyan mb-4">Software Developer</p>
               <div className="flex justify-center space-x-1 mb-4">
                 {[1, 2, 3, 4, 5].map((star) => (
@@ -42,7 +84,7 @@ const Profile = () => {
               <div className="space-y-4">
                 <div className="flex items-center space-x-3">
                   <Mail size={20} className="text-stellar-cyan" />
-                  <span className="text-white">jobseeker@example.com</span>
+                  <input type="email" name="email" value={profileData.email} onChange={handleChange} className="text-white bg-transparent" />
                 </div>
                 <div className="flex items-center space-x-3">
                   <Phone size={20} className="text-stellar-cyan" />
@@ -112,10 +154,7 @@ const Profile = () => {
             <div className="glass rounded-2xl p-6">
               <h3 className="text-xl font-bold text-white mb-6">Skills & Technologies</h3>
               <div className="flex flex-wrap gap-2">
-                {[
-                  'React', 'TypeScript', 'Node.js', 'Python', 'AWS', 'Docker', 
-                  'MongoDB', 'PostgreSQL', 'GraphQL', 'REST APIs', 'Git', 'Agile'
-                ].map((skill) => (
+                {[ 'React', 'TypeScript', 'Node.js', 'Python', 'AWS', 'Docker', 'MongoDB', 'PostgreSQL', 'GraphQL', 'REST APIs', 'Git', 'Agile' ].map((skill) => (
                   <span
                     key={skill}
                     className="px-3 py-1 bg-stellar-purple/20 text-stellar-purple border border-stellar-purple/30 rounded-full text-sm"
@@ -127,7 +166,7 @@ const Profile = () => {
             </div>
 
             <div className="text-center">
-              <button className="bg-stellar-purple hover:bg-stellar-purple/80 text-white px-8 py-3 rounded-lg transition-colors duration-300">
+              <button onClick={handleUpdateProfile} className="bg-stellar-purple hover:bg-stellar-purple/80 text-white px-8 py-3 rounded-lg transition-colors duration-300">
                 Save Changes
               </button>
             </div>

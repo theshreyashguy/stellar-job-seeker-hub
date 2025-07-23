@@ -28,6 +28,7 @@ const Analysis = () => {
       setIsLoading(true);
       try {
         const analyticsData = await fetchAnalytics();
+        console.log("Fetched analytics data:", analyticsData);
         setData(analyticsData as AnalyticsData);
       } catch (error) {
         console.error("Failed to fetch analytics:", error);
