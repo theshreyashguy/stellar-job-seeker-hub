@@ -34,31 +34,10 @@ const Gmail = () => {
   } = useGmail({ isSignedIn });
 
   useEffect(() => {
-    const initGapi = async () => {
-      if (isSignedIn && isInitialized) {
-        console.log(
-          "User signed in and API initialized, searching messages..."
-        );
-        searchMessages(searchQuery);
-      }
-    };
-
-    initGapi();
+    if (isSignedIn && isInitialized) {
+      searchMessages(searchQuery);
+    }
   }, [isSignedIn, isInitialized, searchQuery, searchMessages]);
-
-  useEffect(() => {
-    if (isSignedIn && isInitialized) {
-      searchMessages(searchQuery);
-    }
-    // Only run when both are true
-  }, [isSignedIn, isInitialized]);
-
-  useEffect(() => {
-    // When searchQuery changes and everything is ready, search again
-    if (isSignedIn && isInitialized) {
-      searchMessages(searchQuery);
-    }
-  }, [searchQuery, isSignedIn, isInitialized]);
 
   const handleSearch = () => {
     if (isSignedIn) {
@@ -170,7 +149,8 @@ const Gmail = () => {
                 <div className="flex items-center space-x-2 text-sm text-gray-400">
                   <span>Status:</span>
                   {!isInitialized ? (
-                    <span className="text-yellow-400">
+                    <span className="text-yellow-400 flex items-center">
+                      <RefreshCw className="animate-spin mr-2" size={16} />
                       Initializing Gmail API...
                     </span>
                   ) : (
@@ -181,37 +161,28 @@ const Gmail = () => {
             </div>
 
             <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
-              <div className="flex space-x-2">
+              <div className="flex-grow">
                 <Input
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search emails..."
-                  className="bg-white/10 border-white/20 text-white"
+                  className="bg-white/10 border-white/20 text-white w-full"
+                  onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
                 />
-                <Button
-                  onClick={handleSearch}
-                  disabled={isLoadingMessages}
-                  variant="ghost"
-                >
-                  <Search size={16} />
-                </Button>
               </div>
 
               <div className="flex space-x-2">
                 <Button
                   onClick={handleSearch}
-                  disabled={isLoadingMessages}
-                  variant="ghost"
+                  disabled={isLoadingMessages || !isInitialized}
+                  className="bg-red-600 hover:bg-red-700"
                 >
-                  <RefreshCw
-                    size={16}
-                    className={isLoadingMessages ? "animate-spin" : ""}
-                  />
-                  Refresh
+                  <Search size={16} className="mr-2" />
+                  Search
                 </Button>
                 <Button
                   onClick={handleFollowupAll}
-                  disabled={isLoadingMessages}
+                  disabled={isLoadingMessages || !isInitialized}
                   className="bg-stellar-purple hover:bg-stellar-purple/80"
                 >
                   <Send size={16} className="mr-2" />

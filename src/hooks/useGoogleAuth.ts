@@ -21,6 +21,7 @@ export const useGoogleAuth = () => {
 
   const initClient = useCallback(async () => {
     try {
+      await new Promise<void>((resolve) => gapi.load('client:auth2', resolve));
       await gapi.client.init({
         apiKey: API_KEY,
         clientId: CLIENT_ID,
@@ -29,14 +30,9 @@ export const useGoogleAuth = () => {
       });
       
       const authInstance = gapi.auth2.getAuthInstance();
-      if (authInstance) {
-        authInstance.isSignedIn.listen(updateSigninStatus);
-        updateSigninStatus(authInstance.isSignedIn.get());
-      } else {
-        // Handle case where auth instance is not ready
-        console.warn("Google Auth instance not ready during init.");
-        setIsLoading(false);
-      }
+      authInstance.isSignedIn.listen(updateSigninStatus);
+      updateSigninStatus(authInstance.isSignedIn.get());
+
     } catch (e: any) {
       setError(`Error initializing GAPI client: ${e.message}`);
       toast({
@@ -49,19 +45,7 @@ export const useGoogleAuth = () => {
   }, [updateSigninStatus, toast]);
 
   useEffect(() => {
-    const handleGapiLoad = () => {
-      gapi.load('client:auth2', initClient);
-    };
-
-    if (window.gapi) {
-      handleGapiLoad();
-    } else {
-      // Fallback if gapi script isn't loaded yet, though gapi-script should handle this.
-      const script = document.createElement('script');
-      script.src = 'https://apis.google.com/js/api.js';
-      script.onload = handleGapiLoad;
-      document.body.appendChild(script);
-    }
+    initClient();
   }, [initClient]);
 
   const signIn = async () => {

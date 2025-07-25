@@ -43,17 +43,19 @@ export const useGmail = ({ isSignedIn }: { isSignedIn: boolean }) => {
   // Initialize gapi client once
   useEffect(() => {
     if (!isSignedIn || isInitialized) return;
-    gapi.load("client:auth2", async () => {
-      try {
-        await gapi.client.init({
+
+    gapi.load("client:auth2", () => {
+      gapi.client.load("gmail", "v1", () => {
+        gapi.client.init({
           clientId: CLIENT_ID,
           discoveryDocs: [DISCOVERY_DOC],
           scope: SCOPES,
+        }).then(() => {
+          setIsInitialized(true);
+        }).catch((err) => {
+          console.error("Error initializing Gmail API client:", err);
         });
-        setIsInitialized(true);
-      } catch (err) {
-        console.error("Error initializing Gmail API client:", err);
-      }
+      });
     });
   }, [isSignedIn, isInitialized]);
 
