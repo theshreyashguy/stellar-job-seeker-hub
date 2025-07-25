@@ -96,26 +96,41 @@ export default function Profile() {
           <div className="md:col-span-1">
             <div className="glass rounded-2xl p-6 sticky top-24 text-center">
               <Avatar className="w-32 h-32 mx-auto mb-4 border-4 border-stellar-cyan shadow-lg">
-                <AvatarImage src={profileData.profile_picture_url} alt={profileData.username} />
+                <AvatarImage
+                  src={profileData.profile}
+                  alt={profileData.username}
+                />
                 <AvatarFallback className="bg-stellar-purple text-white">
                   {profileData.username ? (
-                    <span className="text-4xl">{profileData.username.charAt(0).toUpperCase()}</span>
+                    <span className="text-4xl">
+                      {profileData.username.charAt(0).toUpperCase()}
+                    </span>
                   ) : (
                     <User size={48} className="text-stellar-cyan" />
                   )}
                 </AvatarFallback>
               </Avatar>
-              <h2 className="text-2xl font-bold text-white">{profileData.username}</h2>
+              <h2 className="text-2xl font-bold text-white">
+                {profileData.username}
+              </h2>
               <p className="text-stellar-cyan">{profileData.profile_title}</p>
-              
+
               <div className="mt-6 text-left">
-                <h3 className="text-lg font-semibold text-white mb-2">Navigation</h3>
+                <h3 className="text-lg font-semibold text-white mb-2">
+                  Navigation
+                </h3>
                 <nav className="space-y-2">
-                  <a href="#account-info" className="flex items-center space-x-3 text-gray-300 hover:text-white hover:bg-stellar-purple/20 p-2 rounded-lg transition-colors duration-300">
+                  <a
+                    href="#account-info"
+                    className="flex items-center space-x-3 text-gray-300 hover:text-white hover:bg-stellar-purple/20 p-2 rounded-lg transition-colors duration-300"
+                  >
                     <User size={20} />
                     <span>Account Information</span>
                   </a>
-                  <a href="#professional-details" className="flex items-center space-x-3 text-gray-300 hover:text-white hover:bg-stellar-purple/20 p-2 rounded-lg transition-colors duration-300">
+                  <a
+                    href="#professional-details"
+                    className="flex items-center space-x-3 text-gray-300 hover:text-white hover:bg-stellar-purple/20 p-2 rounded-lg transition-colors duration-300"
+                  >
                     <FileText size={20} />
                     <span>Professional Details</span>
                   </a>
@@ -126,10 +141,14 @@ export default function Profile() {
 
           <div className="md:col-span-2 space-y-8">
             <div id="account-info" className="glass rounded-2xl p-8">
-              <h2 className="text-2xl font-bold text-white mb-6">Account Information</h2>
+              <h2 className="text-2xl font-bold text-white mb-6">
+                Account Information
+              </h2>
               <div className="space-y-6">
                 <div className="space-y-2">
-                  <Label htmlFor="username" className="text-gray-300">Username</Label>
+                  <Label htmlFor="username" className="text-gray-300">
+                    Username
+                  </Label>
                   <Input
                     id="username"
                     name="username"
@@ -139,7 +158,9 @@ export default function Profile() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="email" className="text-gray-300">Email</Label>
+                  <Label htmlFor="email" className="text-gray-300">
+                    Email
+                  </Label>
                   <Input
                     id="email"
                     name="email"
@@ -150,7 +171,9 @@ export default function Profile() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="profile_title" className="text-gray-300">Profile Title</Label>
+                  <Label htmlFor="profile_title" className="text-gray-300">
+                    Profile Title
+                  </Label>
                   <Input
                     id="profile_title"
                     name="profile_title"
@@ -161,13 +184,29 @@ export default function Profile() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="profile_picture_url" className="text-gray-300">Profile Picture URL</Label>
+                  <Label htmlFor="profile" className="text-gray-300">
+                    Profile Picture URL
+                  </Label>
                   <Input
-                    id="profile_picture_url"
-                    name="profile_picture_url"
-                    value={profileData.profile_picture_url}
+                    id="profile"
+                    name="profile"
+                    value={profileData.profile}
                     onChange={handleChange}
                     placeholder="https://your-image-url.com/profile.png"
+                    className="bg-stellar-navy/50 border-stellar-cyan/20 text-white"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="phone" className="text-gray-300">
+                    Phone Number
+                  </Label>
+                  <Input
+                    id="phone"
+                    name="phone"
+                    value={profileData.phone}
+                    onChange={handleChange}
+                    placeholder="+91"
                     className="bg-stellar-navy/50 border-stellar-cyan/20 text-white"
                   />
                 </div>
@@ -175,10 +214,14 @@ export default function Profile() {
             </div>
 
             <div id="professional-details" className="glass rounded-2xl p-8">
-              <h2 className="text-2xl font-bold text-white mb-6">Professional Details</h2>
+              <h2 className="text-2xl font-bold text-white mb-6">
+                Professional Details
+              </h2>
               <div className="space-y-6">
                 <div className="space-y-2">
-                  <Label htmlFor="resume_url" className="text-gray-300">Resume URL</Label>
+                  <Label htmlFor="resume_url" className="text-gray-300">
+                    Resume URL
+                  </Label>
                   <Input
                     id="resume_url"
                     name="resume_url"
@@ -190,7 +233,9 @@ export default function Profile() {
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <Label htmlFor="linkedin_url" className="text-gray-300">LinkedIn URL</Label>
+                    <Label htmlFor="linkedin_url" className="text-gray-300">
+                      LinkedIn URL
+                    </Label>
                     <Input
                       id="linkedin_url"
                       name="linkedin_url"
@@ -200,7 +245,9 @@ export default function Profile() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="github_url" className="text-gray-300">GitHub URL</Label>
+                    <Label htmlFor="github_url" className="text-gray-300">
+                      GitHub URL
+                    </Label>
                     <Input
                       id="github_url"
                       name="github_url"
@@ -211,7 +258,10 @@ export default function Profile() {
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="cold_email_template" className="text-gray-300">
+                  <Label
+                    htmlFor="cold_email_template"
+                    className="text-gray-300"
+                  >
                     Cold Email Template
                   </Label>
                   <Textarea
@@ -225,10 +275,10 @@ export default function Profile() {
                 </div>
               </div>
             </div>
-            
+
             <div className="flex justify-end">
-              <Button 
-                onClick={handleUpdateProfile} 
+              <Button
+                onClick={handleUpdateProfile}
                 disabled={isSaving}
                 className="bg-stellar-purple hover:bg-stellar-purple/80 text-white px-8 py-3 rounded-lg flex items-center space-x-2 transition-colors duration-300 disabled:opacity-50"
               >
