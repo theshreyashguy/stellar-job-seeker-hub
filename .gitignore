@@ -22,3 +22,22 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Build output
+aiapply.exe
+
+# Environment variables
+.env
+
+# Sensitive files
+cookie.json
+database.json
+
+# Scraper output
+temp.html
+wellfound_jobs.html
+cuvette/cuvette.html
+linkedin/jobs.html
+
+# Temporary folders
+New folder/

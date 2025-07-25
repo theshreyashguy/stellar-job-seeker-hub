@@ -1,19 +1,21 @@
-
 import React, { useState, useEffect } from "react";
-import { useSearchParams, useNavigate } from 'react-router-dom';
-import { CheckCircle, Send, ArrowLeft } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+import { useSearchParams, useNavigate } from "react-router-dom";
+import { CheckCircle, Send, ArrowLeft } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 import { useJobOpportunities } from "@/hooks/useJobOpportunities";
+
+import { createApplication, updateAnalytics } from "@/lib/api";
 
 const Apply = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { toast } = useToast();
   const { opportunities } = useJobOpportunities();
-  
-  const company = searchParams.get('company') || 'Unknown Company';
-  const role = searchParams.get('role') || 'Unknown Role';
-  
+
+  const company = searchParams.get("company") || "Unknown Company";
+  const role = searchParams.get("role") || "Unknown Role";
+  const platform = searchParams.get("platform") || "Unknown";
+
   const [isApplying, setIsApplying] = useState(false);
   const [isApplied, setIsApplied] = useState(false);
 
@@ -25,16 +27,26 @@ const Apply = () => {
 
   const handleApply = async () => {
     setIsApplying(true);
-    
-    // Simulate application submission
-    setTimeout(() => {
+    try {
+      await createApplication({
+        job_title: role,
+        company_name: company,
+        status: "Applied",
+      });
+      await updateAnalytics("application", platform);
       setIsApplied(true);
       toast({
         title: "Application Submitted!",
         description: `Your application for ${role} at ${company} has been submitted.`,
       });
-      setIsApplying(false);
-    }, 2000);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to submit application.",
+        variant: "destructive",
+      });
+    }
+    setIsApplying(false);
   };
 
   return (
@@ -65,21 +77,23 @@ const Apply = () => {
                 <CheckCircle className="w-10 h-10 text-green-500" />
               </div>
               <div>
-                <h2 className="text-2xl font-bold text-white mb-2">Application Submitted!</h2>
+                <h2 className="text-2xl font-bold text-white mb-2">
+                  Application Submitted!
+                </h2>
                 <p className="text-gray-300">
-                  Your application has been successfully submitted. We'll track this application
-                  in your analytics dashboard.
+                  Your application has been successfully submitted. We'll track
+                  this application in your analytics dashboard.
                 </p>
               </div>
               <div className="flex justify-center space-x-4">
                 <button
-                  onClick={() => navigate('/analysis')}
+                  onClick={() => navigate("/analysis")}
                   className="bg-stellar-purple hover:bg-stellar-purple/80 text-white px-6 py-3 rounded-lg transition-colors duration-300"
                 >
                   View Analytics
                 </button>
                 <button
-                  onClick={() => navigate('/')}
+                  onClick={() => navigate("/")}
                   className="bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg transition-colors duration-300"
                 >
                   Back to Home
@@ -89,7 +103,9 @@ const Apply = () => {
           ) : (
             <div className="space-y-6">
               <div className="bg-stellar-navy/50 rounded-xl p-6">
-                <h3 className="text-lg font-bold text-white mb-3">Application Details</h3>
+                <h3 className="text-lg font-bold text-white mb-3">
+                  Application Details
+                </h3>
                 <div className="space-y-2">
                   <div className="flex justify-between">
                     <span className="text-gray-400">Position:</span>
@@ -101,15 +117,18 @@ const Apply = () => {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-400">Date:</span>
-                    <span className="text-white">{new Date().toLocaleDateString()}</span>
+                    <span className="text-white">
+                      {new Date().toLocaleDateString()}
+                    </span>
                   </div>
                 </div>
               </div>
 
               <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-xl p-4">
                 <p className="text-yellow-200 text-sm">
-                  ⚡ This will automatically submit your pre-configured application materials
-                  and track the application in your dashboard.
+                  ⚡ This will automatically submit your pre-configured
+                  application materials and track the application in your
+                  dashboard.
                 </p>
               </div>
 
@@ -120,7 +139,9 @@ const Apply = () => {
                   className="bg-stellar-purple hover:bg-stellar-purple/80 text-white px-8 py-3 rounded-lg flex items-center space-x-2 mx-auto transition-colors duration-300 disabled:opacity-50"
                 >
                   <Send size={20} />
-                  <span>{isApplying ? 'Submitting...' : 'Submit Application'}</span>
+                  <span>
+                    {isApplying ? "Submitting..." : "Submit Application"}
+                  </span>
                 </button>
               </div>
             </div>

@@ -4,6 +4,8 @@ import { CheckCircle, Send, ArrowLeft, User, X, Edit2Icon } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useJobOpportunities } from "@/hooks/useJobOpportunities";
 
+import { createApplication, updateAnalytics } from "@/lib/api";
+
 const ColdEmail = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -12,6 +14,7 @@ const ColdEmail = () => {
 
   const company = searchParams.get("company") || "Unknown Company";
   const role = searchParams.get("role") || "Unknown Role";
+  const platform = searchParams.get("platform") || "Unknown";
 
   const [isSending, setIsSending] = useState(false);
   const [isParsing, setIsParsing] = useState(false);
@@ -75,15 +78,24 @@ const ColdEmail = () => {
 
   const handleSendEmail = async () => {
     setIsSending(true);
-    setTimeout(() => {
+    try {
+      await createApplication({ job_title: role, company_name: company, status: "Applied" });
+      await updateAnalytics("cold_email", platform);
       setIsSent(true);
       toast({
         title: "Cold Email Sent!",
         description: `Your email regarding ${role} at ${company} has been sent.`,
       });
-      setIsSending(false);
-    }, 2000);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to send cold email.",
+        variant: "destructive",
+      });
+    }
+    setIsSending(false);
   };
+
 
   return (
     <div className="min-h-screen p-8">

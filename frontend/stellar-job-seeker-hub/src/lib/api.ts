@@ -96,6 +96,18 @@ export const fetchAnalytics = async () => {
   return handleResponse(response);
 };
 
+export const updateAnalytics = async (type: string, platform: string) => {
+  const response = await fetch(`${API_BASE_URL}/analytics/update`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: getAuthToken(),
+    },
+    body: JSON.stringify({ type, platform }),
+  });
+  return handleResponse(response);
+};
+
 export const register = async (name, email, password) => {
   console.log(
     "Registering user:",
@@ -147,12 +159,24 @@ export const getProfile = async () => {
 
 export const updateProfile = async (profileData) => {
   const response = await fetch(`${API_BASE_URL}/profile`, {
-    method: 'PUT',
+    method: "PUT",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       Authorization: getAuthToken(),
     },
     body: JSON.stringify(profileData),
+  });
+  return handleResponse(response);
+};
+
+export const createApplication = async (applicationData: any) => {
+  const response = await fetch(`${API_BASE_URL}/applications`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: getAuthToken(),
+    },
+    body: JSON.stringify(applicationData),
   });
   return handleResponse(response);
 };
