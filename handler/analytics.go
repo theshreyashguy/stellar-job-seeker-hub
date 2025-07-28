@@ -43,10 +43,11 @@ func GetAnalytics(db *gorm.DB) gin.HandlerFunc {
 			return
 		}
 
-		if analytics.ID == 0 {
-			analytics.UserID = userID
-		}
-
-		c.JSON(http.StatusOK, analytics)
+		c.JSON(http.StatusOK, gin.H{
+			"total_applications":  analytics.TotalApplications,
+			"cold_emails_sent":    analytics.ColdEmailsSent,
+			"platform_breakdown":  analytics.PlatformBreakdown,
+			"monthly_stats":       analytics.MonthlyStats,
+		})
 	}
 }

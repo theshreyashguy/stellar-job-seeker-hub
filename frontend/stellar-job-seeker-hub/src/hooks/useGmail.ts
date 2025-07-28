@@ -1,8 +1,4 @@
-// Add this script tag to your public/index.html:
-// <script async defer src="https://apis.google.com/js/api.js"></script>
-
-import { useState, useEffect, useCallback } from "react";
-import { gapi } from "gapi-script";
+import { useState, useCallback } from "react";
 
 export interface GmailMessage {
   id: string;
@@ -16,101 +12,69 @@ export interface GmailMessage {
   internalDate: string;
 }
 
-export interface GmailThread {
-  id: string;
-  messages: GmailMessage[];
-}
+const GMAIL_API_URL = "https://www.googleapis.com/gmail/v1/users/me";
 
-const DISCOVERY_DOC =
-  "https://www.googleapis.com/discovery/v1/apis/gmail/v1/rest";
-const CLIENT_ID =
-  "851068951455-4u7jf9lpg9a646tqe3uffdmouk1cc40e.apps.googleusercontent.com";
-const SCOPES = [
-  "email",
-  "profile",
-  "https://www.googleapis.com/auth/gmail.readonly",
-  "https://www.googleapis.com/auth/gmail.send",
-].join(" ");
-
-export const useGmail = ({ isSignedIn }: { isSignedIn: boolean }) => {
+export const useGmail = (accessToken: string | null) => {
   const [messages, setMessages] = useState<GmailMessage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedMessage, setSelectedMessage] = useState<GmailMessage | null>(
     null
   );
-  const [isInitialized, setIsInitialized] = useState(false);
 
-  // Initialize gapi client once
-  useEffect(() => {
-    if (!isSignedIn || isInitialized) return;
-
-    gapi.load("client:auth2", () => {
-      gapi.client.load("gmail", "v1", () => {
-        gapi.client.init({
-          clientId: CLIENT_ID,
-          discoveryDocs: [DISCOVERY_DOC],
-          scope: SCOPES,
-        }).then(() => {
-          setIsInitialized(true);
-        }).catch((err) => {
-          console.error("Error initializing Gmail API client:", err);
-        });
+  const makeRequest = useCallback(
+    async (endpoint: string, options: RequestInit = {}) => {
+      if (!accessToken) {
+        throw new Error("Not authenticated");
+      }
+      const response = await fetch(`${GMAIL_API_URL}${endpoint}`, {
+        ...options,
+        headers: {
+          ...options.headers,
+          Authorization: `Bearer ${accessToken}`,
+        },
       });
-    });
-  }, [isSignedIn, isInitialized]);
+      if (!response.ok) {
+        const error = await response.json();
+        if (error.error.code === 401) {
+          // Handle token expiration
+          localStorage.removeItem("google_access_token");
+          window.location.reload();
+        }
+        throw new Error(error.error.message || "API request failed");
+      }
+      return response.json();
+    },
+    [accessToken]
+  );
 
-  // Search messages
   const searchMessages = useCallback(
     async (query = "in:sent sde applicant") => {
-      if (!isInitialized) return;
       setIsLoading(true);
-      // Set the access token for gapi if available
-      const token = localStorage.getItem("google_access_token");
-      if (token && gapi.client && gapi.client.setToken) {
-        gapi.client.setToken({ access_token: token });
-      }
       try {
-        const resp = await gapi.client.gmail.users.messages.list({
-          userId: "me",
-          q: `in:sent  ${query}`,
-          maxResults: 50,
-        });
-        const msgs = resp.result.messages || [];
+        const resp = await makeRequest(
+          `/messages?q=${encodeURIComponent(query)}&maxResults=50`
+        );
+        const msgs = resp.messages || [];
         if (msgs.length) {
           const details = await Promise.all(
-            msgs.map((m) =>
-              gapi.client.gmail.users.messages
-                .get({ userId: "me", id: m.id })
-                .then((r) => r.result as GmailMessage)
+            msgs.map((m: { id: string }) =>
+              makeRequest(`/messages/${m.id}`)
             )
           );
           setMessages(details);
         } else {
           setMessages([]);
         }
-      } catch (e: unknown) {
-        // If 401, prompt re-authentication
-        const err = e as {
-          status?: number;
-          result?: { error?: { code?: number } };
-        };
-        if (
-          err.status === 401 ||
-          (err.result && err.result.error && err.result.error.code === 401)
-        ) {
-          alert("Your Gmail session has expired. Please sign in again.");
-          window.location.reload();
-        }
+      } catch (e) {
         console.error("Error fetching messages:", e);
         setMessages([]);
       } finally {
         setIsLoading(false);
       }
     },
-    [isInitialized]
+    [makeRequest]
   );
 
-  // Decode body
   const getMessageBody = useCallback((message: GmailMessage): string => {
     let body = "";
     if (message.payload.body?.data) {
@@ -131,7 +95,6 @@ export const useGmail = ({ isSignedIn }: { isSignedIn: boolean }) => {
     return body || message.snippet;
   }, []);
 
-  // Get header
   const getHeader = useCallback(
     (message: GmailMessage, name: string): string => {
       const header = message.payload.headers.find((h) => h.name === name);
@@ -140,7 +103,6 @@ export const useGmail = ({ isSignedIn }: { isSignedIn: boolean }) => {
     []
   );
 
-  // Send reply
   const sendReply = useCallback(
     async (original: GmailMessage, replyText: string) => {
       try {
@@ -159,9 +121,10 @@ export const useGmail = ({ isSignedIn }: { isSignedIn: boolean }) => {
           .replace(/\+/g, "-")
           .replace(/\//g, "_")
           .replace(/=+$/, "");
-        await gapi.client.gmail.users.messages.send({
-          userId: "me",
-          resource: { raw, threadId: original.threadId },
+        await makeRequest("/messages/send", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ raw, threadId: original.threadId }),
         });
         return true;
       } catch (err) {
@@ -169,7 +132,7 @@ export const useGmail = ({ isSignedIn }: { isSignedIn: boolean }) => {
         return false;
       }
     },
-    [getHeader]
+    [getHeader, makeRequest]
   );
 
   return {
@@ -181,6 +144,6 @@ export const useGmail = ({ isSignedIn }: { isSignedIn: boolean }) => {
     getMessageBody,
     getHeader,
     sendReply,
-    isInitialized,
+    isInitialized: !!accessToken,
   };
 };

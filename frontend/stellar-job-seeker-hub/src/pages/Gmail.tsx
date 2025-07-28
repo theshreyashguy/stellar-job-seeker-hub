@@ -15,12 +15,12 @@ import EmailList from "@/components/EmailList";
 import EmailViewer from "@/components/EmailViewer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { gapi } from "gapi-script";
 
 const Gmail = () => {
   const [searchQuery, setSearchQuery] = useState("sde applicant");
   const { toast } = useToast();
-  const { isSignedIn, isLoading, error, signIn, signOut } = useGoogleAuth();
+  const { isSignedIn, isLoading, error, signIn, signOut, accessToken } =
+    useGoogleAuth();
   const {
     messages,
     isLoading: isLoadingMessages,
@@ -31,7 +31,7 @@ const Gmail = () => {
     getHeader,
     sendReply,
     isInitialized,
-  } = useGmail({ isSignedIn });
+  } = useGmail(accessToken);
 
   useEffect(() => {
     if (isSignedIn && isInitialized) {
@@ -105,7 +105,7 @@ const Gmail = () => {
               your job applications
             </p>
             <Button
-              onClick={signIn}
+              onClick={() => signIn()}
               disabled={isLoading}
               className="bg-red-600 hover:bg-red-700 px-8 py-3 text-lg"
             >

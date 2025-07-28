@@ -41,7 +41,6 @@ const App = () => {
             <Toaster />
             <Sonner />
             <Routes>
-              <Route path="/auth" element={<Auth />} />
               <Route
                 path="/*"
                 element={
@@ -63,6 +62,7 @@ const App = () => {
                   </PrivateRoute>
                 }
               />
+              <Route path="/auth" element={<Auth />} />
             </Routes>
           </TooltipProvider>
         </UserProvider>

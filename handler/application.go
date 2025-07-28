@@ -56,7 +56,10 @@ func CreateApplication(db *gorm.DB) gin.HandlerFunc {
 
 		// Update analytics in a separate goroutine
 		go func() {
-			database.UpdateAnalytics(db, int(userID), application)
+			isColdEmail := application.ApplicationType == "cold_email"
+			if err := database.UpdateAnalytics(db, int(userID), application.Platform, isColdEmail); err != nil {
+				log.Printf("Failed to update analytics: %v", err)
+			}
 		}()
 
 		c.JSON(http.StatusOK, application)
