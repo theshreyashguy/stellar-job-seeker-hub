@@ -2,78 +2,49 @@ package handler
 
 import (
 	"aiapply/database"
-	"aiapply/models"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 )
 
-// GetAnalytics returns analytics data
+// GetAnalytics returns analytics data for the authenticated user
 func GetAnalytics(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		analytics, err := database.GetAnalytics(db)
+		rawUserID, exists := c.Get("userID")
+		if !exists {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "User not authenticated"})
+			return
+		}
+
+		// Normalize userID into an int
+		var userID int
+		switch v := rawUserID.(type) {
+		case string:
+			id, err := strconv.Atoi(v)
+			if err != nil {
+				c.JSON(http.StatusInternalServerError, gin.H{"error": "Invalid user ID format"})
+				return
+			}
+			userID = id
+		case float64:
+			userID = int(v)
+		case int:
+			userID = v
+		default:
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Unsupported user ID type"})
+			return
+		}
+
+		analytics, err := database.GetAnalyticsByUserID(db, userID)
 		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-			return
-		}
-		c.JSON(http.StatusOK, analytics)
-	}
-}
-
-// UpdateAnalytics updates the analytics data
-func UpdateAnalytics(db *gorm.DB) gin.HandlerFunc {
-	return func(c *gin.Context) {
-		var req struct {
-			Type     string `json:"type"`
-			Platform string `json:"platform"`
-		}
-
-		if err := c.ShouldBindJSON(&req); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get analytics data"})
 			return
 		}
 
-		analytics, err := database.GetAnalytics(db)
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-			return
-		}
-
-		analytics.TotalApplications++
-
-		if req.Type == "cold_email" {
-			analytics.ColdEmailsSent++
-		}
-
-		// Find the platform and update its stats
-		found := false
-		for i, p := range analytics.PlatformBreakdown {
-			if p.Platform == req.Platform {
-				analytics.PlatformBreakdown[i].Applications++
-				if req.Type == "cold_email" {
-					analytics.PlatformBreakdown[i].ColdEmails++
-				}
-				found = true
-				break
-			}
-		}
-
-		// If the platform is not found, add it
-		if !found {
-			newPlatform := models.PlatformBreakdown{
-				Platform:     req.Platform,
-				Applications: 1,
-			}
-			if req.Type == "cold_email" {
-				newPlatform.ColdEmails = 1
-			}
-			analytics.PlatformBreakdown = append(analytics.PlatformBreakdown, newPlatform)
-		}
-
-		if err := database.UpdateAnalytics(db, analytics); err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-			return
+		if analytics.ID == 0 {
+			analytics.UserID = userID
 		}
 
 		c.JSON(http.StatusOK, analytics)

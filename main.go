@@ -4,6 +4,7 @@ import (
 	"aiapply/database"
 	"aiapply/handler"
 	"aiapply/middleware"
+	"aiapply/models"
 	"log"
 
 	"github.com/gin-contrib/cors"
@@ -16,7 +17,10 @@ func main() {
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
-	db := database.InitDB()
+	database.InitDB()
+	db := database.DB
+	db.AutoMigrate(&models.User{}, &models.JobApplication{}, &models.Analytics{}, &models.PlatformBreakdown{}, &models.MonthlyStat{}, &models.ColdEmail{})
+
 	r := gin.Default()
 
 	// CORS middleware
@@ -42,7 +46,6 @@ func main() {
 
 	// Analytics routes
 	api.GET("/analytics", handler.GetAnalytics(db))
-	api.POST("/analytics/update", handler.UpdateAnalytics(db))
 
 	// User routes
 	api.GET("/users", handler.ListUsers(db))
@@ -54,10 +57,8 @@ func main() {
 	api.POST("/scrape/:platform", handler.ScrapeJobs(db))
 
 	// Application routes
-	api.POST("/applications", handler.CreateApplication(db))
-	api.GET("/applications", handler.GetApplications(db))
-
-	
+	api.POST("/applications", middleware.JWTAuth(), handler.CreateApplication(db))
+	api.GET("/applications", middleware.JWTAuth(), handler.GetApplications(db))
 
 	log.Println("Starting HTTP server on :8090")
 	if err := r.Run(":8090"); err != nil {

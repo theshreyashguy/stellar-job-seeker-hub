@@ -3,7 +3,7 @@ package database
 import (
 	"aiapply/models"
 
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 )
 
 func CreateUser(db *gorm.DB, user *models.User) (*models.User, error) {

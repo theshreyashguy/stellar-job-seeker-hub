@@ -117,6 +117,15 @@ const LinkedIn = () => {
                       href={`https://www.linkedin.com/jobs/view/${opportunity.id}`}
                       target="_blank"
                       rel="noopener noreferrer"
+                      onClick={() => {
+                        navigate(
+                          `/apply?company=${encodeURIComponent(
+                            opportunity.company
+                          )}&role=${encodeURIComponent(
+                            opportunity.name
+                          )}&platform=linkedin`
+                        );
+                      }}
                       className="bg-stellar-purple hover:bg-stellar-purple/80 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors duration-300"
                     >
                       <ExternalLink size={16} />
@@ -131,12 +140,7 @@ const LinkedIn = () => {
                       rel="noopener noreferrer"
                       onClick={() => {
                         //
-                        console.log(
-                          `https://www.linkedin.com/company/${opportunity.company
-                            .toLocaleLowerCase()
-                            .split(" ")
-                            .join("-")}/people/`
-                        );
+
                         navigate(
                           `/cold-email?company=${encodeURIComponent(
                             opportunity.company

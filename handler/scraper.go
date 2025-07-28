@@ -11,7 +11,7 @@ import (
 	"aiapply/wellfound"
 
 	"github.com/gin-gonic/gin"
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 )
 
 func ScrapeJobs(db *gorm.DB) gin.HandlerFunc {

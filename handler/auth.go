@@ -3,14 +3,14 @@ package handler
 import (
 	"net/http"
 
-	"github.com/gin-gonic/gin"
-	"github.com/jinzhu/gorm"
-	"golang.org/x/crypto/bcrypt"
-	"google.golang.org/api/idtoken"
-
 	"aiapply/database"
 	"aiapply/models"
 	"aiapply/utils"
+
+	"github.com/gin-gonic/gin"
+	"golang.org/x/crypto/bcrypt"
+	"google.golang.org/api/idtoken"
+	"gorm.io/gorm"
 )
 
 func Login(db *gorm.DB) gin.HandlerFunc {

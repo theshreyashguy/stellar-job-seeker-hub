@@ -5,8 +5,9 @@ import (
 	"strconv"
 
 	"aiapply/models"
+
 	"github.com/gin-gonic/gin"
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 )
 
 func GetProfile(db *gorm.DB) gin.HandlerFunc {

@@ -74,7 +74,7 @@ export const scrapeLinkedIn = async (file: File): Promise<Opportunity[]> => {
 
 export const scrapeWellfound = async (file: File): Promise<Opportunity[]> => {
   const formData = new FormData();
-  formData.append("file", file);
+  formData.append("html", file);
 
   const response = await fetch(`${API_BASE_URL}/scrape/wellfound`, {
     method: "POST",
@@ -96,17 +96,7 @@ export const fetchAnalytics = async () => {
   return handleResponse(response);
 };
 
-export const updateAnalytics = async (type: string, platform: string) => {
-  const response = await fetch(`${API_BASE_URL}/analytics/update`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: getAuthToken(),
-    },
-    body: JSON.stringify({ type, platform }),
-  });
-  return handleResponse(response);
-};
+
 
 export const register = async (name, email, password) => {
   console.log(
@@ -169,7 +159,7 @@ export const updateProfile = async (profileData) => {
   return handleResponse(response);
 };
 
-export const createApplication = async (applicationData: any) => {
+export const createApplication = async (applicationData) => {
   const response = await fetch(`${API_BASE_URL}/applications`, {
     method: "POST",
     headers: {

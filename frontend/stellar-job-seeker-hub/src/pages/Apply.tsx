@@ -3,14 +3,16 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import { CheckCircle, Send, ArrowLeft } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useJobOpportunities } from "@/hooks/useJobOpportunities";
+import { useUser } from "@/components/UserProvider";
 
-import { createApplication, updateAnalytics } from "@/lib/api";
+import { createApplication } from "@/lib/api";
 
 const Apply = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { opportunities } = useJobOpportunities();
+
+  const user = useUser();
 
   const company = searchParams.get("company") || "Unknown Company";
   const role = searchParams.get("role") || "Unknown Role";
@@ -19,21 +21,18 @@ const Apply = () => {
   const [isApplying, setIsApplying] = useState(false);
   const [isApplied, setIsApplied] = useState(false);
 
-  useEffect(() => {
-    if (opportunities.length > 0) {
-      console.log("Opportunities available in Apply page:", opportunities);
-    }
-  }, [opportunities]);
-
   const handleApply = async () => {
     setIsApplying(true);
     try {
+      console.log("Submitting application for:", { role, company, platform });
       await createApplication({
+        user_id: user.ID,
         job_title: role,
         company_name: company,
+        platform: platform,
         status: "Applied",
+        application_type: "application",
       });
-      await updateAnalytics("application", platform);
       setIsApplied(true);
       toast({
         title: "Application Submitted!",

@@ -38,7 +38,12 @@ const Analysis = () => {
       setError(null);
       try {
         const analyticsData = await fetchAnalytics();
-        setData(analyticsData as AnalyticsData);
+        setData({
+          totalApplications: analyticsData.total_applications || 0,
+          coldEmailsSent: analyticsData.cold_emails_sent || 0,
+          platformBreakdown: analyticsData.platform_breakdown || [],
+          monthlyStats: analyticsData.monthly_stats || [],
+        });
       } catch (err) {
         console.error("Failed to fetch analytics:", err);
         setError("Failed to load analytics data. Please try again later.");

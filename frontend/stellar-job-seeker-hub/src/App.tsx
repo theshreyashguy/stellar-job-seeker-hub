@@ -17,6 +17,7 @@ import NotFound from "./pages/NotFound";
 import Auth from "./pages/Auth";
 import { JobOpportunitiesProvider } from "./hooks/useJobOpportunities";
 import { useAuth } from "./hooks/useAuth";
+import { UserProvider } from "./components/UserProvider";
 
 const queryClient = new QueryClient();
 
@@ -31,38 +32,40 @@ const PrivateRoute = ({
 };
 
 const App = () => {
-  const { isSignedIn } = useAuth();
+  const { isSignedIn, user } = useAuth();
   return (
     <QueryClientProvider client={queryClient}>
       <JobOpportunitiesProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <Routes>
-            <Route path="/auth" element={<Auth />} />
-            <Route
-              path="/*"
-              element={
-                <PrivateRoute isSignedIn={isSignedIn}>
-                  <Layout>
-                    <Routes>
-                      <Route path="/" element={<Index />} />
-                      <Route path="/linkedin" element={<LinkedIn />} />
-                      <Route path="/cuvette" element={<Cuvette />} />
-                      <Route path="/wellfound" element={<Wellfound />} />
-                      <Route path="/gmail" element={<Gmail />} />
-                      <Route path="/apply" element={<Apply />} />
-                      <Route path="/cold-email" element={<ColdEmail />} />
-                      <Route path="/analysis" element={<Analysis />} />
-                      <Route path="/profile" element={<Profile />} />
-                      <Route path="*" element={<NotFound />} />
-                    </Routes>
-                  </Layout>
-                </PrivateRoute>
-              }
-            />
-          </Routes>
-        </TooltipProvider>
+        <UserProvider value={user}>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <Routes>
+              <Route path="/auth" element={<Auth />} />
+              <Route
+                path="/*"
+                element={
+                  <PrivateRoute isSignedIn={isSignedIn}>
+                    <Layout>
+                      <Routes>
+                        <Route path="/" element={<Index />} />
+                        <Route path="/linkedin" element={<LinkedIn />} />
+                        <Route path="/cuvette" element={<Cuvette />} />
+                        <Route path="/wellfound" element={<Wellfound />} />
+                        <Route path="/gmail" element={<Gmail />} />
+                        <Route path="/apply" element={<Apply />} />
+                        <Route path="/cold-email" element={<ColdEmail />} />
+                        <Route path="/analysis" element={<Analysis />} />
+                        <Route path="/profile" element={<Profile />} />
+                        <Route path="*" element={<NotFound />} />
+                      </Routes>
+                    </Layout>
+                  </PrivateRoute>
+                }
+              />
+            </Routes>
+          </TooltipProvider>
+        </UserProvider>
       </JobOpportunitiesProvider>
     </QueryClientProvider>
   );

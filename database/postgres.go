@@ -5,25 +5,26 @@ import (
 	"log"
 	"os"
 
-	"aiapply/models"
-
-	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/postgres"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
-func InitDB() *gorm.DB {
+var DB *gorm.DB
+
+func InitDB() {
 	connStr := os.Getenv("DATABASE_URL")
 	if connStr == "" {
 		log.Fatal("DATABASE_URL environment variable is not set")
 	}
 
-	db, err := gorm.Open("postgres", connStr)
+	var err error
+	DB, err = gorm.Open(postgres.Open(connStr), &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Silent),
+	})
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	db.AutoMigrate(&models.User{}, &models.JobApplication{}, &models.Analytics{}, &models.PlatformBreakdown{}, &models.MonthlyStat{})
-
 	fmt.Println("Successfully connected to the database")
-	return db
 }
