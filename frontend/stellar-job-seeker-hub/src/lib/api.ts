@@ -5,9 +5,19 @@ interface RawOpportunity {
   ID: string;
   Role: string;
   CompanyName: string;
-  Salary: string;
+  CompanyPhotoURL: string;
   Location: string;
-  CompanyPhotoURL?: string;
+  Salary: string;
+  Duration: string;
+  Mode: string;
+  StartDate: string;
+  OfficeLocation: string;
+  ApplyBy: string;
+  PostedAgo: string;
+  Type: string;
+  ApplyURL: string;
+  Skills: string[];
+  Level: string;
   Company: string;
 }
 
@@ -47,6 +57,15 @@ export const scrapeCuvette = async (file: File): Promise<Opportunity[]> => {
     salary: item.Salary,
     location: item.Location,
     imageUrl: item.CompanyPhotoURL,
+    duration: item.Duration,
+    mode: item.Mode,
+    startDate: item.StartDate,
+    officeLocation: item.OfficeLocation,
+    applyBy: item.ApplyBy,
+    postedAgo: item.PostedAgo,
+    skills: item.Skills,
+    level: item.Level,
+    applyUrl: item.ApplyURL,
   }));
 };
 
@@ -95,8 +114,6 @@ export const fetchAnalytics = async () => {
   });
   return handleResponse(response);
 };
-
-
 
 export const register = async (name, email, password) => {
   console.log(

@@ -9,6 +9,14 @@ export interface Opportunity {
   location: string;
   imageUrl?: string;
   applyUrl?: string;
+  duration?: string;
+  mode?: string;
+  startDate?: string;
+  officeLocation?: string;
+  applyBy?: string;
+  postedAgo?: string;
+  skills?: string[];
+  level?: string;
 }
 
 interface JobOpportunitiesContextType {

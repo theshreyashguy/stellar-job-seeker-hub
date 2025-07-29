@@ -3,7 +3,6 @@ package wellfound
 import (
 	"fmt"
 	"io"
-	"strings"
 
 	"github.com/PuerkitoBio/goquery"
 )
@@ -29,37 +28,26 @@ func ScrapeJobDetailsFromReader(reader io.Reader) ([]JobDetail, error) {
 	var details []JobDetail
 
 	// Find each job listing inside the listings container
-	doc.Find(`div[data-testid="job-listing-list"] .styles_component__Ey28k`).Each(func(i int, s *goquery.Selection) {
-		// ID attribute if present
-		id, _ := s.Attr("data-id")
+	doc.Find(`[data-test="StartupResult"]`).Each(func(i int, s *goquery.Selection) {
+		companyName := s.Find("h2").Text()
+		companyURL, _ := s.Find("a").Attr("href")
+		companyPhotoURL, _ := s.Find("img").Attr("src")
 
-		// Role/Title
-		role := strings.TrimSpace(s.Find("span.styles_title__xpQDw").Text())
+		s.Find(`[data-testid="job-listing-list"] > div`).Each(func(j int, job *goquery.Selection) {
+			id, _ := job.Attr("data-id")
+			role := job.Find("[class*='styles_title']").Text()
+			location := job.Find("[class*='styles_locations']").Text()
+			salary := job.Find("[class*='styles_compensation']").Text()
 
-		// Locations: multiple spans
-		tmpLocs := []string{}
-		s.Find("span.styles_location__O9Z62").Each(func(_ int, l *goquery.Selection) {
-			tmpLocs = append(tmpLocs, strings.TrimSpace(l.Text()))
-		})
-		location := strings.Join(tmpLocs, ", ")
-
-		// Salary/Compensation
-		salary := strings.TrimSpace(s.Find("span.styles_compensation__3JnvU").Text())
-
-		// Company info: find the corresponding header container by index
-		headerSel := doc.Find("div.styles_headerContainer__GfbYF").Eq(i)
-		companyName := strings.TrimSpace(headerSel.Find("h2").Text())
-		companyURL, _ := headerSel.Find("a").Attr("href")
-		companyPhotoURL, _ := headerSel.Find("img").Attr("src")
-
-		details = append(details, JobDetail{
-			ID:              id,
-			Role:            role,
-			CompanyName:     companyName,
-			CompanyURL:      companyURL,
-			CompanyPhotoURL: companyPhotoURL,
-			Location:        location,
-			Salary:          salary,
+			details = append(details, JobDetail{
+				ID:              id,
+				Role:            role,
+				CompanyName:     companyName,
+				CompanyURL:      companyURL,
+				CompanyPhotoURL: companyPhotoURL,
+				Location:        location,
+				Salary:          salary,
+			})
 		})
 	})
 

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Upload,
   ExternalLink,
@@ -16,8 +16,13 @@ import { scrapeWellfound } from "@/lib/api";
 const Wellfound = () => {
   const [file, setFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
-  const { wellfoundOpportunities, setWellfoundOpportunities, removeWellfoundOpportunity } = useJobOpportunities();
+  const {
+    wellfoundOpportunities,
+    setWellfoundOpportunities,
+    removeWellfoundOpportunity,
+  } = useJobOpportunities();
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const handleFileUpload = async (
     event: React.ChangeEvent<HTMLInputElement>
@@ -32,13 +37,13 @@ const Wellfound = () => {
       const data = await scrapeWellfound(selectedFile);
       console.log("Scraped Wellfound data:", data);
       const opportunities: Opportunity[] = data.map((job: any) => ({
-          id: job.ID,
-          name: job.Role,
-          company: job.CompanyName,
-          salary: job.Salary,
-          location: job.Location,
-          imageUrl: job.CompanyPhotoURL,
-          applyUrl: job.CompanyURL,
+        id: job.ID,
+        name: job.Role,
+        company: job.CompanyName,
+        salary: job.Salary,
+        location: job.Location,
+        imageUrl: job.CompanyPhotoURL,
+        applyUrl: job.CompanyURL,
       }));
       setWellfoundOpportunities(opportunities);
       toast({
@@ -139,14 +144,18 @@ const Wellfound = () => {
                   </div>
                   <div className="flex space-x-3 ml-4">
                     <a
-                      href={
-                        opportunity.applyUrl ||
-                        `https://wellfound.com/company/${opportunity.company
-                          .toLowerCase()
-                          .replace(/ /g, "-")}`
-                      }
+                      href={`https://wellfound.com${opportunity.applyUrl}`}
                       target="_blank"
                       rel="noopener noreferrer"
+                      onClick={() => {
+                        navigate(
+                          `/apply?company=${encodeURIComponent(
+                            opportunity.company
+                          )}&role=${encodeURIComponent(
+                            opportunity.name
+                          )}&platform=wellfound`
+                        );
+                      }}
                       className="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors duration-300"
                     >
                       <ExternalLink size={16} />

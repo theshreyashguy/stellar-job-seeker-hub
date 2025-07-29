@@ -1,21 +1,26 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Upload, ExternalLink, Send, Loader, CheckCircle, X } from "lucide-react";
+import {
+  Upload,
+  ExternalLink,
+  Send,
+  Loader,
+  CheckCircle,
+  X,
+} from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useJobOpportunities, Opportunity } from "@/hooks/useJobOpportunities";
 import { scrapeCuvette } from "@/lib/api";
 import placeholder from "../../public/branch-svgrepo-com.svg";
 
-<img
-  src={placeholder}
-  alt="No Logo"
-  className="w-16 h-16 rounded-lg object-cover border border-green-500 opacity-60"
-/>;
-
 const Cuvette = () => {
   const [file, setFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
-  const { cuvetteOpportunities, setCuvetteOpportunities, removeCuvetteOpportunity } = useJobOpportunities();
+  const {
+    cuvetteOpportunities,
+    setCuvetteOpportunities,
+    removeCuvetteOpportunity,
+  } = useJobOpportunities();
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -105,7 +110,9 @@ const Cuvette = () => {
             </h2>
             {cuvetteOpportunities.map((opportunity) => (
               <div
-                key={opportunity.id + opportunity.name + opportunity.company}
+                key={
+                  opportunity.id || `${opportunity.name}-${opportunity.company}`
+                }
                 className="glass rounded-xl p-6 border border-green-500/20 hover:border-green-500/50 transition-all duration-300"
               >
                 <div className="flex items-start gap-6">
@@ -144,9 +151,21 @@ const Cuvette = () => {
                       </div>
                       <div className="flex items-center space-x-3 ml-4">
                         <a
-                          href={`https://www.linkedin.com/jobs/view/${opportunity.id}`}
+                          href={opportunity.applyUrl}
                           target="_blank"
                           rel="noopener noreferrer"
+                          onClick={() => {
+                            console.log(
+                              `Navigating to apply URL: ${opportunity.applyUrl}`
+                            );
+                            navigate(
+                              `/apply?company=${encodeURIComponent(
+                                opportunity.company
+                              )}&role=${encodeURIComponent(
+                                opportunity.name
+                              )}&platform=cuvette`
+                            );
+                          }}
                           className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors duration-300 text-sm"
                         >
                           <ExternalLink size={16} />
@@ -198,9 +217,7 @@ const Cuvette = () => {
                         </span>
                       </div>
                       <div className="flex flex-col">
-                        <span className="text-sm text-gray-400">
-                          Duration
-                        </span>
+                        <span className="text-sm text-gray-400">Duration</span>
                         <span className="font-semibold">
                           ⏳ {opportunity.duration || "N/A"}
                         </span>
