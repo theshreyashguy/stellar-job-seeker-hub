@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {
   RefreshCw,
   Send,
@@ -7,17 +7,21 @@ import {
   LogOut,
   Search,
   AlertCircle,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useGoogleAuth } from "@/hooks/useGoogleAuth";
-import { useGmail } from "@/hooks/useGmail";
+import { useGmail, GmailMessage } from "@/hooks/useGmail";
 import EmailList from "@/components/EmailList";
 import EmailViewer from "@/components/EmailViewer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
 
 const Gmail = () => {
   const [searchQuery, setSearchQuery] = useState("sde applicant");
+  const [filter, setFilter] = useState<"all" | "replied" | "no-reply">("all");
   const { toast } = useToast();
   const { isSignedIn, isLoading, error, signIn, signOut, accessToken } =
     useGoogleAuth();
@@ -29,7 +33,7 @@ const Gmail = () => {
     searchMessages,
     getMessageBody,
     getHeader,
-    sendReply,
+    sendFollowUp,
     isInitialized,
   } = useGmail(accessToken);
 
@@ -55,12 +59,38 @@ const Gmail = () => {
       return;
     }
 
-    // Simulate sending follow-ups for demo
-    toast({
-      title: "Follow-ups sent!",
-      description: `Sent ${messages.length} follow-up emails`,
-    });
+    const noReplyMessages = messages.filter((m) => !m.hasReply);
+    if (noReplyMessages.length === 0) {
+      toast({
+        title: "No follow-ups to send",
+        description: "All emails have been replied to.",
+      });
+      return;
+    }
+
+    try {
+      await Promise.all(noReplyMessages.map(sendFollowUp));
+      toast({
+        title: "Follow-ups sent!",
+        description: `Sent ${noReplyMessages.length} follow-up emails`,
+      });
+      // Refresh messages after sending follow-ups
+      searchMessages(searchQuery);
+    } catch (error) {
+      toast({
+        title: "Error sending follow-ups",
+        description: "Could not send follow-up emails. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
+
+  const filteredMessages = useMemo(() => {
+    if (filter === "all") return messages;
+    if (filter === "replied") return messages.filter((m) => m.hasReply);
+    if (filter === "no-reply") return messages.filter((m) => !m.hasReply);
+    return messages;
+  }, [messages, filter]);
 
   if (isLoading) {
     return (
@@ -182,11 +212,11 @@ const Gmail = () => {
                 </Button>
                 <Button
                   onClick={handleFollowupAll}
-                  disabled={isLoadingMessages || !isInitialized}
+                  disabled={isLoadingMessages || !isInitialized || messages.filter(m => !m.hasReply).length === 0}
                   className="bg-stellar-purple hover:bg-stellar-purple/80"
                 >
                   <Send size={16} className="mr-2" />
-                  Follow-up All
+                  Follow-up All ({messages.filter(m => !m.hasReply).length})
                 </Button>
                 <Button onClick={signOut} variant="ghost">
                   <LogOut size={16} className="mr-2" />
@@ -195,13 +225,34 @@ const Gmail = () => {
               </div>
             </div>
           </div>
+          <div className="mt-4 flex items-center space-x-2">
+            <span className="text-sm text-gray-400">Filter by:</span>
+            <Button
+              variant={filter === "all" ? "secondary" : "ghost"}
+              onClick={() => setFilter("all")}
+            >
+              All ({messages.length})
+            </Button>
+            <Button
+              variant={filter === "replied" ? "secondary" : "ghost"}
+              onClick={() => setFilter("replied")}
+            >
+              Replied ({messages.filter((m) => m.hasReply).length})
+            </Button>
+            <Button
+              variant={filter === "no-reply" ? "secondary" : "ghost"}
+              onClick={() => setFilter("no-reply")}
+            >
+              No Reply ({messages.filter((m) => !m.hasReply).length})
+            </Button>
+          </div>
         </div>
 
         {/* Email Interface */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div className="order-2 lg:order-1">
             <EmailList
-              messages={messages}
+              messages={filteredMessages}
               selectedMessage={selectedMessage}
               onSelectMessage={setSelectedMessage}
               getHeader={getHeader}
@@ -213,7 +264,7 @@ const Gmail = () => {
               message={selectedMessage}
               getHeader={getHeader}
               getMessageBody={getMessageBody}
-              sendReply={sendReply}
+              sendReply={() => {}}
             />
           </div>
         </div>

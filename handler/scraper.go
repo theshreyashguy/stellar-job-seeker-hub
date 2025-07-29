@@ -38,9 +38,9 @@ func ScrapeJobs(db *gorm.DB) gin.HandlerFunc {
 		case "linkedin":
 			jobs, scrapeErr = linkedin.Jobscrapper(strings.NewReader(string(content)))
 		case "wellfound":
-			jobs, scrapeErr = wellfound.ScrapeFromReader(strings.NewReader(string(content)))
+			jobs, scrapeErr = wellfound.ScrapeJobDetailsFromReader(strings.NewReader(string(content)))
 		case "cuvette":
-			jobs, scrapeErr = cuvette.ScrapeJobDetailsFromReader(strings.NewReader(string(content)))
+			jobs, scrapeErr = cuvette.ScrapeCuvetteInternships(strings.NewReader(string(content)))
 		default:
 			c.JSON(http.StatusBadRequest, gin.H{"error": fmt.Sprintf("Platform '%s' not supported", platform)})
 			return

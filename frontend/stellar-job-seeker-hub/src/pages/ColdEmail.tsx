@@ -159,6 +159,7 @@ const ColdEmail: React.FC = () => {
   const [isSent, setIsSent] = useState(false);
   const [employeeInfo, setEmployeeInfo] = useState("");
   const [employeeNames, setEmployeeNames] = useState<string[]>([]);
+  const [domain, setDomain] = useState("");
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [editingValue, setEditingValue] = useState("");
 
@@ -170,12 +171,20 @@ const ColdEmail: React.FC = () => {
       .filter(Boolean);
 
     const namesSet = new Set<string>();
-    const suffixRegex =
-      /\s*(?:\d+(?:st|nd|rd|th)[^ ]* degree connection|is open to work)$/i;
+    
+    // This regex finds the first occurrence of common LinkedIn separators or phrases
+    // (like '•', connection degree, 'is open to work') and removes everything 
+    // from that point to the end of the line.
+    const junkRegex = /\s*([•·|,-]|\d+(?:st|nd|rd|th)|is open to work|follows you).*$/i;
 
     lines.forEach((line) => {
-      const cleanName = line.replace(suffixRegex, "").trim();
-      if (cleanName) namesSet.add(cleanName);
+      const cleanName = line.replace(junkRegex, "").trim();
+
+      // Add to set if the result is not empty, has at least two words (heuristic for a name),
+      // and is not all-uppercase (to avoid acronyms).
+      if (cleanName && cleanName.split(' ').length >= 2 && cleanName !== cleanName.toUpperCase()) {
+        namesSet.add(cleanName);
+      }
     });
 
     setEmployeeNames(Array.from(namesSet));
@@ -202,6 +211,14 @@ const ColdEmail: React.FC = () => {
   };
 
   const handleSendEmail = async () => {
+    if (!domain) {
+      toast({
+        title: "Domain Required",
+        description: "Please enter a company domain.",
+        variant: "destructive",
+      });
+      return;
+    }
     setIsSending(true);
     try {
       await createApplication({
@@ -211,6 +228,8 @@ const ColdEmail: React.FC = () => {
         platform,
         status: "Applied",
         application_type: "cold_email",
+        employee_names: employeeNames,
+        domain,
       });
       setIsSent(true);
       toast({
@@ -270,6 +289,17 @@ const ColdEmail: React.FC = () => {
                   onSave={saveEdit}
                 />
               )}
+              <div className="space-y-3">
+                <label className="flex items-center space-x-2 text-white font-medium">
+                  <span>Company Domain</span>
+                </label>
+                <input
+                  value={domain}
+                  onChange={(e) => setDomain(e.target.value)}
+                  placeholder="e.g., company.com"
+                  className="w-full p-4 bg-stellar-navy/50 border border-gray-600 rounded-lg text-white placeholder-gray-400"
+                />
+              </div>
               <div className="text-center">
                 <button
                   onClick={handleSendEmail}

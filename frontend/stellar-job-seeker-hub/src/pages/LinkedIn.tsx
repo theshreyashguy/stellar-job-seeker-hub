@@ -144,7 +144,9 @@ const LinkedIn = () => {
                         navigate(
                           `/cold-email?company=${encodeURIComponent(
                             opportunity.company
-                          )}&role=${encodeURIComponent(opportunity.name)}`
+                          )}&role=${encodeURIComponent(
+                            opportunity.name
+                          )}&platform=linkedin`
                         );
                       }}
                       className="bg-stellar-cyan hover:bg-stellar-cyan/80 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors duration-300"

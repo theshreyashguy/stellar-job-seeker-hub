@@ -14,7 +14,6 @@ type User struct {
 	GitHubURL         string `json:"github_url"`
 	LinkedInURL       string `json:"linkedin_url"`
 	ResumeURL         string `json:"resume_url"`
-	ColdEmailTemplate string `json:"cold_email_template"`
 }
 
 // Token represents a JWT token

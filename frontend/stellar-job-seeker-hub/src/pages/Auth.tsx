@@ -31,13 +31,6 @@ export default function Auth() {
             </CardHeader>
             <CardContent className="space-y-2">
               <LoginForm />
-              <Button
-                variant="outline"
-                className="w-full"
-                onClick={() => signInWithGoogle()}
-              >
-                Sign in with Google
-              </Button>
             </CardContent>
           </Card>
         </TabsContent>
@@ -51,13 +44,6 @@ export default function Auth() {
             </CardHeader>
             <CardContent className="space-y-2">
               <RegisterForm />
-              <Button
-                variant="outline"
-                className="w-full"
-                onClick={() => signInWithGoogle()}
-              >
-                Sign up with Google
-              </Button>
             </CardContent>
           </Card>
         </TabsContent>

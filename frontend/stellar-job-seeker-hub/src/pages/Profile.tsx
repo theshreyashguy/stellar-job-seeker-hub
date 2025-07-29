@@ -257,22 +257,7 @@ export default function Profile() {
                     />
                   </div>
                 </div>
-                <div className="space-y-2">
-                  <Label
-                    htmlFor="cold_email_template"
-                    className="text-gray-300"
-                  >
-                    Cold Email Template
-                  </Label>
-                  <Textarea
-                    id="cold_email_template"
-                    name="cold_email_template"
-                    value={profileData.cold_email_template}
-                    onChange={handleChange}
-                    className="h-40 bg-stellar-navy/50 border-stellar-cyan/20 text-white"
-                    placeholder="Write your generic cold email template here..."
-                  />
-                </div>
+                
               </div>
             </div>
 

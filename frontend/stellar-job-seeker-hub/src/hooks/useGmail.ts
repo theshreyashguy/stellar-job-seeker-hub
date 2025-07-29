@@ -10,6 +10,8 @@ export interface GmailMessage {
     parts?: Array<{ body?: { data?: string }; mimeType?: string }>;
   };
   internalDate: string;
+  hasReply?: boolean;
+  thread?: GmailMessage[];
 }
 
 const GMAIL_API_URL = "https://www.googleapis.com/gmail/v1/users/me";
@@ -19,6 +21,14 @@ export const useGmail = (accessToken: string | null) => {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedMessage, setSelectedMessage] = useState<GmailMessage | null>(
     null
+  );
+
+  const getHeader = useCallback(
+    (message: GmailMessage, name: string): string => {
+      const header = message.payload.headers.find((h) => h.name === name);
+      return header?.value || "";
+    },
+    []
   );
 
   const makeRequest = useCallback(
@@ -56,12 +66,32 @@ export const useGmail = (accessToken: string | null) => {
         );
         const msgs = resp.messages || [];
         if (msgs.length) {
-          const details = await Promise.all(
-            msgs.map((m: { id: string }) =>
-              makeRequest(`/messages/${m.id}`)
+          const uniqueThreadIds = [
+            ...new Set(msgs.map((m: { threadId: string }) => m.threadId)),
+          ];
+
+          const threads = await Promise.all(
+            uniqueThreadIds.map((threadId) =>
+              makeRequest(`/threads/${threadId}`)
             )
           );
-          setMessages(details);
+
+          const processedMessages = threads.map((thread: any) => {
+            const firstMessage = thread.messages[0];
+            const userEmail = getHeader(firstMessage, "From"); 
+
+            const hasReply = thread.messages.some(
+              (msg: GmailMessage) => getHeader(msg, "From") !== userEmail
+            );
+
+            return {
+              ...firstMessage,
+              hasReply,
+              thread: thread.messages,
+            };
+          });
+
+          setMessages(processedMessages);
         } else {
           setMessages([]);
         }
@@ -72,7 +102,7 @@ export const useGmail = (accessToken: string | null) => {
         setIsLoading(false);
       }
     },
-    [makeRequest]
+    [makeRequest, getHeader]
   );
 
   const getMessageBody = useCallback((message: GmailMessage): string => {
@@ -95,14 +125,6 @@ export const useGmail = (accessToken: string | null) => {
     return body || message.snippet;
   }, []);
 
-  const getHeader = useCallback(
-    (message: GmailMessage, name: string): string => {
-      const header = message.payload.headers.find((h) => h.name === name);
-      return header?.value || "";
-    },
-    []
-  );
-
   const sendReply = useCallback(
     async (original: GmailMessage, replyText: string) => {
       try {
@@ -120,7 +142,7 @@ export const useGmail = (accessToken: string | null) => {
         const raw = btoa(email)
           .replace(/\+/g, "-")
           .replace(/\//g, "_")
-          .replace(/=+$/, "");
+          .replace(/=+\$/, "");
         await makeRequest("/messages/send", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -129,6 +151,40 @@ export const useGmail = (accessToken: string | null) => {
         return true;
       } catch (err) {
         console.error("Error sending reply:", err);
+        return false;
+      }
+    },
+    [getHeader, makeRequest]
+  );
+
+  const sendFollowUp = useCallback(
+    async (original: GmailMessage) => {
+      try {
+        const subject = getHeader(original, "Subject");
+        const to = getHeader(original, "To");
+        const messageId = getHeader(original, "Message-ID");
+        const followUpText = `Hi,\n\nI'm just following up on my previous email. I'm still very interested in the position and would love to hear back from you.\n\nBest regards,\n[Your Name]`;
+
+        const email = [
+          `To: ${to}`,
+          `Subject: Following up: ${subject}`,
+          `In-Reply-To: ${messageId}`,
+          `References: ${messageId}`,
+          "",
+          followUpText,
+        ].join("\n");
+        const raw = btoa(email)
+          .replace(/\+/g, "-")
+          .replace(/\//g, "_")
+          .replace(/=+\$/, "");
+        await makeRequest("/messages/send", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ raw, threadId: original.threadId }),
+        });
+        return true;
+      } catch (err) {
+        console.error("Error sending follow-up:", err);
         return false;
       }
     },
@@ -144,6 +200,7 @@ export const useGmail = (accessToken: string | null) => {
     getMessageBody,
     getHeader,
     sendReply,
+    sendFollowUp,
     isInitialized: !!accessToken,
   };
 };

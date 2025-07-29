@@ -1,9 +1,11 @@
 package emailer
 
 import (
+	"aiapply/models"
 	"bytes"
 	"encoding/base64"
 	"fmt"
+	"log"
 	"net/smtp"
 	"os"
 	"path/filepath"
@@ -19,9 +21,10 @@ const (
 )
 
 // SendApplicationEmail sends your application (plain+HTML) and attaches resume & presentation.
-func SendApplicationEmail(to, position string) error {
+func SendApplicationEmail(to, position string, user models.User) error {
+
 	// 1) Headers
-	subj := fmt.Sprintf("Subject: Application: %s applicant\r\n", position)
+	subj := fmt.Sprintf("Subject: Application for %s - %s\r\n", position, user.Username)
 	headers := subj +
 		"MIME-Version: 1.0\r\n" +
 		fmt.Sprintf("Content-Type: multipart/mixed; boundary=%s\r\n", mixedBoundary) +
@@ -35,12 +38,12 @@ func SendApplicationEmail(to, position string) error {
 	buf.WriteString(fmt.Sprintf("Content-Type: multipart/alternative; boundary=%s\r\n", altBoundary))
 	buf.WriteString("\r\n")
 
-	// 2a) Plain‑text version
+	// 2a) Plain text version
 	buf.WriteString(fmt.Sprintf("--%s\r\n", altBoundary))
 	buf.WriteString("Content-Type: text/plain; charset=utf-8\r\n")
 	buf.WriteString("Content-Transfer-Encoding: 7bit\r\n")
 	buf.WriteString("\r\n")
-	buf.WriteString(plainBody())
+	buf.WriteString(plainBody(position, user))
 	buf.WriteString("\r\n")
 
 	// 2b) HTML version
@@ -48,7 +51,7 @@ func SendApplicationEmail(to, position string) error {
 	buf.WriteString("Content-Type: text/html; charset=utf-8\r\n")
 	buf.WriteString("Content-Transfer-Encoding: 7bit\r\n")
 	buf.WriteString("\r\n")
-	buf.WriteString(htmlBody())
+	buf.WriteString(htmlBody(position, user))
 	buf.WriteString("\r\n")
 
 	// end of alternative
@@ -59,49 +62,54 @@ func SendApplicationEmail(to, position string) error {
 		return fmt.Errorf("attach resume: %w", err)
 	}
 
-	// 4) Attach presentation.pdf
-	if err := attachFile(&buf, "presentation.pdf"); err != nil {
-		return fmt.Errorf("attach presentation: %w", err)
-	}
-
-	// 5) Closing mixed boundary
+	// 4) Closing mixed boundary
 	buf.WriteString(fmt.Sprintf("--%s--\r\n", mixedBoundary))
 
-	// 6) Send!
+	// 5) Send!
 	auth := smtp.PlainAuth("", username, password, smtpHost)
 	if err := smtp.SendMail(smtpHost+":"+smtpPort, auth, username, []string{to}, buf.Bytes()); err != nil {
+		log.Printf("Failed to send email to %s: %v", to, err)
 		return fmt.Errorf("sendMail: %w", err)
 	}
 	return nil
 }
 
-func plainBody() string {
-	return `I’m Shreyash,
+func plainBody(position string, user models.User) string {
+	return fmt.Sprintf(`Hope you're doing well.
 
-a software developer passionate about building scalable applications. I have strong frontend experience and full-stack skills. As a Codeforces Expert (Top 1%) and CodeChef 4‑star coder, and in recent leetcode beetweekly 148 I achieved a rank of 55 globally out of 40k participants, I bring solid problem‑solving abilities to every project. In my internships, I delivered measurable impact by optimizing API performance and implementing scalable microservice architectures, improving efficiency and handling growing loads. I would welcome the opportunity to discuss how my background could benefit your team. I have attached my resume and a ppt on my journey for your reference.
+I'm reaching out to express my interest in the %s position at your company.
 
-Thank you for your time; I look forward to hearing from you. If my experience sounds like a fit, I’d be happy to chat further.
+I'm a frontend-focused full-stack developer who loves building scalable applications. As a Codeforces Expert (Top 1%%) and CodeChef 5‑star coder, I ranked 55 out of 40k participants in LeetCode Weekly Contest 148, showcasing my strong problem-solving skills.
+
+In my internships, I optimized API performance, implemented microservice architectures, and improved system efficiency to support growing loads. I believe my background aligns well with the needs of your team.
+
+I’d love to connect and learn more about any opportunities on your team. I've attached my resume and a presentation on my journey for your reference.
+
+Thank you for your time, and I look forward to hearing from you.
 
 Best regards,
-Shreyash Jadhao
-LinkedIn: https://www.linkedin.com/in/shreyash-jadhao-02bb5b226/
-GitHub:    https://github.com/theshreyashguy
-`
+%s
+%s
+%s
+%s
+`, position, user.Username, user.LinkedInURL, user.GitHubURL, user.ResumeURL)
 }
 
-func htmlBody() string {
-	return `<html>
+func htmlBody(position string, user models.User) string {
+	return fmt.Sprintf(`<html>
   <body>
-    <p>I’m <strong>Shreyash</strong>,</p>
-    <p>a software developer passionate about building scalable applications. I have strong frontend experience and full-stack skills. As a <em>Codeforces Expert (Top 1%)</em> and <em>CodeChef 4‑star coder</em>, and in recent leetcode beetweekly 148 I achieved a rank of 55 globally out of 40k participants, I bring solid problem‑solving abilities to every project. In my internships, I delivered measurable impact by optimizing API performance and implementing scalable microservice architectures, improving efficiency and handling growing loads. I would welcome the opportunity to discuss how my background could benefit your team. I have attached my resume and a ppt on my journey for your reference.</p>
-    <p>Thank you for your time; I look forward to hearing from you. If my experience sounds like a fit, I’d be happy to chat further.</p>
+    <p>Hope you're doing well.</p>
+    <p>I'm reaching out to express my interest in the <strong>%s</strong> position at your company.</p>
+    <p>I'm a <strong>frontend-focused full-stack developer</strong> who loves building scalable applications. As a <em>Codeforces Expert (Top 1%%)</em> and <em>CodeChef 5‑star coder</em>, I ranked 55 out of 40k participants in LeetCode Weekly Contest 148, showcasing my strong problem-solving skills.</p>
+    <p>In my internships, I optimized API performance, implemented microservice architectures, and improved system efficiency to support growing loads. I believe my background aligns well with the needs of your team.</p>
+    <p>I’d love to connect and learn more about any opportunities on your team. I've attached my resume and a presentation on my journey for your reference.</p>
+    <p>Thank you for your time, and I look forward to hearing from you.</p>
     <p>Best regards,<br/>
-       <strong>Shreyash Jadhao</strong><br/>
-       <a href="https://www.linkedin.com/in/shreyash-jadhao-02bb5b226/">LinkedIn</a> |
-       <a href="https://github.com/theshreyashguy">GitHub</a>
+       <strong>%s</strong><br/>
+       <a href="%s">LinkedIn</a> | <a href="%s">GitHub</a> | <a href="%s">Resume</a>
     </p>
   </body>
-</html>`
+</html>`, position, user.Username, user.LinkedInURL, user.GitHubURL, user.ResumeURL)
 }
 
 // attachFile reads a file, base64‑encodes it, and appends it as a mixed part.
@@ -113,14 +121,11 @@ func attachFile(buf *bytes.Buffer, path string) error {
 	filename := filepath.Base(path)
 	encoded := base64.StdEncoding.EncodeToString(data)
 
-	// header for this attachment
 	buf.WriteString(fmt.Sprintf("--%s\r\n", mixedBoundary))
 	buf.WriteString("Content-Type: application/pdf; name=\"" + filename + "\"\r\n")
 	buf.WriteString("Content-Transfer-Encoding: base64\r\n")
 	buf.WriteString("Content-Disposition: attachment; filename=\"" + filename + "\"\r\n")
 	buf.WriteString("\r\n")
-
-	// RFC2045: max 76 chars per line
 	for i := 0; i < len(encoded); i += 76 {
 		end := i + 76
 		if end > len(encoded) {

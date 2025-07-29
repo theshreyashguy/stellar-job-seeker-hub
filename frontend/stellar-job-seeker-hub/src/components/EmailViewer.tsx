@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import DOMPurify from "dompurify";
-import parse from "html-react-parser";
-import { Reply, Forward, Trash2, Archive, Star, Send, MoreHorizontal, ArrowLeft, Printer, Download } from "lucide-react";
+import { Reply, Send, CornerDownRight, MessageCircle } from "lucide-react";
 import { GmailMessage } from "@/hooks/useGmail";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -15,37 +14,19 @@ interface EmailViewerProps {
   getHeader: (message: GmailMessage, name: string) => string;
   getMessageBody: (message: GmailMessage) => string;
   sendReply: (message: GmailMessage, replyText: string) => Promise<boolean>;
+  sendFollowUp?: (message: GmailMessage) => Promise<boolean>;
   onBack?: () => void;
 }
 
-const EmailViewer: React.FC<EmailViewerProps> = ({
-  message,
-  getHeader,
-  getMessageBody,
-  sendReply,
-  onBack,
-}) => {
-  const [showReplyBox, setShowReplyBox] = useState(false);
-  const [replyText, setReplyText] = useState("");
-  const [isSending, setIsSending] = useState(false);
-  const [isStarred, setIsStarred] = useState(false);
-  const { toast } = useToast();
-
-  if (!message) {
-    return (
-      <div className="glass rounded-xl p-8 text-center">
-        <div className="text-muted-foreground">
-          <p className="text-lg">Select an email to view</p>
-        </div>
-      </div>
-    );
-  }
+const EmailMessageContent: React.FC<{ message: GmailMessage, getHeader: any, getMessageBody: any }> = ({ message, getHeader, getMessageBody }) => {
+  const fromEmail = getHeader(message, "From");
+  const fromName = fromEmail.includes("<") ? fromEmail.split("<")[0].trim().replace(/"/g, "") : fromEmail.split("@")[0];
+  const cleanBody = DOMPurify.sanitize(getMessageBody(message));
 
   const formatDate = (internalDate: string) => {
     const date = new Date(parseInt(internalDate, 10));
     return date.toLocaleDateString("en-US", {
       weekday: "short",
-      year: "numeric",
       month: "short",
       day: "numeric",
       hour: "2-digit",
@@ -58,30 +39,78 @@ const EmailViewer: React.FC<EmailViewerProps> = ({
     return name.slice(0, 2).toUpperCase();
   };
 
-  const handleStar = async () => {
-    setIsStarred(!isStarred);
-    toast({
-      title: isStarred ? "Removed from starred" : "Added to starred",
-      description: isStarred ? "Email unmarked" : "Email starred",
-    });
-  };
+  return (
+    <div className="p-6 border-b border-border/30">
+      <div className="flex items-start space-x-4">
+        <Avatar className="h-10 w-10">
+          <AvatarImage src="" />
+          <AvatarFallback className="bg-primary/10 text-primary font-medium">
+            {getInitials(fromEmail)}
+          </AvatarFallback>
+        </Avatar>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="font-medium text-foreground">{fromName}</h3>
+              <p className="text-sm text-muted-foreground">{fromEmail}</p>
+            </div>
+            <div className="text-sm text-muted-foreground">
+              {formatDate(message.internalDate)}
+            </div>
+          </div>
+          <div className="mt-2 flex items-center space-x-2 text-sm text-muted-foreground">
+            <span>to</span>
+            <span className="font-medium">{getHeader(message, "To")}</span>
+          </div>
+        </div>
+      </div>
+      <div className="p-6">
+        <div className="prose prose-neutral dark:prose-invert max-w-none">
+          <div
+            className="text-foreground leading-relaxed"
+            dangerouslySetInnerHTML={{ __html: cleanBody }}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
 
-  const handleDelete = async () => {
-    toast({
-      title: "Email deleted",
-      description: "Email moved to trash",
-    });
-  };
+const EmailViewer: React.FC<EmailViewerProps> = ({
+  message,
+  getHeader,
+  getMessageBody,
+  sendReply,
+  sendFollowUp,
+}) => {
+  const [showReplyBox, setShowReplyBox] = useState(false);
+  const [replyText, setReplyText] = useState("");
+  const [isSending, setIsSending] = useState(false);
+  const { toast } = useToast();
 
-  const handleArchive = async () => {
-    toast({
-      title: "Email archived",
-      description: "Email moved to archive",
-    });
-  };
+  const canReply = useMemo(() => {
+    if (!message || !message.thread) return false;
+    const lastMessage = message.thread[message.thread.length - 1];
+    const fromHeader = getHeader(lastMessage, "From");
+    // A simple check if the user sent the last email. 
+    // This might need to be more robust based on the actual user email.
+    return !fromHeader.includes("me"); 
+  }, [message, getHeader]);
+
+  if (!message) {
+    return (
+      <div className="glass rounded-xl p-8 text-center h-full flex items-center justify-center">
+        <div className="text-muted-foreground">
+          <MessageCircle size={48} className="mx-auto mb-4 opacity-50" />
+          <p className="text-lg">Select a conversation to view</p>
+          <p className="text-sm">You can filter conversations by replied or no-reply status.</p>
+        </div>
+      </div>
+    );
+  }
 
   const handleReply = async () => {
-    if (!replyText.trim()) return;
+    if (!replyText.trim() || !message) return;
     setIsSending(true);
     const success = await sendReply(message, replyText);
     toast({
@@ -91,150 +120,73 @@ const EmailViewer: React.FC<EmailViewerProps> = ({
         : "Error sending your reply. Please try again.",
       variant: success ? "default" : "destructive",
     });
-    if (success) setShowReplyBox(false);
+    if (success) {
+      setShowReplyBox(false);
+      setReplyText("");
+    }
     setIsSending(false);
   };
 
-  // Build sanitized HTML with quotes and separators
-  const rawBody = getMessageBody(message);
-  const htmlBody = rawBody
-    .split("\n")
-    .map((line) => {
-      if (line.startsWith(">")) {
-        return `<blockquote class="pl-4 border-l-2 border-border italic text-muted-foreground bg-muted/20 rounded-r-lg py-2">${line.replace(
-          /^>+\s?/,
-          ""
-        )}</blockquote>`;
-      }
-      if (/^On .* wrote:/.test(line)) {
-        return `<hr class="my-4 border-border"><p class="text-sm text-muted-foreground italic">${line}</p>`;
-      }
-      if (line.trim() === "") {
-        return `<br>`;
-      }
-      return `<p class="mb-3 leading-relaxed">${line}</p>`;
-    })
-    .join("");
+  const handleFollowUp = async () => {
+    if (!message || !sendFollowUp) return;
+    const success = await sendFollowUp(message);
+    toast({
+      title: success ? "Follow-up sent!" : "Failed to send follow-up",
+      description: success
+        ? "Your follow-up has been sent successfully."
+        : "Error sending your follow-up. Please try again.",
+      variant: success ? "default" : "destructive",
+    });
+  };
 
-  const cleanBody = DOMPurify.sanitize(htmlBody);
-
-  const fromEmail = getHeader(message, "From");
-  const fromName = fromEmail.includes("<") ? fromEmail.split("<")[0].trim().replace(/"/g, "") : fromEmail.split("@")[0];
   const subject = getHeader(message, "Subject") || "No Subject";
 
   return (
     <div className="glass rounded-xl overflow-hidden flex flex-col h-full">
-      {/* Header with back button and actions */}
       <div className="p-4 border-b border-border/50 flex-shrink-0">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center space-x-3">
-            {onBack && (
-              <Button variant="ghost" size="sm" onClick={onBack}>
-                <ArrowLeft size={16} />
-              </Button>
-            )}
-            <h1 className="text-lg font-semibold text-foreground line-clamp-1">
-              {subject}
-            </h1>
-          </div>
-          {/* <div className="flex items-center space-x-1">
-            <Button variant="ghost" size="sm" onClick={handleArchive}>
-              <Archive size={16} />
-            </Button>
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              onClick={handleStar}
-              className={isStarred ? "text-yellow-500" : ""}
-            >
-              <Star size={16} fill={isStarred ? "currentColor" : "none"} />
-            </Button>
-            <Button variant="ghost" size="sm" onClick={handleDelete}>
-              <Trash2 size={16} />
-            </Button>
-            <Button variant="ghost" size="sm">
-              <Printer size={16} />
-            </Button>
-            <Button variant="ghost" size="sm">
-              <MoreHorizontal size={16} />
-            </Button>
-          </div> */}
-        </div>
+        <h1 className="text-lg font-semibold text-foreground line-clamp-1">
+          {subject}
+        </h1>
       </div>
 
-      {/* Email content */}
       <div className="flex-1 overflow-y-auto">
-        {/* Sender info */}
-        <div className="p-6 border-b border-border/30">
-          <div className="flex items-start space-x-4">
-            <Avatar className="h-10 w-10">
-              <AvatarImage src="" />
-              <AvatarFallback className="bg-primary/10 text-primary font-medium">
-                {getInitials(fromEmail)}
-              </AvatarFallback>
-            </Avatar>
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="font-medium text-foreground">{fromName}</h3>
-                  <p className="text-sm text-muted-foreground">{fromEmail}</p>
-                </div>
-                <div className="text-sm text-muted-foreground">
-                  {formatDate(message.internalDate)}
-                </div>
-              </div>
-              <div className="mt-2 flex items-center space-x-2 text-sm text-muted-foreground">
-                <span>to</span>
-                <span className="font-medium">{getHeader(message, "To")}</span>
-              </div>
-            </div>
-          </div>
-        </div>
+        {message.thread?.map((threadMessage) => (
+          <EmailMessageContent 
+            key={threadMessage.id} 
+            message={threadMessage} 
+            getHeader={getHeader} 
+            getMessageBody={getMessageBody} 
+          />
+        ))}
+      </div>
 
-        {/* Email body */}
-        <div className="p-6">
-          <div className="prose prose-neutral dark:prose-invert max-w-none">
-            <div
-              className="text-foreground leading-relaxed"
-              dangerouslySetInnerHTML={{ __html: cleanBody }}
-            />
-          </div>
-        </div>
-
-        {/* Action buttons */}
-        <div className="px-6 pb-6">
-          <Separator className="mb-4" />
-          <div className="flex items-center space-x-3">
+      <div className="p-6 border-t border-border/50 flex-shrink-0">
+        <div className="flex items-center space-x-3">
+          <Button
+            onClick={() => setShowReplyBox(!showReplyBox)}
+            variant="outline"
+            size="sm"
+            className="bg-background"
+            disabled={!canReply}
+          >
+            <Reply size={16} className="mr-2" /> Reply
+          </Button>
+          {!message.hasReply && sendFollowUp && (
             <Button
-              onClick={() => setShowReplyBox(!showReplyBox)}
+              onClick={handleFollowUp}
               variant="outline"
               size="sm"
               className="bg-background"
             >
-              <Reply size={16} className="mr-2" /> Reply
+              <CornerDownRight size={16} className="mr-2" /> Follow Up
             </Button>
-            <Button variant="outline" size="sm" className="bg-background">
-              <Forward size={16} className="mr-2" /> Forward
-            </Button>
-          </div>
+          )}
         </div>
       </div>
 
-      {/* Reply box */}
       {showReplyBox && (
         <div className="border-t border-border/50 bg-muted/20 flex-shrink-0">
           <div className="p-6">
-            <div className="flex items-center space-x-3 mb-4">
-              <Avatar className="h-8 w-8">
-                <AvatarFallback className="bg-primary text-primary-foreground text-xs">
-                  ME
-                </AvatarFallback>
-              </Avatar>
-              <div>
-                <p className="text-sm font-medium">Reply to {fromName}</p>
-                <p className="text-xs text-muted-foreground">Re: {subject}</p>
-              </div>
-            </div>
             <div className="space-y-4">
               <Textarea
                 value={replyText}

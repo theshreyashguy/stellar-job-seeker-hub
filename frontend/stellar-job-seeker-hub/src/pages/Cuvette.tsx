@@ -99,23 +99,24 @@ const Cuvette = () => {
         </div>
 
         {cuvetteOpportunities.length > 0 && (
-          <div className="space-y-4">
+          <div className="space-y-6">
             <h2 className="text-2xl font-bold text-white mb-6">
               Found {cuvetteOpportunities.length} Opportunities
             </h2>
             {cuvetteOpportunities.map((opportunity) => (
               <div
                 key={opportunity.id + opportunity.name + opportunity.company}
-                className="glass rounded-xl p-6"
+                className="glass rounded-xl p-6 border border-green-500/20 hover:border-green-500/50 transition-all duration-300"
               >
-                <div className="flex justify-between items-start">
-                  <div className="flex-1 flex items-center gap-6">
+                <div className="flex items-start gap-6">
+                  {/* Company Logo */}
+                  <div className="flex-shrink-0">
                     {opportunity.imageUrl &&
                     opportunity.imageUrl.startsWith("http") ? (
                       <img
                         src={opportunity.imageUrl}
                         alt={opportunity.company}
-                        className="w-16 h-16 rounded-lg object-cover border border-green-500"
+                        className="w-20 h-20 rounded-lg object-cover border-2 border-green-500/50"
                         onError={(e) => {
                           (e.target as HTMLImageElement).src =
                             "/placeholder.svg";
@@ -125,77 +126,117 @@ const Cuvette = () => {
                       <img
                         src={placeholder}
                         alt="No Logo"
-                        className="w-16 h-16 rounded-lg object-cover border border-green-500 opacity-60"
+                        className="w-20 h-20 rounded-lg object-cover border-2 border-green-500/30 opacity-60"
                       />
                     )}
-                    <div>
-                      <h3 className="text-xl font-bold text-white mb-2">
-                        {opportunity.name}
-                      </h3>
-                      <p className="text-green-400 font-medium mb-1">
-                        {opportunity.company}
-                      </p>
-                      <div className="flex flex-wrap gap-4 text-gray-300">
-                        <span>💰 {opportunity.salary}</span>
-                        <span>📍 {opportunity.location}</span>
+                  </div>
+
+                  {/* Job Details */}
+                  <div className="flex-1">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <h3 className="text-2xl font-bold text-white mb-1">
+                          {opportunity.name}
+                        </h3>
+                        <p className="text-green-400 font-medium text-lg mb-3">
+                          {opportunity.company}
+                        </p>
+                      </div>
+                      <div className="flex items-center space-x-3 ml-4">
+                        <a
+                          href={`https://www.linkedin.com/jobs/view/${opportunity.id}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors duration-300 text-sm"
+                        >
+                          <ExternalLink size={16} />
+                          <span>Apply</span>
+                        </a>
+                        <a
+                          href={`/cold-email?company=${encodeURIComponent(
+                            opportunity.company
+                          )}&role=${encodeURIComponent(opportunity.name)}`}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            navigate(
+                              `/cold-email?company=${encodeURIComponent(
+                                opportunity.company
+                              )}&role=${encodeURIComponent(opportunity.name)}`
+                            );
+                          }}
+                          className="bg-stellar-cyan hover:bg-stellar-cyan/80 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors duration-300 text-sm"
+                        >
+                          <Send size={16} />
+                          <span>Cold Email</span>
+                        </a>
+                        <button
+                          onClick={() =>
+                            removeCuvetteOpportunity(
+                              opportunity.id,
+                              opportunity.name,
+                              opportunity.company
+                            )
+                          }
+                          className="text-gray-400 hover:text-red-500 transition-colors duration-300"
+                        >
+                          <X size={20} />
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 text-gray-300 mt-4">
+                      <div className="flex flex-col">
+                        <span className="text-sm text-gray-400">Salary</span>
+                        <span className="font-semibold">
+                          💰 {opportunity.salary || "N/A"}
+                        </span>
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="text-sm text-gray-400">Location</span>
+                        <span className="font-semibold">
+                          📍 {opportunity.location || "N/A"}
+                        </span>
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="text-sm text-gray-400">
+                          Duration
+                        </span>
+                        <span className="font-semibold">
+                          ⏳ {opportunity.duration || "N/A"}
+                        </span>
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="text-sm text-gray-400">Mode</span>
+                        <span className="font-semibold">
+                          {opportunity.mode || "N/A"}
+                        </span>
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="text-sm text-gray-400">
+                          Start Date
+                        </span>
+                        <span className="font-semibold">
+                          📅 {opportunity.startDate || "N/A"}
+                        </span>
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="text-sm text-gray-400">
+                          Office Location
+                        </span>
+                        <span className="font-semibold">
+                          🏢 {opportunity.officeLocation || "N/A"}
+                        </span>
                       </div>
                     </div>
                   </div>
-                  <div className="flex space-x-3 ml-4">
-                    <a
-                      href={`https://www.linkedin.com/jobs/view/${opportunity.id}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors duration-300"
-                    >
-                      <ExternalLink size={16} />
-                      <span>Apply</span>
-                    </a>
-                    {/* <a
-                      href={`https://www.linkedin.com/company/${opportunity.company
-                        .toLowerCase()
-                        .replace(/ /g, "-")}/people/`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="bg-stellar-cyan hover:bg-stellar-cyan/80 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors duration-300"
-                    >
-                      <Send size={16} />
-                      <span>Cold Email</span>
-                    </a> */}
-
-                    <a
-                      href={`https://www.linkedin.com/company/${opportunity.company
-                        .toLocaleLowerCase()
-                        .split(" ")
-                        .join("-")}/people/`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      onClick={() => {
-                        //
-                        console.log(
-                          `https://www.linkedin.com/company/${opportunity.company
-                            .toLocaleLowerCase()
-                            .split(" ")
-                            .join("-")}/people/`
-                        );
-                        navigate(
-                          `/cold-email?company=${encodeURIComponent(
-                            opportunity.company
-                          )}&role=${encodeURIComponent(opportunity.name)}`
-                        );
-                      }}
-                      className="bg-stellar-cyan hover:bg-stellar-cyan/80 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors duration-300"
-                    >
-                      <ExternalLink size={16} />
-                      <span>Cold Email</span>
-                    </a>
-                    <button
-                      onClick={() => removeCuvetteOpportunity(opportunity.id, opportunity.name, opportunity.company)}
-                      className="text-gray-400 hover:text-white transition-colors duration-300"
-                    >
-                      <X size={20} />
-                    </button>
-                  </div>
+                </div>
+                <div className="border-t border-green-500/20 mt-4 pt-3 flex justify-between items-center text-sm text-gray-400">
+                  <span>
+                    <strong>Apply By:</strong> {opportunity.applyBy || "N/A"}
+                  </span>
+                  <span>
+                    <strong>Posted:</strong> {opportunity.postedAgo || "N/A"}
+                  </span>
                 </div>
               </div>
             ))}

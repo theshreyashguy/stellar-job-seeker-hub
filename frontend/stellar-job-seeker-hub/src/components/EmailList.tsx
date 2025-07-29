@@ -1,6 +1,7 @@
 import React from 'react';
-import { Mail, Clock, User } from 'lucide-react';
+import { Mail, Clock, User, CornerDownRight } from 'lucide-react';
 import { GmailMessage } from '@/hooks/useGmail';
+import { Badge } from '@/components/ui/badge';
 
 interface EmailListProps {
   messages: GmailMessage[];
@@ -30,15 +31,15 @@ const EmailList: React.FC<EmailListProps> = ({
         <div className="flex items-center space-x-2">
           <Mail className="text-blue-400" size={20} />
           <h2 className="text-lg font-semibold text-white">SDE Applications</h2>
-          <span className="text-sm text-gray-400">({messages.length} emails)</span>
+          <span className="text-sm text-gray-400">({messages.length} conversations)</span>
         </div>
       </div>
       
-      <div className="max-h-96 overflow-y-auto">
+      <div className="max-h-[calc(100vh-250px)] overflow-y-auto">
         {messages.length === 0 ? (
           <div className="p-8 text-center text-gray-400">
             <Mail size={48} className="mx-auto mb-4 opacity-50" />
-            <p>No emails found with "sde applicant" keyword</p>
+            <p>No emails found</p>
           </div>
         ) : (
           messages.map((message) => (
@@ -51,11 +52,19 @@ const EmailList: React.FC<EmailListProps> = ({
             >
               <div className="flex items-start justify-between">
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center space-x-2 mb-1">
-                    <User size={14} className="text-gray-400 flex-shrink-0" />
-                    <p className="text-sm font-medium text-white truncate">
-                      {getHeader(message, 'From')}
-                    </p>
+                  <div className="flex items-center justify-between mb-1">
+                    <div className="flex items-center space-x-2 min-w-0">
+                      <User size={14} className="text-gray-400 flex-shrink-0" />
+                      <p className="text-sm font-medium text-white truncate">
+                        {getHeader(message, 'To')}
+                      </p>
+                    </div>
+                    {message.hasReply && (
+                      <Badge variant="secondary" className="bg-green-500/20 text-green-300 text-xs px-2 py-0.5">
+                        <CornerDownRight size={12} className="mr-1"/>
+                        Replied
+                      </Badge>
+                    )}
                   </div>
                   
                   <h3 className="text-sm font-semibold text-white mb-1 truncate">
@@ -72,10 +81,6 @@ const EmailList: React.FC<EmailListProps> = ({
                     <Clock size={12} />
                     <span>{formatDate(message.internalDate)}</span>
                   </div>
-                  
-                  {selectedMessage?.id === message.id && (
-                    <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
-                  )}
                 </div>
               </div>
             </div>

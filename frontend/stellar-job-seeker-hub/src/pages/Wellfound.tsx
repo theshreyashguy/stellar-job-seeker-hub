@@ -1,6 +1,14 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Upload, ExternalLink, Send, Loader, CheckCircle, X } from "lucide-react";
+import {
+  Upload,
+  ExternalLink,
+  Send,
+  Loader,
+  CheckCircle,
+  X,
+  CodeSquare,
+} from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useJobOpportunities, Opportunity } from "@/hooks/useJobOpportunities";
 import { scrapeWellfound } from "@/lib/api";
@@ -22,10 +30,20 @@ const Wellfound = () => {
 
     try {
       const data = await scrapeWellfound(selectedFile);
-      setWellfoundOpportunities(data);
+      console.log("Scraped Wellfound data:", data);
+      const opportunities: Opportunity[] = data.map((job: any) => ({
+          id: job.ID,
+          name: job.Role,
+          company: job.CompanyName,
+          salary: job.Salary,
+          location: job.Location,
+          imageUrl: job.CompanyPhotoURL,
+          applyUrl: job.CompanyURL,
+      }));
+      setWellfoundOpportunities(opportunities);
       toast({
         title: "Success!",
-        description: `Found ${data.length} opportunities`,
+        description: `Found ${opportunities.length} opportunities`,
       });
     } catch (error) {
       toast({

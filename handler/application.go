@@ -2,11 +2,14 @@ package handler
 
 import (
 	"aiapply/database"
+	"aiapply/emailer"
 	"aiapply/models"
 	"aiapply/utils"
 	"fmt"
 	"log"
 	"net/http"
+	"strings"
+	"sync"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -54,13 +57,54 @@ func CreateApplication(db *gorm.DB) gin.HandlerFunc {
 			return
 		}
 
-		// Update analytics in a separate goroutine
-		go func() {
-			isColdEmail := application.ApplicationType == "cold_email"
-			if err := database.UpdateAnalytics(db, int(userID), application.Platform, isColdEmail); err != nil {
-				log.Printf("Failed to update analytics: %v", err)
+		// If cold email, send emails in a goroutine
+		if application.ApplicationType == "cold_email" {
+			var wg sync.WaitGroup
+			for _, name := range application.EmployeeNames {
+				wg.Add(1)
+				go func(name string, app models.JobApplication) {
+					defer wg.Done()
+					var user models.User
+					if err := db.First(&user, app.UserID).Error; err != nil {
+						log.Printf("Failed to fetch user for cold email: %v", err)
+						return
+					}
+
+					parts := strings.Fields(name)
+					if len(parts) < 2 {
+						log.Printf("Skipping invalid name: %s", name)
+						return
+					}
+					firstName, lastName := parts[0], parts[len(parts)-1]
+					permutations := emailer.GeneratePermutations(firstName, lastName, app.Domain)
+
+					for _, email := range permutations {
+						if err := emailer.ValidateEmail(email); err == nil {
+							log.Printf("Sending cold email to %s for job %s", email, app.JobTitle)
+
+							if err := emailer.SendApplicationEmail(email, app.JobTitle, user); err == nil {
+								// Update analytics only after email is successfully sent
+								if err := database.UpdateAnalytics(db, int(app.UserID), app.Platform, true); err != nil {
+									log.Printf("Failed to update analytics for %s: %v", email, err)
+								}
+								break // Assuming one valid email per name is enough
+							}
+						}
+					}
+				}(name, application)
 			}
-		}()
+			go func() {
+				wg.Wait()
+				log.Println("All cold emails processed.")
+			}()
+		} else {
+			// Update analytics for other application types
+			go func() {
+				if err := database.UpdateAnalytics(db, int(application.UserID), application.Platform, false); err != nil {
+					log.Printf("Failed to update analytics: %v", err)
+				}
+			}()
+		}
 
 		c.JSON(http.StatusOK, application)
 	}
