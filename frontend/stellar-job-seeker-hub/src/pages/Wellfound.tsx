@@ -14,7 +14,6 @@ import { useJobOpportunities, Opportunity } from "@/hooks/useJobOpportunities";
 import { scrapeWellfound } from "@/lib/api";
 
 const Wellfound = () => {
-  h;
   const [file, setFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const {
