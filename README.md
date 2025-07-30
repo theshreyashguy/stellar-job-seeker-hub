@@ -184,6 +184,4 @@ See [CONTRIBUTING.md](https://chatgpt.com/c/CONTRIBUTING.md) for full guidelines
 
 ---
 
-## 📄 License
 
-This project is licensed under the MIT License. See [LICENSE](https://chatgpt.com/c/LICENSE) for details.
