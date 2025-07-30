@@ -13,8 +13,10 @@ A full-stack application designed to streamline your job search. Scrape job list
 
 - **Job Scraping:** Automatically scrape job listings from various platforms.
 - **Application Management:** Keep track of all your job applications in one place.
+- **Cold Emailing:** A powerful cold emailing system with features like email permutation generation, email validation, and templated emails.
+- **Mail Management:** Manage your cold email campaigns and track their performance.
+- **Analytics Dashboard:** Visualize your job application stats, track your progress, and gain insights into your job search.
 - **User Authentication:** Secure user registration and login with JWT and Google OAuth.
-- **Analytics Dashboard:** Visualize your job application stats and track your progress.
 - **Profile Management:** Create and manage your user profile.
 - **Modern UI:** A sleek and responsive user interface built with React and Tailwind CSS.
 
