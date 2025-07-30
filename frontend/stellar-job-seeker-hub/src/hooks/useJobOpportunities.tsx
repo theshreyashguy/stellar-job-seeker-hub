@@ -25,7 +25,11 @@ interface JobOpportunitiesContextType {
   removeLinkedinOpportunity: (id: string) => void;
   wellfoundOpportunities: Opportunity[];
   setWellfoundOpportunities: (opportunities: Opportunity[]) => void;
-  removeWellfoundOpportunity: (id: string) => void;
+  removeWellfoundOpportunity: (
+    id: string,
+    name: string,
+    company: string
+  ) => void;
   cuvetteOpportunities: Opportunity[];
   setCuvetteOpportunities: (opportunities: Opportunity[]) => void;
   removeCuvetteOpportunity: (id: string, name: string, company: string) => void;
@@ -54,15 +58,26 @@ export const JobOpportunitiesProvider = ({
     setLinkedinOpportunities((prev) => prev.filter((opp) => opp.id !== id));
   };
 
-  const removeWellfoundOpportunity = (id: string) => {
-    setWellfoundOpportunities((prev) => prev.filter((opp) => opp.id !== id));
+  const removeWellfoundOpportunity = (
+    id: string,
+    name: string,
+    company: string
+  ) => {
+    setWellfoundOpportunities((prev) =>
+      prev.filter(
+        (opp) => opp.id !== id || opp.name !== name || opp.company !== company
+      )
+    );
   };
 
-  const removeCuvetteOpportunity = (id: string, name: string, company: string) => {
+  const removeCuvetteOpportunity = (
+    id: string,
+    name: string,
+    company: string
+  ) => {
     setCuvetteOpportunities((prev) =>
       prev.filter(
-        (opp) =>
-          opp.id !== id || opp.name !== name || opp.company !== company
+        (opp) => opp.id !== id || opp.name !== name || opp.company !== company
       )
     );
   };

@@ -3,6 +3,8 @@ package cuvette
 import (
 	"fmt"
 	"io"
+	"log"
+	"net/url"
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
@@ -37,40 +39,56 @@ func ScrapeCuvetteListings(reader io.Reader) ([]JobDetail, error) {
 
 	var listings []JobDetail
 
-	doc.Find("div[class*='StudentInternshipCard_container']").Each(func(_ int, s *goquery.Selection) {
-		// Role, header, company, location, photo, salary
+	doc.Find("div[class^='StudentInternshipCard_container']").Each(func(_ int, s *goquery.Selection) {
+		// Basic header
 		role := strings.TrimSpace(s.Find("h3").Text())
-		rawHeader := strings.TrimSpace(s.Find("div[class*='StudentInternshipCard_heading'] > p").Text())
+
+		// Company | Location
+		rawHeader := strings.TrimSpace(
+			s.Find("div[class^='StudentInternshipCard_heading'] > p").Text(),
+		)
 		parts := strings.Split(rawHeader, "|")
 		companyName := strings.TrimSpace(parts[0])
 		location := ""
 		if len(parts) > 1 {
 			location = strings.TrimSpace(parts[1])
 		}
+
+		// Logo
 		companyPhotoURL, _ := s.Find("img").Attr("src")
-		salary := strings.TrimSpace(s.Find("div[class*='StudentInternshipCard_infoValue']").First().Text())
 
-		// Other info fields
+		// Salary (first infoValue)
+		salary := strings.TrimSpace(
+			s.Find("div[class^='StudentInternshipCard_infoValue']").First().Text(),
+		)
+
+		// Duration / Mode / Start Date / Office Location
 		var duration, mode, startDate, officeLocation string
-		s.Find("div[class*='StudentInternshipCard_info']").Each(func(_ int, info *goquery.Selection) {
-			label := strings.TrimSpace(info.Find("div[class*='StudentInternshipCard_infoTop']").Text())
-			value := strings.TrimSpace(info.Find("div[class*='StudentInternshipCard_infoValue']").Text())
-			switch label {
-			case "Duration":
-				duration = value
-			case "Mode":
-				mode = value
-			case "Start Date":
-				startDate = value
-			case "Office Location":
-				officeLocation = value
-			}
-		})
+		s.Find("div[class^='StudentInternshipCard_info']").Each(
+			func(_ int, info *goquery.Selection) {
+				label := strings.TrimSpace(
+					info.Find("div[class^='StudentInternshipCard_infoTop']").Text(),
+				)
+				value := strings.TrimSpace(
+					info.Find("div[class^='StudentInternshipCard_infoValue']").Text(),
+				)
+				switch label {
+				case "Duration":
+					duration = value
+				case "Mode":
+					mode = value
+				case "Start Date":
+					startDate = value
+				case "Office Location":
+					officeLocation = value
+				}
+			},
+		)
 
-		// ApplyBy and PostedAgo
+		// ApplyBy & PostedAgo
 		var applyBy, postedAgo string
-		if infoPs := s.Find("div[class*='StudentInternshipCard_currentInfoLeft'] p"); infoPs.Length() > 0 {
-			line := strings.TrimSpace(infoPs.First().Text())
+		if p := s.Find("div[class^='StudentInternshipCard_currentInfoLeft'] p").First(); p.Length() > 0 {
+			line := strings.TrimSpace(p.Text())
 			parts := strings.Split(line, "•")
 			if len(parts) > 0 {
 				applyBy = strings.TrimSpace(parts[0])
@@ -80,22 +98,32 @@ func ScrapeCuvetteListings(reader io.Reader) ([]JobDetail, error) {
 			}
 		}
 
-		// Extract type and ID from the "View Details" link href
-		var typ, id string
-		if link := s.Find("p[class*='StudentInternshipCard_outline']").Closest("div").Find("button").First(); link.Length() > 0 {
-			// The ID and type are not available in the provided HTML for the "Apply Now" button.
-			// This will be left blank, and the frontend will need to handle it.
+		// Try to pull out the <a href> around “View Details” or “Apply Now”
+		var applyURL, typ, id string
+		if linkSel := s.Find("p[class^='StudentInternshipCard_outline']").Closest("a"); linkSel.Length() > 0 {
+			if href, ok := linkSel.Attr("href"); ok {
+				applyURL = href
+				log.Printf("Found apply URL: %s", applyURL)
+
+				// parse query parameters to get type & id, if present
+				if u, err := url.Parse(href); err == nil {
+					q := u.Query()
+					typ = q.Get("type")
+					id = q.Get("id")
+				}
+			}
 		}
-		applyURL := "" // No apply URL available from the button.
 
 		// Skills
 		var skills []string
-		s.Find("div[class*='StudentInternshipCard_skill']").Each(func(_ int, skill *goquery.Selection) {
+		s.Find("div[class^='StudentInternshipCard_skill']").Each(func(_ int, skill *goquery.Selection) {
 			skills = append(skills, strings.TrimSpace(skill.Text()))
 		})
 
-		// Level
-		level := strings.TrimSpace(s.Find("p[class*='sc-iUuxjF']").Text())
+		// Level badge
+		level := strings.TrimSpace(
+			s.Find("p[class^='sc-iUuxjF']").First().Text(),
+		)
 
 		listings = append(listings, JobDetail{
 			Role:            role,

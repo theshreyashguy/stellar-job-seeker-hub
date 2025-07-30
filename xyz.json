@@ -1,0 +1,1860 @@
+{
+  "success": true,
+  "data": [
+    {
+      "_id": "68876b548939fc86e10ee4ff",
+      "graduationYear": [],
+      "refSkills": [
+        {
+          "_id": "613b28e82593b2b5fe95c461",
+          "name": "SQL",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/sqlite-icon.svg"
+        },
+        {
+          "_id": "629b257df5543ba0b054ebb4",
+          "name": "Excel"
+        },
+        {
+          "_id": "629b257df5543ba0b054ec77",
+          "name": "ZenDesk"
+        }
+      ],
+      "refOptionalSkills": [],
+      "jobOffer": [4, 5],
+      "probationSalaryRange": [40000, 50000],
+      "applicationQuestions": [],
+      "refUser": {
+        "refCompanyProfile": {
+          "isVerifiedByAdmin": true,
+          "companyName": "prismforce",
+          "logoUrl": "",
+          "refLocation": {
+            "_id": "61360492bfd16a28bc0c1ab5",
+            "city": "Mumbai",
+            "state": "Maharashtra",
+            "country": "India",
+            "createdAt": "2021-09-06T12:09:58.433Z",
+            "updatedAt": "2021-09-06T12:09:58.433Z"
+          }
+        }
+      },
+      "jobStatus": "in-process",
+      "startDate": "2025-08-27T12:21:37.987Z",
+      "numOfOpenings": 4,
+      "refJobTitle": {
+        "_id": "623ebd7d1b0564483ab43729",
+        "name": "Technical Operations",
+        "createdAt": "2021-09-06T07:16:02.072Z",
+        "updatedAt": "2021-09-06T07:16:02.072Z",
+        "type": 1
+      },
+      "isRemoteJob": true,
+      "refLocation": {
+        "_id": "61360492bfd16a28bc0c1948",
+        "city": "Bangalore",
+        "state": "Karnataka",
+        "country": "India",
+        "createdAt": "2021-09-06T12:09:58.433Z",
+        "updatedAt": "2021-09-06T12:09:58.433Z"
+      },
+      "probationDuration": "3",
+      "immediate": true,
+      "preferences": {
+        "probationPeriod": true
+      },
+      "yearsOfExperience": 0,
+      "createdAt": "2025-07-28T12:21:40.511Z",
+      "applicantCount": 438
+    },
+    {
+      "_id": "688742298939fc86e1048d96",
+      "graduationYear": [],
+      "refSkills": [
+        {
+          "_id": "613b28e82593b2b5fe95c47e",
+          "name": "Postman",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/getpostman-icon.svg"
+        },
+        {
+          "_id": "6155b0aee2985fba7ba7e6cb",
+          "name": "Selenium",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/Selenium-icon.png"
+        },
+        {
+          "_id": "626141c3514b1d2b0e0ee1a8",
+          "name": "Manual testing",
+          "logoUrl": ""
+        },
+        {
+          "_id": "626141c3514b1d2b0e0ee1a9",
+          "name": "Automation testing",
+          "logoUrl": ""
+        },
+        {
+          "_id": "629b257df5543ba0b054eb4d",
+          "name": "API testing"
+        }
+      ],
+      "refOptionalSkills": [
+        {
+          "_id": "613b28e82593b2b5fe95c47d",
+          "name": "Chrome DevTools",
+          "logoUrl": "https://production-cuvette.s3.amazonaws.com/skillsIcon/chrome.svg"
+        },
+        {
+          "_id": "6155b0aee2985fba7ba7e6c0",
+          "name": "JSON",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/JSON-icon.png"
+        },
+        {
+          "_id": "6155b0aee2985fba7ba7e6d3",
+          "name": "XML",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/XML-icon.jpg"
+        }
+      ],
+      "jobOffer": [3.6, 4.8],
+      "probationSalaryRange": [20000, 25000],
+      "applicationQuestions": [],
+      "refUser": {
+        "refCompanyProfile": {
+          "isVerifiedByAdmin": true,
+          "companyName": "Markopolo ai",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/company/626a82a18a8b290dae0745da/logo.webp",
+          "refLocation": {
+            "_id": "619c6de6b06c4c1ce4a14626",
+            "city": "",
+            "state": "",
+            "country": "United States Of America (USA)"
+          }
+        }
+      },
+      "jobStatus": "in-process",
+      "startDate": "2025-08-27T09:26:01.356Z",
+      "numOfOpenings": 1,
+      "refJobTitle": {
+        "_id": "6135c025df4eadc1bd885bee",
+        "name": "QA Engineer",
+        "createdAt": "2021-09-06T07:16:02.072Z",
+        "updatedAt": "2021-09-06T07:16:02.072Z",
+        "type": 1
+      },
+      "isRemoteJob": true,
+      "refLocation": {
+        "_id": "61360492bfd16a28bc0c1948",
+        "city": "Bangalore",
+        "state": "Karnataka",
+        "country": "India",
+        "createdAt": "2021-09-06T12:09:58.433Z",
+        "updatedAt": "2021-09-06T12:09:58.433Z"
+      },
+      "probationDuration": "3",
+      "immediate": true,
+      "preferences": {
+        "probationPeriod": true
+      },
+      "yearsOfExperience": 0,
+      "createdAt": "2025-07-28T09:26:01.748Z",
+      "applicantCount": 687
+    },
+    {
+      "_id": "687f67f621311e1857e3a55f",
+      "graduationYear": [],
+      "refSkills": [
+        {
+          "_id": "613b28e82593b2b5fe95c44f",
+          "name": "Python",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/python-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c461",
+          "name": "SQL",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/sqlite-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c47a",
+          "name": "Docker",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/docker-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c47b",
+          "name": "Git",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/git-scm-icon.svg"
+        },
+        {
+          "_id": "61a1e391b06c4c1ce4a14677",
+          "name": "API",
+          "logoUrl": ""
+        }
+      ],
+      "refOptionalSkills": [
+        {
+          "_id": "613b28e82593b2b5fe95c437",
+          "name": "Javascript",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/JavaScript-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c476",
+          "name": "CI/CD",
+          "logoUrl": "https://production-cuvette.s3.amazonaws.com/skillsIcon/travis-ci-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c47f",
+          "name": "REST",
+          "logoUrl": "https://production-cuvette.s3.amazonaws.com/skillsIcon/rest-api.svg"
+        }
+      ],
+      "jobOffer": [6, 9],
+      "probationSalaryRange": [],
+      "applicationQuestions": [
+        {
+          "question": "Why should you be hired for this role?"
+        },
+        {
+          "question": ""
+        }
+      ],
+      "refUser": {
+        "refCompanyProfile": {
+          "isVerifiedByAdmin": true,
+          "companyName": "D Square Consulting Services Pvt Ltd",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/company/683555cfa514b980279e46f1/logo.webp?d=1748340605210",
+          "refLocation": {
+            "_id": "61360492bfd16a28bc0c1948",
+            "city": "Bangalore",
+            "state": "Karnataka",
+            "country": "India",
+            "createdAt": "2021-09-06T12:09:58.433Z",
+            "updatedAt": "2021-09-06T12:09:58.433Z"
+          }
+        }
+      },
+      "jobStatus": "in-process",
+      "startDate": "2025-08-22T08:43:37.973Z",
+      "numOfOpenings": 3,
+      "refJobTitle": {
+        "_id": "6135c025df4eadc1bd885be8",
+        "name": "Backend Developer",
+        "createdAt": "2021-09-06T07:16:02.072Z",
+        "updatedAt": "2021-09-06T07:16:02.072Z",
+        "type": 1
+      },
+      "isRemoteJob": false,
+      "refLocation": {
+        "_id": "61360492bfd16a28bc0c1948",
+        "city": "Bangalore",
+        "state": "Karnataka",
+        "country": "India",
+        "createdAt": "2021-09-06T12:09:58.433Z",
+        "updatedAt": "2021-09-06T12:09:58.433Z"
+      },
+      "probationDuration": "",
+      "immediate": true,
+      "preferences": {
+        "probationPeriod": false
+      },
+      "yearsOfExperience": 3,
+      "createdAt": "2025-07-22T10:29:10.417Z",
+      "applicantCount": 800
+    },
+    {
+      "_id": "6878b70592c47e2371a389a8",
+      "graduationYear": [],
+      "refSkills": [
+        {
+          "_id": "613b28e82593b2b5fe95c44f",
+          "name": "Python",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/python-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c461",
+          "name": "SQL",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/sqlite-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c475",
+          "name": "Google Cloud",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/google_cloud-icon.svg"
+        },
+        {
+          "_id": "61a1e391b06c4c1ce4a14764",
+          "name": "LLVM",
+          "logoUrl": ""
+        },
+        {
+          "_id": "6867cc958c361b186199ec09",
+          "name": "AI/ ML",
+          "logoUrl": ""
+        }
+      ],
+      "refOptionalSkills": [
+        {
+          "_id": "613b28e82593b2b5fe95c427",
+          "name": "Java",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/java-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c46b",
+          "name": "Deep Learning",
+          "logoUrl": ""
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c473",
+          "name": "AWS",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/amazon_aws-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c474",
+          "name": "Azure",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/microsoft_azure-icon.svg"
+        },
+        {
+          "_id": "629b257df5543ba0b054ec17",
+          "name": "PyTorch"
+        },
+        {
+          "_id": "629b257df5543ba0b054ec3e",
+          "name": "Spark"
+        },
+        {
+          "_id": "629b257df5543ba0b054ec52",
+          "name": "Tensorflow"
+        }
+      ],
+      "jobOffer": [15, 25],
+      "probationSalaryRange": [],
+      "applicationQuestions": [
+        {
+          "question": "Why should you be hired for this role?"
+        },
+        {
+          "question": ""
+        }
+      ],
+      "refUser": {
+        "refCompanyProfile": {
+          "isVerifiedByAdmin": true,
+          "companyName": "D Square Consulting Services Pvt Ltd",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/company/683555cfa514b980279e46f1/logo.webp?d=1748340605210",
+          "refLocation": {
+            "_id": "61360492bfd16a28bc0c1948",
+            "city": "Bangalore",
+            "state": "Karnataka",
+            "country": "India",
+            "createdAt": "2021-09-06T12:09:58.433Z",
+            "updatedAt": "2021-09-06T12:09:58.433Z"
+          }
+        }
+      },
+      "jobStatus": "in-process",
+      "startDate": "2025-08-22T08:42:58.504Z",
+      "numOfOpenings": 4,
+      "refJobTitle": {
+        "_id": "6135c025df4eadc1bd885bf0",
+        "name": "MLOps Engineer",
+        "createdAt": "2021-09-06T07:16:02.072Z",
+        "updatedAt": "2021-09-06T07:16:02.072Z",
+        "type": 1
+      },
+      "isRemoteJob": false,
+      "refLocation": {
+        "_id": "61360492bfd16a28bc0c1948",
+        "city": "Bangalore",
+        "state": "Karnataka",
+        "country": "India",
+        "createdAt": "2021-09-06T12:09:58.433Z",
+        "updatedAt": "2021-09-06T12:09:58.433Z"
+      },
+      "probationDuration": "",
+      "immediate": true,
+      "preferences": {
+        "probationPeriod": false
+      },
+      "yearsOfExperience": 3,
+      "createdAt": "2025-07-17T08:40:37.704Z",
+      "applicantCount": 883
+    },
+    {
+      "_id": "686e423f1ab143eb45deeb3c",
+      "graduationYear": [],
+      "refSkills": [
+        {
+          "_id": "613b28e82593b2b5fe95c42a",
+          "name": "Flutter",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/flutter-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c42e",
+          "name": "React.js",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/React-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c431",
+          "name": "NextJs",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/next-js.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c444",
+          "name": "NodeJs",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/Node.js-icon.svg"
+        },
+        {
+          "_id": "6155b0aee2985fba7ba7e6b2",
+          "name": "Dart",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/Dart-icon.png"
+        }
+      ],
+      "refOptionalSkills": [
+        {
+          "_id": "613b28e82593b2b5fe95c45f",
+          "name": "PostgreSQL",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/Postgresql-icon.svg"
+        },
+        {
+          "_id": "6155b0aee2985fba7ba7e6b7",
+          "name": "Firebase",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/Firebase-icon.png"
+        },
+        {
+          "_id": "61a1e391b06c4c1ce4a14677",
+          "name": "API",
+          "logoUrl": ""
+        }
+      ],
+      "jobOffer": [3, 3.5],
+      "probationSalaryRange": [],
+      "applicationQuestions": [],
+      "refUser": {
+        "refCompanyProfile": {
+          "isVerifiedByAdmin": true,
+          "companyName": "EPVI",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/company/652c1cd3179e372c70d70040/logo.webp?d=1745242843149",
+          "refLocation": {
+            "_id": "61360492bfd16a28bc0c19e9",
+            "city": "Gurugram",
+            "state": "Haryana",
+            "country": "India",
+            "createdAt": "2021-09-06T12:09:58.433Z",
+            "updatedAt": "2021-09-06T12:09:58.433Z"
+          }
+        }
+      },
+      "jobStatus": "in-process",
+      "startDate": "2025-08-08T10:19:43.074Z",
+      "numOfOpenings": 1,
+      "refJobTitle": {
+        "_id": "6135c025df4eadc1bd885be7",
+        "name": "Frontend Developer",
+        "createdAt": "2021-09-06T07:16:02.072Z",
+        "updatedAt": "2021-09-06T07:16:02.072Z",
+        "type": 1
+      },
+      "isRemoteJob": true,
+      "probationDuration": "",
+      "immediate": true,
+      "preferences": {
+        "probationPeriod": false
+      },
+      "yearsOfExperience": 0,
+      "createdAt": "2025-07-09T10:19:43.586Z",
+      "applicantCount": 2898
+    },
+    {
+      "_id": "686d113cef8e5ea21cc485fc",
+      "graduationYear": [],
+      "refSkills": [
+        {
+          "_id": "613b28e82593b2b5fe95c447",
+          "name": "Django",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/django.svg"
+        }
+      ],
+      "refOptionalSkills": [
+        {
+          "_id": "613b28e82593b2b5fe95c45f",
+          "name": "PostgreSQL",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/Postgresql-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c473",
+          "name": "AWS",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/amazon_aws-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c47a",
+          "name": "Docker",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/docker-icon.svg"
+        },
+        {
+          "_id": "66269b88e810f1039456d444",
+          "name": "Kafka"
+        }
+      ],
+      "jobOffer": [4, 5.5],
+      "probationSalaryRange": [10000, 15000],
+      "applicationQuestions": [],
+      "refUser": {
+        "refCompanyProfile": {
+          "isVerifiedByAdmin": true,
+          "companyName": "EPVI",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/company/652c1cd3179e372c70d70040/logo.webp?d=1745242843149",
+          "refLocation": {
+            "_id": "61360492bfd16a28bc0c19e9",
+            "city": "Gurugram",
+            "state": "Haryana",
+            "country": "India",
+            "createdAt": "2021-09-06T12:09:58.433Z",
+            "updatedAt": "2021-09-06T12:09:58.433Z"
+          }
+        }
+      },
+      "jobStatus": "in-process",
+      "startDate": "2025-08-07T12:38:18.884Z",
+      "numOfOpenings": 2,
+      "refJobTitle": {
+        "_id": "6135c025df4eadc1bd885be8",
+        "name": "Backend Developer",
+        "createdAt": "2021-09-06T07:16:02.072Z",
+        "updatedAt": "2021-09-06T07:16:02.072Z",
+        "type": 1
+      },
+      "isRemoteJob": false,
+      "refLocation": {
+        "_id": "61360492bfd16a28bc0c19e9",
+        "city": "Gurugram",
+        "state": "Haryana",
+        "country": "India",
+        "createdAt": "2021-09-06T12:09:58.433Z",
+        "updatedAt": "2021-09-06T12:09:58.433Z"
+      },
+      "probationDuration": "3",
+      "immediate": true,
+      "preferences": {
+        "probationPeriod": true
+      },
+      "yearsOfExperience": 0,
+      "createdAt": "2025-07-08T12:38:20.021Z",
+      "applicantCount": 1915
+    },
+    {
+      "_id": "686cbfa4ef8e5ea21cafc240",
+      "graduationYear": [],
+      "refSkills": [
+        {
+          "_id": "613b28e82593b2b5fe95c44f",
+          "name": "Python",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/python-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c476",
+          "name": "CI/CD",
+          "logoUrl": "https://production-cuvette.s3.amazonaws.com/skillsIcon/travis-ci-icon.svg"
+        },
+        {
+          "_id": "6155b0aee2985fba7ba7e6c3",
+          "name": "Kubernetes",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/Kubernetes-icon.png"
+        },
+        {
+          "_id": "61a1e391b06c4c1ce4a14677",
+          "name": "API",
+          "logoUrl": ""
+        },
+        {
+          "_id": "629b257df5543ba0b054ec3e",
+          "name": "Spark"
+        }
+      ],
+      "refOptionalSkills": [
+        {
+          "_id": "613b28e82593b2b5fe95c461",
+          "name": "SQL",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/sqlite-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c473",
+          "name": "AWS",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/amazon_aws-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c474",
+          "name": "Azure",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/microsoft_azure-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c475",
+          "name": "Google Cloud",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/google_cloud-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c47b",
+          "name": "Git",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/git-scm-icon.svg"
+        },
+        {
+          "_id": "66269b88e810f1039456d444",
+          "name": "Kafka"
+        }
+      ],
+      "jobOffer": [6, 13],
+      "probationSalaryRange": [],
+      "applicationQuestions": [
+        {
+          "question": "Why should you be hired for this role?"
+        },
+        {
+          "question": ""
+        }
+      ],
+      "refUser": {
+        "refCompanyProfile": {
+          "isVerifiedByAdmin": true,
+          "companyName": "D Square Consulting Services Pvt Ltd",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/company/683555cfa514b980279e46f1/logo.webp?d=1748340605210",
+          "refLocation": {
+            "_id": "61360492bfd16a28bc0c1948",
+            "city": "Bangalore",
+            "state": "Karnataka",
+            "country": "India",
+            "createdAt": "2021-09-06T12:09:58.433Z",
+            "updatedAt": "2021-09-06T12:09:58.433Z"
+          }
+        }
+      },
+      "jobStatus": "in-process",
+      "startDate": "2025-08-21T10:30:59.519Z",
+      "numOfOpenings": 3,
+      "refJobTitle": {
+        "_id": "6135c025df4eadc1bd885bed",
+        "name": "Data Engineer",
+        "createdAt": "2021-09-06T07:16:02.072Z",
+        "updatedAt": "2021-09-06T07:16:02.072Z",
+        "type": 1
+      },
+      "isRemoteJob": true,
+      "refLocation": {
+        "_id": "619c6de6b06c4c1ce4a145b8",
+        "city": "",
+        "state": "",
+        "country": "India"
+      },
+      "probationDuration": "",
+      "immediate": true,
+      "preferences": {
+        "probationPeriod": false
+      },
+      "yearsOfExperience": 3,
+      "createdAt": "2025-07-08T06:50:12.092Z",
+      "applicantCount": 1041
+    },
+    {
+      "_id": "686ca8dfef8e5ea21ca8a30c",
+      "graduationYear": [],
+      "refSkills": [
+        {
+          "_id": "613b28e82593b2b5fe95c444",
+          "name": "NodeJs",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/Node.js-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c45d",
+          "name": "MongoDB",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/mongodb-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c461",
+          "name": "SQL",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/sqlite-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c473",
+          "name": "AWS",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/amazon_aws-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c47b",
+          "name": "Git",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/git-scm-icon.svg"
+        }
+      ],
+      "refOptionalSkills": [
+        {
+          "_id": "613b28e82593b2b5fe95c44f",
+          "name": "Python",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/python-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c45f",
+          "name": "PostgreSQL",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/Postgresql-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c460",
+          "name": "GraphQL",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/GraphQL-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c474",
+          "name": "Azure",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/microsoft_azure-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c476",
+          "name": "CI/CD",
+          "logoUrl": "https://production-cuvette.s3.amazonaws.com/skillsIcon/travis-ci-icon.svg"
+        },
+        {
+          "_id": "61a1e391b06c4c1ce4a14677",
+          "name": "API",
+          "logoUrl": ""
+        },
+        {
+          "_id": "6867cc958c361b186199ec09",
+          "name": "AI/ ML",
+          "logoUrl": ""
+        }
+      ],
+      "jobOffer": [3, 4.8],
+      "probationSalaryRange": [15000, 20000],
+      "applicationQuestions": [
+        {
+          "question": "Why should you be hired for this role?"
+        },
+        {
+          "question": ""
+        }
+      ],
+      "refUser": {
+        "refCompanyProfile": {
+          "isVerifiedByAdmin": true,
+          "companyName": "Markopolo ai",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/company/626a82a18a8b290dae0745da/logo.webp",
+          "refLocation": {
+            "_id": "619c6de6b06c4c1ce4a14626",
+            "city": "",
+            "state": "",
+            "country": "United States Of America (USA)"
+          }
+        }
+      },
+      "jobStatus": "in-process",
+      "startDate": "2025-08-07T05:14:28.100Z",
+      "numOfOpenings": 1,
+      "refJobTitle": {
+        "_id": "6135c025df4eadc1bd885be8",
+        "name": "Backend Developer",
+        "createdAt": "2021-09-06T07:16:02.072Z",
+        "updatedAt": "2021-09-06T07:16:02.072Z",
+        "type": 1
+      },
+      "isRemoteJob": false,
+      "refLocation": {
+        "_id": "61360492bfd16a28bc0c1948",
+        "city": "Bangalore",
+        "state": "Karnataka",
+        "country": "India",
+        "createdAt": "2021-09-06T12:09:58.433Z",
+        "updatedAt": "2021-09-06T12:09:58.433Z"
+      },
+      "probationDuration": "3",
+      "immediate": true,
+      "preferences": {
+        "probationPeriod": true
+      },
+      "yearsOfExperience": 0,
+      "createdAt": "2025-07-08T05:13:03.613Z",
+      "applicantCount": 2054
+    },
+    {
+      "_id": "686bff0eef8e5ea21c96f31d",
+      "graduationYear": [],
+      "refSkills": [
+        {
+          "_id": "613b28e82593b2b5fe95c439",
+          "name": "HTML",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/html-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c43a",
+          "name": "CSS",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/Css-icon.svg"
+        },
+        {
+          "_id": "61a1e391b06c4c1ce4a1475f",
+          "name": "Liquid",
+          "logoUrl": ""
+        },
+        {
+          "_id": "61dc74ae746692cd07008b53",
+          "name": "Shopify",
+          "logoUrl": ""
+        }
+      ],
+      "refOptionalSkills": [],
+      "jobOffer": [5, 10],
+      "probationSalaryRange": [35000, 75000],
+      "applicationQuestions": [],
+      "refUser": {
+        "refCompanyProfile": {
+          "isVerifiedByAdmin": true,
+          "companyName": "Cube",
+          "logoUrl": "",
+          "refLocation": {
+            "_id": "61360492bfd16a28bc0c1948",
+            "city": "Bangalore",
+            "state": "Karnataka",
+            "country": "India",
+            "createdAt": "2021-09-06T12:09:58.433Z",
+            "updatedAt": "2021-09-06T12:09:58.433Z"
+          }
+        }
+      },
+      "jobStatus": "in-process",
+      "startDate": "2025-08-06T17:08:30.192Z",
+      "numOfOpenings": 2,
+      "refJobTitle": {
+        "_id": "6135c025df4eadc1bd885be9",
+        "name": "Fullstack Developer",
+        "createdAt": "2021-09-06T07:16:02.072Z",
+        "updatedAt": "2021-09-06T07:16:02.072Z",
+        "type": 1
+      },
+      "isRemoteJob": false,
+      "refLocation": {
+        "_id": "61360492bfd16a28bc0c1947",
+        "city": "Bangalore",
+        "state": "Karnataka",
+        "country": "India",
+        "createdAt": "2021-09-06T12:09:58.433Z",
+        "updatedAt": "2021-09-06T12:09:58.433Z"
+      },
+      "probationDuration": "6",
+      "immediate": true,
+      "preferences": {
+        "probationPeriod": true
+      },
+      "yearsOfExperience": 0,
+      "createdAt": "2025-07-07T17:08:30.567Z",
+      "applicantCount": 2558
+    },
+    {
+      "_id": "686bfd12ef8e5ea21c966a37",
+      "graduationYear": [],
+      "refSkills": [
+        {
+          "_id": "613b28e82593b2b5fe95c437",
+          "name": "Javascript",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/JavaScript-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c439",
+          "name": "HTML",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/html-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c43a",
+          "name": "CSS",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/Css-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c448",
+          "name": "PHP",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/php-icon.svg"
+        },
+        {
+          "_id": "6155b0aee2985fba7ba7e6d2",
+          "name": "Wordpress",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/WordPress-icon.png"
+        }
+      ],
+      "refOptionalSkills": [],
+      "jobOffer": [5, 10],
+      "probationSalaryRange": [35000, 70000],
+      "applicationQuestions": [],
+      "refUser": {
+        "refCompanyProfile": {
+          "isVerifiedByAdmin": true,
+          "companyName": "Cube",
+          "logoUrl": "",
+          "refLocation": {
+            "_id": "61360492bfd16a28bc0c1948",
+            "city": "Bangalore",
+            "state": "Karnataka",
+            "country": "India",
+            "createdAt": "2021-09-06T12:09:58.433Z",
+            "updatedAt": "2021-09-06T12:09:58.433Z"
+          }
+        }
+      },
+      "jobStatus": "in-process",
+      "startDate": "2025-08-06T17:00:02.558Z",
+      "numOfOpenings": 2,
+      "refJobTitle": {
+        "_id": "6135c025df4eadc1bd885be9",
+        "name": "Fullstack Developer",
+        "createdAt": "2021-09-06T07:16:02.072Z",
+        "updatedAt": "2021-09-06T07:16:02.072Z",
+        "type": 1
+      },
+      "isRemoteJob": false,
+      "refLocation": {
+        "_id": "61360492bfd16a28bc0c1948",
+        "city": "Bangalore",
+        "state": "Karnataka",
+        "country": "India",
+        "createdAt": "2021-09-06T12:09:58.433Z",
+        "updatedAt": "2021-09-06T12:09:58.433Z"
+      },
+      "probationDuration": "6",
+      "immediate": true,
+      "preferences": {
+        "probationPeriod": true
+      },
+      "yearsOfExperience": 0,
+      "createdAt": "2025-07-07T17:00:02.974Z",
+      "applicantCount": 2199
+    },
+    {
+      "_id": "68690bfeef8e5ea21c090725",
+      "graduationYear": [],
+      "refSkills": [
+        {
+          "_id": "613b28e82593b2b5fe95c444",
+          "name": "NodeJs",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/Node.js-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c44f",
+          "name": "Python",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/python-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c45d",
+          "name": "MongoDB",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/mongodb-icon.svg"
+        },
+        {
+          "_id": "6155b0aee2985fba7ba7e6ba",
+          "name": "Image Processing",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/Image-Processing-icon.png"
+        },
+        {
+          "_id": "6155b0aee2985fba7ba7e6cb",
+          "name": "Selenium",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/Selenium-icon.png"
+        }
+      ],
+      "refOptionalSkills": [
+        {
+          "_id": "613b28e82593b2b5fe95c473",
+          "name": "AWS",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/amazon_aws-icon.svg"
+        },
+        {
+          "_id": "6155b0aee2985fba7ba7e6c0",
+          "name": "JSON",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/JSON-icon.png"
+        },
+        {
+          "_id": "6155b0aee2985fba7ba7e6c4",
+          "name": "LaTeX",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/LaTeX-icon.png"
+        },
+        {
+          "_id": "61a1e391b06c4c1ce4a14677",
+          "name": "API",
+          "logoUrl": ""
+        },
+        {
+          "_id": "61a1e391b06c4c1ce4a146c0",
+          "name": "CSV",
+          "logoUrl": ""
+        }
+      ],
+      "jobOffer": [6, 8],
+      "probationSalaryRange": [],
+      "applicationQuestions": [],
+      "refUser": {
+        "refCompanyProfile": {
+          "companyName": "MathonGo",
+          "isVerifiedByAdmin": true,
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/company/613fa45183c4f428bad69af8/logo.webp",
+          "refLocation": {
+            "_id": "61360492bfd16a28bc0c1948",
+            "city": "Bangalore",
+            "state": "Karnataka",
+            "country": "India",
+            "createdAt": "2021-09-06T12:09:58.433Z",
+            "updatedAt": "2021-09-06T12:09:58.433Z"
+          }
+        }
+      },
+      "jobStatus": "in-process",
+      "startDate": "2025-08-04T11:26:54.792Z",
+      "numOfOpenings": 2,
+      "refJobTitle": {
+        "_id": "6135c025df4eadc1bd885bea",
+        "name": "Software Developer",
+        "createdAt": "2021-09-06T07:16:02.072Z",
+        "updatedAt": "2021-09-06T07:16:02.072Z",
+        "type": 1
+      },
+      "isRemoteJob": false,
+      "refLocation": {
+        "_id": "61360492bfd16a28bc0c1948",
+        "city": "Bangalore",
+        "state": "Karnataka",
+        "country": "India",
+        "createdAt": "2021-09-06T12:09:58.433Z",
+        "updatedAt": "2021-09-06T12:09:58.433Z"
+      },
+      "probationDuration": "",
+      "immediate": true,
+      "preferences": {
+        "probationPeriod": false
+      },
+      "yearsOfExperience": 0,
+      "createdAt": "2025-07-05T11:26:54.988Z",
+      "applicantCount": 2953
+    },
+    {
+      "_id": "6867d44c6048ced6c7eea763",
+      "graduationYear": [],
+      "refSkills": [
+        {
+          "_id": "613b28e82593b2b5fe95c437",
+          "name": "Javascript",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/JavaScript-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c439",
+          "name": "HTML",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/html-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c43a",
+          "name": "CSS",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/Css-icon.svg"
+        },
+        {
+          "_id": "66273ae2e810f1039456d44d",
+          "name": "Bubble.io"
+        }
+      ],
+      "refOptionalSkills": [
+        {
+          "_id": "6135bcb7df4eadc1bd88522c",
+          "name": "Good Communication",
+          "createdAt": "2021-09-06T07:03:14.268Z",
+          "updatedAt": "2021-09-06T07:03:14.268Z",
+          "isApproved": true
+        },
+        {
+          "_id": "6135bcb7df4eadc1bd885235",
+          "name": "Problem Solving",
+          "createdAt": "2021-09-06T07:03:14.268Z",
+          "updatedAt": "2021-09-06T07:03:14.268Z",
+          "isApproved": true
+        },
+        {
+          "_id": "629b257df5543ba0b054eb52",
+          "name": "Attention to Detail"
+        }
+      ],
+      "jobOffer": [6, 8],
+      "probationSalaryRange": [],
+      "applicationQuestions": [],
+      "refUser": {
+        "refCompanyProfile": {
+          "isVerifiedByAdmin": true,
+          "companyName": "Tenovia",
+          "logoUrl": "",
+          "refLocation": {
+            "_id": "61360492bfd16a28bc0c1948",
+            "city": "Bangalore",
+            "state": "Karnataka",
+            "country": "India",
+            "createdAt": "2021-09-06T12:09:58.433Z",
+            "updatedAt": "2021-09-06T12:09:58.433Z"
+          }
+        }
+      },
+      "jobStatus": "in-process",
+      "startDate": "2025-08-03T13:16:59.931Z",
+      "numOfOpenings": 1,
+      "refJobTitle": {
+        "_id": "6135c025df4eadc1bd885bea",
+        "name": "Software Developer",
+        "createdAt": "2021-09-06T07:16:02.072Z",
+        "updatedAt": "2021-09-06T07:16:02.072Z",
+        "type": 1
+      },
+      "isRemoteJob": true,
+      "refLocation": {
+        "_id": "61360492bfd16a28bc0c1948",
+        "city": "Bangalore",
+        "state": "Karnataka",
+        "country": "India",
+        "createdAt": "2021-09-06T12:09:58.433Z",
+        "updatedAt": "2021-09-06T12:09:58.433Z"
+      },
+      "probationDuration": "",
+      "immediate": true,
+      "preferences": {
+        "probationPeriod": false
+      },
+      "yearsOfExperience": 0,
+      "createdAt": "2025-07-04T13:17:00.334Z",
+      "applicantCount": 3449
+    },
+    {
+      "_id": "686761e59a07e9b49654ab93",
+      "graduationYear": [],
+      "refSkills": [
+        {
+          "_id": "613b28e82593b2b5fe95c480",
+          "name": "Figma",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/figma-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c481",
+          "name": "AdobeXD",
+          "logoUrl": "https://production-cuvette.s3.amazonaws.com/skillsIcon/Adobe_XD_CC_icon.svg"
+        },
+        {
+          "_id": "629b257df5543ba0b054eb47",
+          "name": "After Effects"
+        },
+        {
+          "_id": "629b257df5543ba0b054eb6b",
+          "name": "Canva"
+        },
+        {
+          "_id": "629b257df5543ba0b054ec05",
+          "name": "Photoshop"
+        }
+      ],
+      "refOptionalSkills": [
+        {
+          "_id": "629b257df5543ba0b054eb5e",
+          "name": "Branding"
+        },
+        {
+          "_id": "629b257df5543ba0b054ebca",
+          "name": "InDesign"
+        },
+        {
+          "_id": "629b257df5543ba0b054ec5e",
+          "name": "Typography"
+        }
+      ],
+      "jobOffer": [3.6, 6],
+      "probationSalaryRange": [],
+      "applicationQuestions": [],
+      "refUser": {
+        "refCompanyProfile": {
+          "isVerifiedByAdmin": true,
+          "companyName": "EPVI New Technological Epoch Private Limited",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/company/6863b92c42784a177ed24280/logo.webp?d=1751366267229",
+          "refLocation": {
+            "_id": "61360492bfd16a28bc0c19e9",
+            "city": "Gurugram",
+            "state": "Haryana",
+            "country": "India",
+            "createdAt": "2021-09-06T12:09:58.433Z",
+            "updatedAt": "2021-09-06T12:09:58.433Z"
+          }
+        }
+      },
+      "jobStatus": "in-process",
+      "startDate": "2025-08-03T05:08:52.302Z",
+      "numOfOpenings": 1,
+      "refJobTitle": {
+        "_id": "61b42ee803a75d6a2318c435",
+        "name": "UI/UX Designer",
+        "type": 1
+      },
+      "isRemoteJob": false,
+      "refLocation": {
+        "_id": "61360492bfd16a28bc0c19e9",
+        "city": "Gurugram",
+        "state": "Haryana",
+        "country": "India",
+        "createdAt": "2021-09-06T12:09:58.433Z",
+        "updatedAt": "2021-09-06T12:09:58.433Z"
+      },
+      "probationDuration": "",
+      "immediate": true,
+      "preferences": {
+        "probationPeriod": false
+      },
+      "yearsOfExperience": 0,
+      "createdAt": "2025-07-04T05:08:53.907Z",
+      "applicantCount": 1351
+    },
+    {
+      "_id": "6866b1729a07e9b4963db245",
+      "graduationYear": [],
+      "refSkills": [
+        {
+          "_id": "613b28e82593b2b5fe95c42e",
+          "name": "React.js",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/React-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c444",
+          "name": "NodeJs",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/Node.js-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c456",
+          "name": "Typescript",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/Typescript-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c45f",
+          "name": "PostgreSQL",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/Postgresql-icon.svg"
+        },
+        {
+          "_id": "61a1e391b06c4c1ce4a147d7",
+          "name": "Prisma",
+          "logoUrl": ""
+        }
+      ],
+      "refOptionalSkills": [
+        {
+          "_id": "613b28e82593b2b5fe95c42a",
+          "name": "Flutter",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/flutter-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c431",
+          "name": "NextJs",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/next-js.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c439",
+          "name": "HTML",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/html-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c43a",
+          "name": "CSS",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/Css-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c442",
+          "name": "Tailwind",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/tailwindcss-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c445",
+          "name": "ExpressJs",
+          "logoUrl": "https://production-cuvette.s3.amazonaws.com/skillsIcon/expressjs-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c45d",
+          "name": "MongoDB",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/mongodb-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c473",
+          "name": "AWS",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/amazon_aws-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c474",
+          "name": "Azure",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/microsoft_azure-icon.svg"
+        },
+        {
+          "_id": "6155b0aee2985fba7ba7e6cd",
+          "name": "Socket.io",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/Socket.io-icon.svg"
+        }
+      ],
+      "jobOffer": [3.2, 6],
+      "probationSalaryRange": [25000, 50000],
+      "applicationQuestions": [],
+      "refUser": {
+        "refCompanyProfile": {
+          "isVerifiedByAdmin": true,
+          "companyName": "CraftIndika Retail Private Limited",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/company/6866ae769a07e9b4963cd789/logo.webp?d=1751559967541",
+          "refLocation": {
+            "_id": "61360492bfd16a28bc0c1a54",
+            "city": "Khordha",
+            "state": "Odisha",
+            "country": "India",
+            "createdAt": "2021-09-06T12:09:58.433Z",
+            "updatedAt": "2021-09-06T12:09:58.433Z"
+          }
+        }
+      },
+      "jobStatus": "in-process",
+      "startDate": "2025-08-02T16:35:57.941Z",
+      "numOfOpenings": 2,
+      "refJobTitle": {
+        "_id": "6135c025df4eadc1bd885be9",
+        "name": "Fullstack Developer",
+        "createdAt": "2021-09-06T07:16:02.072Z",
+        "updatedAt": "2021-09-06T07:16:02.072Z",
+        "type": 1
+      },
+      "isRemoteJob": true,
+      "probationDuration": "3",
+      "immediate": true,
+      "preferences": {
+        "probationPeriod": true
+      },
+      "yearsOfExperience": 0,
+      "createdAt": "2025-07-03T16:36:02.594Z",
+      "applicantCount": 2118
+    },
+    {
+      "_id": "686644069a07e9b4961cf6c6",
+      "graduationYear": [],
+      "refSkills": [
+        {
+          "_id": "613b28e82593b2b5fe95c451",
+          "name": "C#",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/c%23.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c458",
+          "name": "Unity 3D",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/unity3d-icon.svg"
+        }
+      ],
+      "refOptionalSkills": [],
+      "jobOffer": [16, 24],
+      "probationSalaryRange": [],
+      "applicationQuestions": [],
+      "refUser": {
+        "refCompanyProfile": {
+          "isVerifiedByAdmin": true,
+          "companyName": "SnapHyr",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/company/685977a0c7a1bbc599fe0018/logo.webp?d=1750693965113",
+          "refLocation": {
+            "_id": "61360492bfd16a28bc0c19e9",
+            "city": "Gurugram",
+            "state": "Haryana",
+            "country": "India",
+            "createdAt": "2021-09-06T12:09:58.433Z",
+            "updatedAt": "2021-09-06T12:09:58.433Z"
+          }
+        }
+      },
+      "jobStatus": "in-process",
+      "startDate": "2025-08-02T08:49:09.951Z",
+      "numOfOpenings": 1,
+      "refJobTitle": {
+        "_id": "6135c025df4eadc1bd885bf3",
+        "name": "Game Developer",
+        "createdAt": "2021-09-06T07:16:02.072Z",
+        "updatedAt": "2021-09-06T07:16:02.072Z",
+        "type": 1
+      },
+      "isRemoteJob": false,
+      "refLocation": {
+        "_id": "62cd9a18e9536402bb1e51d2",
+        "city": "Noida",
+        "state": "Uttar Pradesh",
+        "country": "India",
+        "createdAt": "2021-09-06T12:09:58.433Z",
+        "updatedAt": "2021-09-06T12:09:58.433Z"
+      },
+      "probationDuration": "",
+      "immediate": true,
+      "preferences": {
+        "probationPeriod": false
+      },
+      "yearsOfExperience": 3,
+      "createdAt": "2025-07-03T08:49:10.384Z",
+      "applicantCount": 763
+    },
+    {
+      "_id": "686595639a07e9b496021524",
+      "graduationYear": [],
+      "refSkills": [
+        {
+          "_id": "613b28e82593b2b5fe95c437",
+          "name": "Javascript",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/JavaScript-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c43e",
+          "name": "jQuery",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/Jquery-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c448",
+          "name": "PHP",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/php-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c45e",
+          "name": "MySQL",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/MYSQL-icon.svg"
+        },
+        {
+          "_id": "6155b0aee2985fba7ba7e6d2",
+          "name": "Wordpress",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/WordPress-icon.png"
+        }
+      ],
+      "refOptionalSkills": [
+        {
+          "_id": "613b28e82593b2b5fe95c442",
+          "name": "Tailwind",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/tailwindcss-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c44f",
+          "name": "Python",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/python-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c45f",
+          "name": "PostgreSQL",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/Postgresql-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c47b",
+          "name": "Git",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/git-scm-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c480",
+          "name": "Figma",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/figma-icon.svg"
+        },
+        {
+          "_id": "61a1e391b06c4c1ce4a14681",
+          "name": "Astro",
+          "logoUrl": ""
+        }
+      ],
+      "jobOffer": [3.6, 6],
+      "probationSalaryRange": [20000, 35000],
+      "applicationQuestions": [
+        {
+          "question": "Why should you be hired for this role?"
+        },
+        {
+          "question": ""
+        }
+      ],
+      "refUser": {
+        "refCompanyProfile": {
+          "isVerifiedByAdmin": true,
+          "companyName": "Orbitalyne L.L.C.",
+          "logoUrl": "",
+          "refLocation": {
+            "_id": "619c6de6b06c4c1ce4a14626",
+            "city": "",
+            "state": "",
+            "country": "United States Of America (USA)"
+          }
+        }
+      },
+      "jobStatus": "in-process",
+      "startDate": "2025-08-02T16:15:29.444Z",
+      "numOfOpenings": 1,
+      "refJobTitle": {
+        "_id": "6135c025df4eadc1bd885be9",
+        "name": "Fullstack Developer",
+        "createdAt": "2021-09-06T07:16:02.072Z",
+        "updatedAt": "2021-09-06T07:16:02.072Z",
+        "type": 1
+      },
+      "isRemoteJob": true,
+      "probationDuration": "1",
+      "immediate": true,
+      "preferences": {
+        "probationPeriod": true
+      },
+      "yearsOfExperience": 0,
+      "createdAt": "2025-07-02T20:24:03.026Z",
+      "applicantCount": 1980
+    },
+    {
+      "_id": "686532d29a07e9b496e463ef",
+      "graduationYear": [],
+      "refSkills": [
+        {
+          "_id": "613b28e82593b2b5fe95c42b",
+          "name": "React Native",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/React-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c42e",
+          "name": "React.js",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/React-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c437",
+          "name": "Javascript",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/JavaScript-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c445",
+          "name": "ExpressJs",
+          "logoUrl": "https://production-cuvette.s3.amazonaws.com/skillsIcon/expressjs-icon.svg"
+        },
+        {
+          "_id": "6155b0aee2985fba7ba7e6d1",
+          "name": "UI/UX",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/UIUX-icon.png"
+        }
+      ],
+      "refOptionalSkills": [
+        {
+          "_id": "613b28e82593b2b5fe95c45d",
+          "name": "MongoDB",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/mongodb-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c45e",
+          "name": "MySQL",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/MYSQL-icon.svg"
+        },
+        {
+          "_id": "6155b0aee2985fba7ba7e6bc",
+          "name": "iOS",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/iOS-icon.png"
+        },
+        {
+          "_id": "6155b0aee2985fba7ba7e6c0",
+          "name": "JSON",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/JSON-icon.png"
+        },
+        {
+          "_id": "629b257df5543ba0b054eb4b",
+          "name": "Android Studio"
+        }
+      ],
+      "jobOffer": [3, 4.5],
+      "probationSalaryRange": [],
+      "applicationQuestions": [],
+      "refUser": {
+        "refCompanyProfile": {
+          "isVerifiedByAdmin": true,
+          "companyName": "Radiant IT Services Pvt Ltd",
+          "logoUrl": "",
+          "refLocation": {
+            "_id": "61360492bfd16a28bc0c1b09",
+            "city": "Pune",
+            "state": "Maharashtra",
+            "country": "India",
+            "createdAt": "2021-09-06T12:09:58.433Z",
+            "updatedAt": "2021-09-06T12:09:58.433Z"
+          }
+        }
+      },
+      "jobStatus": "in-process",
+      "startDate": "2025-08-01T13:23:29.534Z",
+      "numOfOpenings": 3,
+      "refJobTitle": {
+        "_id": "6135c025df4eadc1bd885be7",
+        "name": "Frontend Developer",
+        "createdAt": "2021-09-06T07:16:02.072Z",
+        "updatedAt": "2021-09-06T07:16:02.072Z",
+        "type": 1
+      },
+      "isRemoteJob": true,
+      "refLocation": {
+        "_id": "61360492bfd16a28bc0c1b09",
+        "city": "Pune",
+        "state": "Maharashtra",
+        "country": "India",
+        "createdAt": "2021-09-06T12:09:58.433Z",
+        "updatedAt": "2021-09-06T12:09:58.433Z"
+      },
+      "probationDuration": "",
+      "immediate": true,
+      "preferences": {
+        "probationPeriod": false
+      },
+      "yearsOfExperience": 0,
+      "createdAt": "2025-07-02T13:23:30.404Z",
+      "applicantCount": 2734
+    },
+    {
+      "_id": "686527239a07e9b496dcf498",
+      "graduationYear": [],
+      "refSkills": [
+        {
+          "_id": "61a1e391b06c4c1ce4a14772",
+          "name": "Markdown",
+          "logoUrl": ""
+        },
+        {
+          "_id": "61a1e391b06c4c1ce4a147d3",
+          "name": "PostScript",
+          "logoUrl": ""
+        },
+        {
+          "_id": "629b257df5543ba0b054ec51",
+          "name": "Technical advisement"
+        },
+        {
+          "_id": "62e3edca93cfa00537a910ad",
+          "name": "Content Writing",
+          "logoUrl": ""
+        }
+      ],
+      "refOptionalSkills": [
+        {
+          "_id": "613b28e82593b2b5fe95c439",
+          "name": "HTML",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/html-icon.svg"
+        },
+        {
+          "_id": "61a1e391b06c4c1ce4a14677",
+          "name": "API",
+          "logoUrl": ""
+        },
+        {
+          "_id": "629b257df5543ba0b054ec0f",
+          "name": "Product Knowledge"
+        }
+      ],
+      "jobOffer": [3, 3.2],
+      "probationSalaryRange": [],
+      "applicationQuestions": [
+        {
+          "question": "Why should you be hired for this role?"
+        },
+        {
+          "question": ""
+        }
+      ],
+      "refUser": {
+        "refCompanyProfile": {
+          "isVerifiedByAdmin": true,
+          "companyName": "EPVI New Technological Epoch Private Limited",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/company/6863b92c42784a177ed24280/logo.webp?d=1751366267229",
+          "refLocation": {
+            "_id": "61360492bfd16a28bc0c19e9",
+            "city": "Gurugram",
+            "state": "Haryana",
+            "country": "India",
+            "createdAt": "2021-09-06T12:09:58.433Z",
+            "updatedAt": "2021-09-06T12:09:58.433Z"
+          }
+        }
+      },
+      "jobStatus": "in-process",
+      "startDate": "2025-08-08T08:57:54.479Z",
+      "numOfOpenings": 1,
+      "refJobTitle": {
+        "_id": "629b257cf5543ba0b054eb31",
+        "name": "Technical Content Writer",
+        "type": 1
+      },
+      "isRemoteJob": false,
+      "refLocation": {
+        "_id": "61360492bfd16a28bc0c19e9",
+        "city": "Gurugram",
+        "state": "Haryana",
+        "country": "India",
+        "createdAt": "2021-09-06T12:09:58.433Z",
+        "updatedAt": "2021-09-06T12:09:58.433Z"
+      },
+      "probationDuration": "",
+      "immediate": true,
+      "preferences": {
+        "probationPeriod": false
+      },
+      "yearsOfExperience": 0,
+      "createdAt": "2025-07-02T12:33:39.623Z",
+      "applicantCount": 952
+    },
+    {
+      "_id": "6863bc3b42784a177ed32a92",
+      "graduationYear": [],
+      "refSkills": [
+        {
+          "_id": "613b28e82593b2b5fe95c42e",
+          "name": "React.js",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/React-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c431",
+          "name": "NextJs",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/next-js.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c437",
+          "name": "Javascript",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/JavaScript-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c456",
+          "name": "Typescript",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/Typescript-icon.svg"
+        },
+        {
+          "_id": "61a1e391b06c4c1ce4a1473f",
+          "name": "Jest Snapshot",
+          "logoUrl": ""
+        }
+      ],
+      "refOptionalSkills": [],
+      "jobOffer": [3, 4.8],
+      "probationSalaryRange": [],
+      "applicationQuestions": [
+        {
+          "question": "Why should you be hired for this role?"
+        },
+        {
+          "question": ""
+        }
+      ],
+      "refUser": {
+        "refCompanyProfile": {
+          "isVerifiedByAdmin": true,
+          "companyName": "EPVI New Technological Epoch Private Limited",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/company/6863b92c42784a177ed24280/logo.webp?d=1751366267229",
+          "refLocation": {
+            "_id": "61360492bfd16a28bc0c19e9",
+            "city": "Gurugram",
+            "state": "Haryana",
+            "country": "India",
+            "createdAt": "2021-09-06T12:09:58.433Z",
+            "updatedAt": "2021-09-06T12:09:58.433Z"
+          }
+        }
+      },
+      "jobStatus": "in-process",
+      "startDate": "2026-07-09T18:30:00.000Z",
+      "numOfOpenings": 1,
+      "refJobTitle": {
+        "_id": "6135c025df4eadc1bd885be7",
+        "name": "Frontend Developer",
+        "createdAt": "2021-09-06T07:16:02.072Z",
+        "updatedAt": "2021-09-06T07:16:02.072Z",
+        "type": 1
+      },
+      "isRemoteJob": false,
+      "refLocation": {
+        "_id": "61360492bfd16a28bc0c19e9",
+        "city": "Gurugram",
+        "state": "Haryana",
+        "country": "India",
+        "createdAt": "2021-09-06T12:09:58.433Z",
+        "updatedAt": "2021-09-06T12:09:58.433Z"
+      },
+      "probationDuration": "",
+      "immediate": false,
+      "preferences": {
+        "probationPeriod": false
+      },
+      "yearsOfExperience": 0,
+      "createdAt": "2025-07-01T10:45:15.991Z",
+      "applicantCount": 2075
+    },
+    {
+      "_id": "68639bc642784a177ec95aaf",
+      "graduationYear": [],
+      "refSkills": [
+        {
+          "_id": "613b28e82593b2b5fe95c42f",
+          "name": "Angular",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/Angular-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c437",
+          "name": "Javascript",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/JavaScript-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c439",
+          "name": "HTML",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/html-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c43a",
+          "name": "CSS",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/Css-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c44c",
+          "name": ".NET",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/NET-icon.svg"
+        }
+      ],
+      "refOptionalSkills": [
+        {
+          "_id": "613b28e82593b2b5fe95c440",
+          "name": "Bootstrap",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/Bootstrap-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c467",
+          "name": "MS SQL",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/MYSQL-icon.svg"
+        },
+        {
+          "_id": "613b28e82593b2b5fe95c474",
+          "name": "Azure",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/microsoft_azure-icon.svg"
+        },
+        {
+          "_id": "6155b0aee2985fba7ba7e6d3",
+          "name": "XML",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/skillsIcon/XML-icon.jpg"
+        }
+      ],
+      "jobOffer": [8, 10],
+      "probationSalaryRange": [800000, 1000000],
+      "applicationQuestions": [],
+      "refUser": {
+        "refCompanyProfile": {
+          "isVerifiedByAdmin": true,
+          "companyName": "Reework",
+          "logoUrl": "https://production-cuvette.s3.ap-south-1.amazonaws.com/company/6846be6281b6371bb69aac34/logo.webp?d=1749466799121",
+          "refLocation": {
+            "_id": "61360492bfd16a28bc0c1ab5",
+            "city": "Mumbai",
+            "state": "Maharashtra",
+            "country": "India",
+            "createdAt": "2021-09-06T12:09:58.433Z",
+            "updatedAt": "2021-09-06T12:09:58.433Z"
+          }
+        }
+      },
+      "jobStatus": "in-process",
+      "startDate": "2025-07-31T08:26:46.192Z",
+      "numOfOpenings": 2,
+      "refJobTitle": {
+        "_id": "6135c025df4eadc1bd885be9",
+        "name": "Fullstack Developer",
+        "createdAt": "2021-09-06T07:16:02.072Z",
+        "updatedAt": "2021-09-06T07:16:02.072Z",
+        "type": 1
+      },
+      "isRemoteJob": true,
+      "refLocation": {
+        "_id": "61360492bfd16a28bc0c1ab5",
+        "city": "Mumbai",
+        "state": "Maharashtra",
+        "country": "India",
+        "createdAt": "2021-09-06T12:09:58.433Z",
+        "updatedAt": "2021-09-06T12:09:58.433Z"
+      },
+      "probationDuration": "3",
+      "immediate": true,
+      "preferences": {
+        "probationPeriod": true
+      },
+      "yearsOfExperience": 0,
+      "createdAt": "2025-07-01T08:26:46.135Z",
+      "applicantCount": 3025
+    }
+  ],
+  "pageSize": 20,
+  "pageNumber": 1,
+  "total": 25
+}

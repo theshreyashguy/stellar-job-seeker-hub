@@ -14,6 +14,7 @@ import { useJobOpportunities, Opportunity } from "@/hooks/useJobOpportunities";
 import { scrapeWellfound } from "@/lib/api";
 
 const Wellfound = () => {
+  h;
   const [file, setFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const {
@@ -164,14 +165,21 @@ const Wellfound = () => {
                     <a
                       href={`/cold-email?company=${encodeURIComponent(
                         opportunity.company
-                      )}&role=${encodeURIComponent(opportunity.name)}`}
+                      )}&role=${encodeURIComponent(opportunity.name)}
+                      &platform=wellfound`}
                       className="bg-stellar-cyan hover:bg-stellar-cyan/80 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors duration-300"
                     >
                       <Send size={16} />
                       <span>Cold Email</span>
                     </a>
                     <button
-                      onClick={() => removeWellfoundOpportunity(opportunity.id)}
+                      onClick={() =>
+                        removeWellfoundOpportunity(
+                          opportunity.id,
+                          opportunity.name,
+                          opportunity.company
+                        )
+                      }
                       className="text-gray-400 hover:text-white transition-colors duration-300"
                     >
                       <X size={20} />
