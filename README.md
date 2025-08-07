@@ -2,7 +2,7 @@
 
 A full-stack application designed to streamline your job search: from scraping listings to sending optimized cold emails and tracking outcomes via a rich analytics dashboard.
 
----
+---                                     |
 
 ## ✨ Features
 
@@ -56,6 +56,21 @@ A full-stack application designed to streamline your job search: from scraping l
 
 ---
 
+## Demo Images
+
+|      |      |
+| ---- | ---- |
+| <img src="https://github.com/user-attachments/assets/c0b6b7de-65b5-4df8-9dc5-8326859f77f5" width="600px" height="450px" alt="Dashboard overview" /> | <img src="https://github.com/user-attachments/assets/1379697d-26cf-4271-abbd-f73fda1d3006" width="600px" height="450px" alt="Opportunities list" /> |
+|  |  |
+| <img src="https://github.com/user-attachments/assets/b4784e16-27a8-4858-91df-fbef886e7752" width="600px" height="450px" alt="JSON upload form" /> | <img src="https://github.com/user-attachments/assets/90e378cc-ec06-4f1f-9bc1-bad8f00df54b" width="600px" height="450px" alt="Jobs/Internships toggle" /> |
+| |  |
+| <img src="https://github.com/user-attachments/assets/233a662d-22c2-4ed7-ab47-b750556d294c" width="600px" height="450px" alt="Opportunity detail view" /> | <img src="https://github.com/user-attachments/assets/2c9652fb-5eca-4208-a5fd-34074f3ed6f5" width="600px" height="450px" alt="Mobile layout preview" /> |
+|  |  |
+
+
+
+
+---
 ## 🔬 Algorithms & Research
 
 We've implemented and optimized multiple core algorithms to ensure reliability, scalability, and high deliverability, grounded in established research:
@@ -169,6 +184,4 @@ See [CONTRIBUTING.md](https://chatgpt.com/c/CONTRIBUTING.md) for full guidelines
 
 ---
 
-## 📄 License
 
-This project is licensed under the MIT License. See [LICENSE](https://chatgpt.com/c/LICENSE) for details.
