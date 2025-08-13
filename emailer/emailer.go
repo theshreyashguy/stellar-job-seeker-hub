@@ -11,12 +11,14 @@ import (
 	"path/filepath"
 )
 
-var smtpHost = os.Getenv("smtpHost")
-var smtpPort = os.Getenv("smtpPort")
-var username = os.Getenv("username")
-var password = os.Getenv("password") 
-var mixedBoundary = os.Getenv("mixedBoundary") 
-var altBoundary   = os.Getenv("altBoundary")
+const (
+	smtpHost      = "smtp.gmail.com"
+	smtpPort      = "587"
+	username      = "jadhaoshreyash31@gmail.com" // your Gmail address
+	password      = "ttcubeiowzfeyebv"           // app password or OAuth token
+	mixedBoundary = "MIXED-BOUNDARY-123456"
+	altBoundary   = "ALT-BOUNDARY-654321"
+)
 
 // SendApplicationEmail sends your application (plain+HTML) and attaches resume & presentation.
 func SendApplicationEmail(to, position string, user models.User) error {

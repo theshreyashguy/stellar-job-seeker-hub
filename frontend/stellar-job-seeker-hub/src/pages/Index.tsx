@@ -32,7 +32,8 @@ const Index = () => {
       icon: Mail,
       color: 'from-red-500 to-red-700',
       description: 'Email management and follow-ups'
-    }
+    },
+    
   ];
 
   return (

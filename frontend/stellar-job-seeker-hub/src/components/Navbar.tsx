@@ -10,10 +10,11 @@ const Navbar: React.FC = () => {
   const { signOut } = useAuth();
 
   const navItems = [
-    { path: '/', label: 'Home', icon: Home },
-    { path: '/profile', label: 'Profile', icon: User },
-    { path: '/analysis', label: 'Analysis', icon: BarChart3 },
-    { path: '/gmail', label: 'Gmail', icon: Mail },
+    { path: "/", label: "Home", icon: Home },
+    { path: "/profile", label: "Profile", icon: User },
+    { path: "/analysis", label: "Analysis", icon: BarChart3 },
+    { path: "/cold-emailer", label: "Cold Emailer", icon: Mail },
+    { path: "/gmail", label: "Gmail", icon: Mail },
   ];
 
   return (

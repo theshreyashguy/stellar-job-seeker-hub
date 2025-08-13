@@ -11,6 +11,7 @@ import Wellfound from "./pages/Wellfound";
 import Gmail from "./pages/Gmail";
 import Apply from "./pages/Apply";
 import ColdEmail from "./pages/ColdEmail";
+import ColdEmailer from "./pages/ColdEmailer";
 import Analysis from "./pages/Analysis";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
@@ -54,6 +55,7 @@ const App = () => {
                         <Route path="/gmail" element={<Gmail />} />
                         <Route path="/apply" element={<Apply />} />
                         <Route path="/cold-email" element={<ColdEmail />} />
+                        <Route path="/cold-emailer" element={<ColdEmailer />} />
                         <Route path="/analysis" element={<Analysis />} />
                         <Route path="/profile" element={<Profile />} />
                         <Route path="*" element={<NotFound />} />

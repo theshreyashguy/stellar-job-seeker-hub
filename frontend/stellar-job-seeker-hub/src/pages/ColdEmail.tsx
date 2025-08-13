@@ -1,10 +1,12 @@
-import React, { useState, useCallback } from "react";
+import React, { useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { CheckCircle, Send, ArrowLeft, User, X, Edit2 } from "lucide-react";
+import { CheckCircle, Send, ArrowLeft } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { useJobOpportunities } from "@/hooks/useJobOpportunities";
 import { useUser } from "@/components/UserProvider";
 import { createApplication } from "@/lib/api";
+import { EmployeeInput } from "@/components/cold-email/EmployeeInput";
+import { NamesList } from "@/components/cold-email/NamesList";
+import { parseEmployeeNames } from "@/lib/parsing";
 
 const EmailDetails = ({ role, company }: { role: string; company: string }) => (
   <div className="bg-stellar-navy/50 rounded-xl p-6">
@@ -23,96 +25,6 @@ const EmailDetails = ({ role, company }: { role: string; company: string }) => (
         <span className="text-white">{new Date().toLocaleDateString()}</span>
       </div>
     </div>
-  </div>
-);
-
-const EmployeeInput = ({
-  info,
-  setInfo,
-  onParse,
-  isParsing,
-}: {
-  info: string;
-  setInfo: React.Dispatch<React.SetStateAction<string>>;
-  onParse: () => void;
-  isParsing: boolean;
-}) => (
-  <div className="space-y-3">
-    <label className="flex items-center space-x-2 text-white font-medium">
-      <User size={18} />
-      <span>Employee/Contact</span>
-    </label>
-    <textarea
-      value={info}
-      onChange={(e) => setInfo(e.target.value)}
-      placeholder="Paste raw LinkedIn info here..."
-      className="w-full p-4 bg-stellar-navy/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 resize-none"
-      rows={3}
-    />
-    <div className="text-center">
-      <button
-        onClick={onParse}
-        disabled={isParsing}
-        className="bg-stellar-cyan hover:bg-stellar-cyan/80 text-white px-8 py-3 rounded-lg transition-colors disabled:opacity-50"
-      >
-        {isParsing ? "Parsing..." : "Parse Employee Info"}
-      </button>
-    </div>
-  </div>
-);
-
-const NamesList = ({
-  names,
-  onEdit,
-  onRemove,
-  editingIndex,
-  editingValue,
-  setEditingValue,
-  onSave,
-}: {
-  names: string[];
-  onEdit: (idx: number) => void;
-  onRemove: (idx: number) => void;
-  editingIndex: number | null;
-  editingValue: string;
-  setEditingValue: React.Dispatch<React.SetStateAction<string>>;
-  onSave: () => void;
-}) => (
-  <div className="bg-stellar-navy/50 rounded-xl p-4">
-    <h4 className="text-lg font-bold text-white mb-2">
-      Extracted Employee Names:
-    </h4>
-    <ul className="space-y-2">
-      {names.map((name, idx) => (
-        <li
-          key={idx}
-          className="flex items-center justify-between bg-gray-700/20 p-2 rounded-lg"
-        >
-          {editingIndex === idx ? (
-            <input
-              value={editingValue}
-              onChange={(e) => setEditingValue(e.target.value)}
-              onBlur={onSave}
-              onKeyDown={(e) => e.key === "Enter" && onSave()}
-              autoFocus
-              className="flex-1 bg-transparent border-b border-gray-400 text-white px-2 py-1 focus:outline-none"
-            />
-          ) : (
-            <span
-              onClick={() => onEdit(idx)}
-              className="flex-1 cursor-pointer text-white"
-            >
-              {name}
-            </span>
-          )}
-          <X
-            size={16}
-            onClick={() => onRemove(idx)}
-            className="text-red-400 cursor-pointer ml-2"
-          />
-        </li>
-      ))}
-    </ul>
   </div>
 );
 
@@ -147,7 +59,6 @@ const ColdEmail: React.FC = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { opportunities } = useJobOpportunities(); // future use
   const user = useUser();
 
   const company = searchParams.get("company") || "Unknown Company";
@@ -163,33 +74,12 @@ const ColdEmail: React.FC = () => {
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [editingValue, setEditingValue] = useState("");
 
-  const parseEmployeeInfo = useCallback((info: string) => {
+  const handleParse = () => {
     setIsParsing(true);
-    const lines = info
-      .split(/\r?\n/)
-      .map((l) => l.trim())
-      .filter(Boolean);
-
-    const namesSet = new Set<string>();
-    
-    // This regex finds the first occurrence of common LinkedIn separators or phrases
-    // (like '•', connection degree, 'is open to work') and removes everything 
-    // from that point to the end of the line.
-    const junkRegex = /\s*([•·|,-]|\d+(?:st|nd|rd|th)|is open to work|follows you).*$/i;
-
-    lines.forEach((line) => {
-      const cleanName = line.replace(junkRegex, "").trim();
-
-      // Add to set if the result is not empty, has at least two words (heuristic for a name),
-      // and is not all-uppercase (to avoid acronyms).
-      if (cleanName && cleanName.split(' ').length >= 2 && cleanName !== cleanName.toUpperCase()) {
-        namesSet.add(cleanName);
-      }
-    });
-
-    setEmployeeNames(Array.from(namesSet));
+    const names = parseEmployeeNames(employeeInfo);
+    setEmployeeNames(names);
     setIsParsing(false);
-  }, []);
+  };
 
   const removeName = (index: number) => {
     setEmployeeNames((prev) => prev.filter((_, i) => i !== index));
@@ -275,7 +165,7 @@ const ColdEmail: React.FC = () => {
               <EmployeeInput
                 info={employeeInfo}
                 setInfo={setEmployeeInfo}
-                onParse={() => parseEmployeeInfo(employeeInfo)}
+                onParse={handleParse}
                 isParsing={isParsing}
               />
               {employeeNames.length > 0 && (
